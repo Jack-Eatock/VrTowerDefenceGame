@@ -20,6 +20,7 @@ public class GridGenerator : MonoBehaviour
     public void start()
     {
         GenerateGrid(GridGenerator.GridSpacing);
+        GridGenerator.GridUsed = new bool[GridWidth * GridHeight];
     }
 
     public void Update()
