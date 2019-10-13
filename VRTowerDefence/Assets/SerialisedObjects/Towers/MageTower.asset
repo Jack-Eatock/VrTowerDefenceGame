@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
   m_Name: MageTower
   m_EditorClassIdentifier: 
-  TowerGO: {fileID: 6468673743562948473, guid: 02f2b783d998b724d95083f2c12dffa0, type: 3}
+  TowerGO: {fileID: 1277772364328422624, guid: 6e33bde7b4c377f48adbf741716f295c, type: 3}
   Name: MageTower
   DamagePerShot: 0
   ReloadDuration: 0
   ReloadTime: 0
   Range: 0
-  MinitureVersion4Menu: {fileID: 5027876910272531933, guid: 045e9daa77f24aa4c952319ab57a3720,
+  MinitureVersion4Menu: {fileID: 5585109631505509869, guid: 045e9daa77f24aa4c952319ab57a3720,
     type: 3}

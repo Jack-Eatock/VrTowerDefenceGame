@@ -17,12 +17,15 @@ public class BuildingScript : MonoBehaviour
     public float GridSize = 40;
 
     // Placing Towers
+    [SerializeField]
+    private GameObject CancelGO;
+
     public GameObject PlacedTowersStorage;
     private GameObject GameWorld;
     private bool CanBePlaced = false;
 
     private  float SF;
-    private bool placing = false;
+    private bool TowerBeingPlaced = false;
     private bool NewTowerHidden = false;
     private bool CurrentlyDisplayedTowerHidden = true;
     private GameObject NewTower = null;
@@ -99,8 +102,13 @@ public class BuildingScript : MonoBehaviour
         {
         }
 
-        if (placing)
+        if (TowerBeingPlaced)
         {
+            if (!CancelGO.activeSelf)
+            {
+                CancelGO.SetActive(true);
+            }
+
             CurrentlyDisplayedTower.transform.rotation = Quaternion.LookRotation(new Vector3(1, 0, 0), Vector3.up);
             if (CurrentlyDisplayedTower.transform.position.y - Ground.transform.position.y  < 0.55)
             {
@@ -172,49 +180,94 @@ public class BuildingScript : MonoBehaviour
             }
 
         }
-    }
-
-    public void OnPlace()
-    {
-        placing = false;
-        CanBePlaced = false;
-        NewTower.transform.SetParent(PlacedTowersStorage.transform);
-        NewTower = null;
-        CurrentlyDisplayedTower.transform.SetParent(TowerMenuPos.transform);
-        CurrentlyDisplayedTower.transform.position = TowerMenuPos.transform.position;
-        CurrentlyDisplayedTower.transform.rotation = TowerMenuPos.transform.rotation;
-        GenerateRemoveTower(CurrentlyDisplayedTowerPos, true);
-        //SetPlacingOnOff(true);
-    }
-
-    public void SetPlacingOnOff(bool Placing)
-    {
-        if (Placing)
+        else
         {
-            placing = true;
+            if (CancelGO.activeSelf)
+            {
+                CancelGO.SetActive(false);
+            }
+        }
+    }
+
+
+    public void ActivateMenu(bool Activate)
+    {
+        if (Activate)
+        {
             MenuGameObject.SetActive(true);
-            GenerateRemoveTower(CurrentlyDisplayedTowerPos, true);
+            GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
             MenuActive = true;
+            GridSwitch();
+        }
+        else
+        {
+            if (TowerBeingPlaced)
+            {
+                SetTowerBeingPlacedTrueFalse(false);
+            }
+            MenuGameObject.SetActive(false);
+            GenerateRemoveMiniTowerFromMenu(0, false);
+            MenuActive = false;
+            GridSwitch();
+        }
+
+    }
+
+    public void SetCurrentTowerPos(int Active = 0)
+    {  
+        // Sets tower in the Menu. 
+        if (Active == 0)
+        {
+            CurrentlyDisplayedTower.transform.SetParent(TowerMenuPos.transform);
+            CurrentlyDisplayedTower.transform.position = TowerMenuPos.transform.position;
+            CurrentlyDisplayedTower.transform.rotation = TowerMenuPos.transform.rotation;
+        }
+
+        //Sets tower as child of Hand.
+        else if (Active == 1)
+        {
             CurrentlyDisplayedTower.gameObject.transform.position = RightHandGO.transform.position;
             CurrentlyDisplayedTower.gameObject.transform.rotation = MinitureTowers[CurrentlyDisplayedTowerPos].transform.rotation;
             CurrentlyDisplayedTower.gameObject.transform.SetParent(RightHandGO.transform);
         }
+
+    }
+
+    public void OnPlaceOrCancel(bool Place)
+    {
+        if (Place)
+        {
+            NewTower.transform.SetParent(PlacedTowersStorage.transform);
+            CanBePlaced = false;
+        }
+        NewTower = null;
+        TowerBeingPlaced = false;
+        SetCurrentTowerPos(0);
+        GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
+        //SetPlacingOnOff(true);
+    }
+
+    public void SetTowerBeingPlacedTrueFalse(bool Activate)
+    {
+        if (Activate)
+        {
+            TowerBeingPlaced = true;
+            MenuGameObject.SetActive(true);
+            GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
+            MenuActive = true;
+            SetCurrentTowerPos(1);
+        }
         else
         {
-            placing = false;
+            TowerBeingPlaced = false;
             if (NewTower)
             {
                 Destroy(NewTower);
                 NewTower = null;
             }
-            CurrentlyDisplayedTower.transform.SetParent(TowerMenuPos.transform);
-            CurrentlyDisplayedTower.transform.position = TowerMenuPos.transform.position;
-            CurrentlyDisplayedTower.transform.rotation = TowerMenuPos.transform.rotation;
-            GenerateRemoveTower(0, false);
-           
-
+            SetCurrentTowerPos(0);
+            GenerateRemoveMiniTowerFromMenu(0, false);
         }
-
     }
     
 
@@ -244,13 +297,12 @@ public class BuildingScript : MonoBehaviour
                 CurrentlyDisplayedTowerPos -= 1;
             }
         }
-        GenerateRemoveTower(CurrentlyDisplayedTowerPos, true);
+        GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
 
     }
 
-    public void GenerateRemoveTower(int x, bool Generate)
-    {
-       
+    public void GenerateRemoveMiniTowerFromMenu(int x, bool Generate)
+    {   
         if (CurrentlyDisplayedTower != null)
         {
             CurrentlyDisplayedTower.SetActive(false);
@@ -277,7 +329,6 @@ public class BuildingScript : MonoBehaviour
             Ground.GetComponent<Renderer>().material = GrassGridMat;
             IsGroundGrid = true;
         }
-
     }
 
     // If the ground is made larger use this function to scale the grid along with it. If not the gird will look strange.
@@ -292,16 +343,22 @@ public class BuildingScript : MonoBehaviour
 
     public void TriggerDownRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        if (!placing)
+        if (!TowerBeingPlaced)
         {
             if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding)
             {
-                SetPlacingOnOff(true);
+                SetTowerBeingPlacedTrueFalse(true);
             }
         }
+
+        else if (TowerBeingPlaced && TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding)
+        {
+            OnPlaceOrCancel(false);
+        }
+
         else if (CanBePlaced)
         {
-            OnPlace();
+            OnPlaceOrCancel(true);
         }
        
     }
@@ -321,7 +378,7 @@ public class BuildingScript : MonoBehaviour
 
     public void OnDPLeftClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        if (!placing)
+        if (!TowerBeingPlaced)
         {
             if (MenuActive)
             {
@@ -332,7 +389,7 @@ public class BuildingScript : MonoBehaviour
     }
     public void OnDPRightClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        if (!placing)
+        if (!TowerBeingPlaced)
         {
             if (MenuActive)
             {
@@ -345,30 +402,12 @@ public class BuildingScript : MonoBehaviour
     {
         if (MenuActive)
         {
-            if (!placing)
-            {
-                MenuGameObject.SetActive(false);
-                GenerateRemoveTower(0, false);
-                MenuActive = false;
-                GridSwitch();
-            }
-            else
-            {
-                MenuActive = false;
-                MenuGameObject.SetActive(false);
-                SetPlacingOnOff(false);
-                GridSwitch();
-
-            }
+            ActivateMenu(false);
         }
         else
         {
-            MenuGameObject.SetActive(true);
-            GenerateRemoveTower(CurrentlyDisplayedTowerPos, true);
-            MenuActive = true;
-            GridSwitch();
+            ActivateMenu(true);
         }
-        //GridSwitch();
       
     }
     public void MenuUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
