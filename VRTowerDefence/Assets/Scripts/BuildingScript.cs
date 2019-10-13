@@ -24,12 +24,16 @@ public class BuildingScript : MonoBehaviour
     private GameObject GameWorld;
     private bool CanBePlaced = false;
 
+    private int GridWidth;
+    private int GridHeight;
     private  float SF;
     private bool TowerBeingPlaced = false;
     private bool NewTowerHidden = false;
     private bool CurrentlyDisplayedTowerHidden = true;
     private GameObject NewTower = null;
     private Vector3 CurrentPosition;
+    private int CurrentPositionPosX;
+    private int CurrentPositionPosY;
 
     //Menu Variables
     private bool MenuActive = false;
@@ -66,6 +70,7 @@ public class BuildingScript : MonoBehaviour
 
     public void Start()
     {
+
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
         SF = Player.GetComponent<MovementScript>().SF;
@@ -124,26 +129,48 @@ public class BuildingScript : MonoBehaviour
                 float PosZ = CurrentlyDisplayedTower.transform.position.z;
                 float PosY = GameWorld.transform.position.y;
                 float GridSpacing = GridGenerator.GridSpacing / 2f;
-                int Counter = 0;
                 bool Placeable = false;
-                foreach (Vector3 Point in GridGenerator.GridPoints)
+
+
+                GridHeight = GridGenerator.GridStatus.GetLength(1);
+                GridWidth = GridGenerator.GridStatus.GetLength(0);
+
+                for (int x = 0; x < GridWidth; x++)
                 {
-                    if (Point.x < PosX + GridSpacing && Point.x > PosX - GridSpacing)
+                    for(int y = 0;y < GridHeight; y++)
                     {
-                        if (Point.z < PosZ + GridSpacing && Point.z > PosZ - GridSpacing)
+                        Vector3 Point = GridGenerator.GridStatus[x, y].Position;
+                        if (Point.x < PosX + GridSpacing && Point.x > PosX - GridSpacing)
                         {
-                            CurrentPosition = new Vector3 (Point.x,PosY,Point.z);
-                            Counter++;
-                            Placeable = true;
-                            break;
+                            if (Point.z < PosZ + GridSpacing && Point.z > PosZ - GridSpacing)
+                            {
+                                CurrentPosition = new Vector3(Point.x, PosY, Point.z);
+                                if (GridGenerator.GridStatus[x, y].Available)
+                                {
+                                    Placeable = true;
+                                    CurrentPositionPosX = x;
+                                    CurrentPositionPosY = y;
+                                }
+                                else if (Placeable)
+                                {
+                                    Placeable = false;
+                                }
+                                
+                                break;
+                            }
                         }
                     }
                 }
+
 
                 if (Placeable)
                 {
                     CanBePlaced = true;
                     Placeable = false;
+                }
+                else
+                {
+                    CanBePlaced = false;
                 }
 
                 if (!NewTower)
@@ -239,6 +266,8 @@ public class BuildingScript : MonoBehaviour
         {
             NewTower.transform.SetParent(PlacedTowersStorage.transform);
             CanBePlaced = false;
+            Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
+            GridGenerator.GridStatus[CurrentPositionPosX,CurrentPositionPosY].Available = false;
         }
         NewTower = null;
         TowerBeingPlaced = false;
