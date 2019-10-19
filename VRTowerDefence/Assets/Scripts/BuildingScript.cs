@@ -283,7 +283,7 @@ public class BuildingScript : MonoBehaviour
 
         foreach (Vector2 Cord in Cords)
         {
-            Debug.Log(Cord);
+            //Debug.Log(Cord);
             GridGenerator.SetGridPointAvailable(false, Cord);
         }
         

@@ -23,7 +23,6 @@ public class GridGenerator : MonoBehaviour
     private Transform InUseTilesStorage;
 
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
-    private List<List<GameObject>> TilesList = new List<List<GameObject>>();
     private float SF;
 
     public static bool GridCanBeUpdated = false;
