@@ -11,11 +11,19 @@ public class OnCollisionScript : MonoBehaviour
     {
         if (CollisionType == 1)
         {
-            if (other.gameObject.name == "RightHand")
+            if (other.gameObject.name == "RightHand") // hand Colliding with Tower menu.
             {
                 IsColliding = true;
             }
 
+        }
+
+        else if (CollisionType == 2) // MiniTower COlliding with Ground.
+        {
+            if (other.gameObject.name == "Ground") // hand Colliding with Tower menu.
+            {
+                IsColliding = true;
+            }
         }
     }
 
@@ -24,6 +32,14 @@ public class OnCollisionScript : MonoBehaviour
         if (CollisionType == 1)
         {
             if (other.gameObject.name == "RightHand")
+            {
+                IsColliding = false;
+            }
+        }
+
+        else if (CollisionType == 2) // MiniTower COlliding with Ground.
+        {
+            if (other.gameObject.name == "Ground") // hand Colliding with Tower menu.
             {
                 IsColliding = false;
             }

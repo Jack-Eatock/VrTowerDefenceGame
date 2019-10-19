@@ -9,9 +9,6 @@ public class MovementScript : MonoBehaviour
     public SteamVR_Action_Boolean GripL;
     public SteamVR_Action_Boolean GripR;
 
-  
-
-
     // References to Input devices \\
     public SteamVR_Input_Sources LeftHand; // Left Controller - Set in Engine.
     public SteamVR_Input_Sources RightHand; // Right Controller - Set in Engine.
@@ -20,12 +17,11 @@ public class MovementScript : MonoBehaviour
 
 
     // Controller Variables \\
-    private Vector3 LastRHandPos;
-    private Vector3 LastLHandPos;
-    private bool IsGrabbingL = false;
-    private bool IsGrabbingR = false;
     private bool IsGrippingL = false;
     private bool IsGrippingR = false;
+
+    private Vector3 LastRHandPos;
+    private Vector3 LastLHandPos;
     private Vector3 ScalingOffset = Vector3.zero;
     private Vector3 ControllerVelocityL = Vector3.zero;
     private Vector3 ControllerVelocityR = Vector3.zero;
@@ -35,20 +31,22 @@ public class MovementScript : MonoBehaviour
 
 
     // Scaling the World \\
-    public float SF = 1;
     private Vector3 Offset;
     private Vector3 TargetPos;
     private Vector3 Pivot;
     private Vector3 DistanceBetween;
+    public  float LocalSF = 1;
     private float RS;
 
     // References to GameObjects \\
     public GameObject GameWorld;
 
-
-    public GameObject LeftHandGO;
-    public GameObject RightHandGO;
-    public GameObject PlayerHead;
+    [SerializeField]
+    private GameObject LeftHandGO;
+    [SerializeField]
+    private GameObject RightHandGO;
+    [SerializeField]
+    private GameObject PlayerHead;
 
 
     // Adjustable Properties to be used in Editior. \\
@@ -79,16 +77,16 @@ public class MovementScript : MonoBehaviour
         Pivot = PlayerHead.transform.position;
 
         DistanceBetween = TargetPos - Pivot;
-        RS = SF / GameWorld.transform.localScale.x;
+        RS = LocalSF / GameWorld.transform.localScale.x;
         Vector3 FP = new Vector3 (Pivot.x + DistanceBetween.x,0,Pivot.z + DistanceBetween.z) * RS;
 
 
-        GameWorld.transform.localScale = new Vector3(SF, SF, SF);
+        GameWorld.transform.localScale = new Vector3(LocalSF, LocalSF, LocalSF);
         GameWorld.transform.localPosition = FP + UpdatePosition;
 
 
         UpdatePosition = Vector3.zero;
-        SF = Mathf.Clamp(2 + GameWorld.transform.position.y - PlayerHead.transform.position.y  + Offset.y, 0.2f, 12f);
+        LocalSF = Mathf.Clamp(2 + GameWorld.transform.position.y - PlayerHead.transform.position.y  + Offset.y, 0.2f, 12f);
         
 
         ControllerVelocityR = (RightHandGO.transform.position - LastRHandPos) / Time.deltaTime;

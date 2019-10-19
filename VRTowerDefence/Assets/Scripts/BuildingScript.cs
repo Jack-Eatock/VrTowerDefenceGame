@@ -7,41 +7,51 @@ using UnityEngine.UI;
 public class BuildingScript : MonoBehaviour
 {
     // General Variables \\
-    [SerializeField]
-    public GameObject Ground;
+
     [SerializeField]
     private GameObject Player;
 
+    public GameObject Ground;
     public GameObject TowerMenuPos;
     public GameObject RightHandGO;
+
     public float GridSize = 40;
 
     // Placing Towers
     [SerializeField]
     private GameObject CancelGO;
+    [SerializeField]
+    private  GameObject PlacedTowersStorage;
 
-    public GameObject PlacedTowersStorage;
+    private GameObject GridGO;
     private GameObject GameWorld;
-    private bool CanBePlaced = false;
+    private GameObject NewTower = null;
 
-    private int GridWidth;
-    private int GridHeight;
-    private  float SF;
     private bool TowerBeingPlaced = false;
     private bool NewTowerHidden = false;
     private bool CurrentlyDisplayedTowerHidden = true;
-    private GameObject NewTower = null;
-    private Vector3 CurrentPosition;
+    private bool CanBePlaced = false;
+
     private int CurrentPositionPosX;
     private int CurrentPositionPosY;
+    private int GridWidth;
+    private int GridHeight;
 
-    //Menu Variables
-    private bool MenuActive = false;
-    public GameObject MenuGameObject;
+    public float SF;
+
+    private Vector3 CurrentPosition;
+
+
+    //Menu 
+    [SerializeField]
+    private GameObject MenuGameObject;
+    [SerializeField]
+    private GameObject Text;
+
     private GameObject[] MinitureTowers;
-    public GameObject Text;
     private Text NameText;
-    
+    private bool MenuActive = false;
+
     //Towers
     public TowerSO[] Towers;
     private GameObject CurrentlyDisplayedTower;
@@ -63,17 +73,16 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private Material GrassMat;
 
-
     private bool IsGroundGrid = false;
 
 
 
     public void Start()
     {
-
+        GridGO = GameObject.Find("Grid");
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
-        SF = Player.GetComponent<MovementScript>().SF;
+        SF = Player.GetComponent<MovementScript>().LocalSF;
 
         MinitureTowers = new GameObject[Towers.Length];
         for (int SObject = 0; SObject < Towers.Length; SObject++)
@@ -100,12 +109,9 @@ public class BuildingScript : MonoBehaviour
 
     public void Update()
     {
-        SF = Player.GetComponent<MovementScript>().SF;
-        GridGenerator.GridSpacing = ((Ground.transform.localScale.x  * SF) / GridSize);
 
-        if (MenuActive)
-        {
-        }
+        SF = Player.GetComponent<MovementScript>().LocalSF;
+        GridGenerator.GridSpacing = ((Ground.transform.localScale.x  * SF) / GridSize);
 
         if (TowerBeingPlaced)
         {
@@ -114,8 +120,10 @@ public class BuildingScript : MonoBehaviour
                 CancelGO.SetActive(true);
             }
 
-            CurrentlyDisplayedTower.transform.rotation = Quaternion.LookRotation(new Vector3(1, 0, 0), Vector3.up);
-            if (CurrentlyDisplayedTower.transform.position.y - Ground.transform.position.y  < 0.55)
+            CanBePlaced = false;
+
+            CurrentlyDisplayedTower.transform.rotation = Quaternion.LookRotation(new Vector3(1, 0, 0), Vector3.up); // Tower locks rotation looking up.
+            if (RightHandGO.GetComponent<OnCollisionScript>().IsColliding)
             {
                 if (!CurrentlyDisplayedTowerHidden)
                 {
@@ -129,7 +137,7 @@ public class BuildingScript : MonoBehaviour
                 float PosZ = CurrentlyDisplayedTower.transform.position.z;
                 float PosY = GameWorld.transform.position.y;
                 float GridSpacing = GridGenerator.GridSpacing / 2f;
-                bool Placeable = false;
+                
 
 
                 GridHeight = GridGenerator.GridStatus.GetLength(1);
@@ -145,32 +153,23 @@ public class BuildingScript : MonoBehaviour
                             if (Point.z < PosZ + GridSpacing && Point.z > PosZ - GridSpacing)
                             {
                                 CurrentPosition = new Vector3(Point.x, PosY, Point.z);
+                           
                                 if (GridGenerator.GridStatus[x, y].Available)
                                 {
-                                    Placeable = true;
+                                    CanBePlaced = true;
                                     CurrentPositionPosX = x;
                                     CurrentPositionPosY = y;
                                 }
-                                else if (Placeable)
+                                else if (CanBePlaced)
                                 {
-                                    Placeable = false;
+                                    Debug.Log("NotPlaceable");
+                                    CanBePlaced = false;
                                 }
                                 
                                 break;
                             }
                         }
                     }
-                }
-
-
-                if (Placeable)
-                {
-                    CanBePlaced = true;
-                    Placeable = false;
-                }
-                else
-                {
-                    CanBePlaced = false;
                 }
 
                 if (!NewTower)
@@ -221,13 +220,16 @@ public class BuildingScript : MonoBehaviour
     {
         if (Activate)
         {
+            GridGenerator.GridCanBeUpdated = true;
             MenuGameObject.SetActive(true);
             GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
             MenuActive = true;
             GridSwitch();
+
         }
         else
         {
+            GridGenerator.GridCanBeUpdated = false;
             if (TowerBeingPlaced)
             {
                 SetTowerBeingPlacedTrueFalse(false);
@@ -264,10 +266,37 @@ public class BuildingScript : MonoBehaviour
     {
         if (Place)
         {
+            NewTower.transform.position = new Vector3( GridGenerator.GridStatus[CurrentPositionPosX,CurrentPositionPosY].Position.x, GameWorld.transform.position.y, GridGenerator.GridStatus[CurrentPositionPosX, CurrentPositionPosY].Position.z);
             NewTower.transform.SetParent(PlacedTowersStorage.transform);
             CanBePlaced = false;
-            Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
-            GridGenerator.GridStatus[CurrentPositionPosX,CurrentPositionPosY].Available = false;
+            // Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
+            for (int x = CurrentPositionPosX - 3; x <= CurrentPositionPosX + 3; x++)
+            {
+                for (int y = CurrentPositionPosY -3; y <= CurrentPositionPosY + 3; y++)
+                {
+                    if (x < 0) {
+                        x = 0; 
+                    }
+                    else if ( x > GridWidth)   {
+                        x = GridWidth;
+                    }
+
+                    if (y < 0)  {
+                        y = 0; 
+                    }
+                    else if (y > GridHeight){
+                        y = GridHeight;
+                    }
+
+                    GridGO.GetComponent<GridGenerator>().SetGridPointAvailable(false, new Vector2(x, y));
+                }
+            }
+
+           
+        }
+        else
+        {
+            Destroy(NewTower);
         }
         NewTower = null;
         TowerBeingPlaced = false;
@@ -287,7 +316,7 @@ public class BuildingScript : MonoBehaviour
             SetCurrentTowerPos(1);
         }
         else
-        {
+        {           
             TowerBeingPlaced = false;
             if (NewTower)
             {
@@ -350,11 +379,13 @@ public class BuildingScript : MonoBehaviour
     {
         if (IsGroundGrid)
         {
+            GridGO.GetComponent<GridGenerator>().OnLoadInUseTiles(false);
             Ground.GetComponent<Renderer>().material = GrassMat;
             IsGroundGrid = false;
         }
         else
         {
+            GridGO.GetComponent<GridGenerator>().OnLoadInUseTiles(true);
             Ground.GetComponent<Renderer>().material = GrassGridMat;
             IsGroundGrid = true;
         }

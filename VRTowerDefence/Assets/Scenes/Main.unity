@@ -239,6 +239,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 112895608}
+  - component: {fileID: 112895611}
+  - component: {fileID: 112895610}
+  - component: {fileID: 112895609}
   m_Layer: 26
   m_Name: AttachmentPoint
   m_TagString: Untagged
@@ -260,6 +263,49 @@ Transform:
   m_Father: {fileID: 925391128}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &112895609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112895607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97409f601a4e2d54fb4e0b2e80fba197, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionType: 2
+  IsColliding: 0
+--- !u!54 &112895610
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112895607}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &112895611
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112895607}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.15
+  m_Center: {x: 0, y: 0, z: -0.01}
 --- !u!1 &249267436
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,13 +461,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798175212f149414bbca7204f5a7ae3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ground: {fileID: 400354474}
   Player: {fileID: 617815456}
+  Ground: {fileID: 400354474}
   TowerMenuPos: {fileID: 271813728}
   RightHandGO: {fileID: 112895607}
   GridSize: 40
   CancelGO: {fileID: 1638906427}
   PlacedTowersStorage: {fileID: 249267436}
+  SF: 0
   MenuGameObject: {fileID: 44991148}
   Text: {fileID: 38611343}
   Towers:
@@ -474,6 +521,7 @@ GameObject:
   - component: {fileID: 400354477}
   - component: {fileID: 400354476}
   - component: {fileID: 400354475}
+  - component: {fileID: 400354479}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -489,7 +537,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 400354474}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -511,7 +559,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d2981e57d7016354885ad5a697694654, type: 2}
+  - {fileID: 2100000, guid: 3c42915d0b78e1144a454c7281e64354, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -554,6 +602,52 @@ Transform:
   m_Father: {fileID: 1868694159}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &400354479
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400354474}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!1 &495581805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 495581806}
+  m_Layer: 0
+  m_Name: InUseTilesStorage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &495581806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495581805}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1868694159}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &617815456 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 107946, guid: dc06161b6d97feb419f45f03b62e14b9,
@@ -580,7 +674,7 @@ MonoBehaviour:
     needsReinit: 0
   LeftHand: 1
   RightHand: 2
-  SF: 1
+  LocalSF: 1
   GameWorld: {fileID: 1868694158}
   LeftHandGO: {fileID: 673716316}
   RightHandGO: {fileID: 925391125}
@@ -780,6 +874,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridWidth: 40
   GridHeight: 40
+  TileInUseGO: {fileID: 3091173940046910673, guid: 8917a20e858d2234393a99a59d19818d,
+    type: 3}
+  InUseTilesStorage: {fileID: 495581806}
 --- !u!4 &734318215
 Transform:
   m_ObjectHideFlags: 0
@@ -1381,6 +1478,7 @@ Transform:
   - {fileID: 734318215}
   - {fileID: 400354478}
   - {fileID: 6034280365224610582}
+  - {fileID: 495581806}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1565,7 +1663,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7342358182268057861}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 0.79, z: 0.04}
+  m_LocalPosition: {x: 0.01, y: 0.79, z: -0}
   m_LocalScale: {x: 1.6719674, y: 1.6781, z: 1.6781}
   m_Children:
   - {fileID: 9171950159642276728}
