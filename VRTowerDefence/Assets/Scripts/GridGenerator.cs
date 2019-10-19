@@ -22,7 +22,7 @@ public class GridGenerator : MonoBehaviour
     [SerializeField]
     private Transform InUseTilesStorage;
 
-    private List<Vector2> TilesInUseArray = new List<Vector2>();
+    public static List<Vector2> TilesInUseArray = new List<Vector2>();
     private List<List<GameObject>> TilesList = new List<List<GameObject>>();
     private float SF;
 
@@ -36,7 +36,7 @@ public class GridGenerator : MonoBehaviour
     public void Start()
     {
         SF = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
-        GridGenerator.GridStatus = new GridPoint[GridWidth, GridHeight];
+        GridStatus = new GridPoint[GridWidth, GridHeight];
         for (int x = 0; x < GridWidth; x++)
         {
             for (int y = 0; y< GridHeight; y++)
@@ -44,15 +44,15 @@ public class GridGenerator : MonoBehaviour
                 GridStatus[x, y] = new GridPoint();
             }
         }
-        GenerateGrid(GridGenerator.GridSpacing);
+        GenerateGrid(GridSpacing);
         GenerateTiles();
     }
 
     public void Update()
     {
-         if (GridGenerator.GridCanBeUpdated) // Updates when the build menu is opn
+         if (GridCanBeUpdated) // Updates when the build menu is opn
          {
-            GenerateGrid(GridGenerator.GridSpacing);
+            GenerateGrid(GridSpacing);
          }
     }
 
@@ -62,19 +62,19 @@ public class GridGenerator : MonoBehaviour
         {
             foreach (Vector2 Tile in TilesInUseArray)
             {
-                GridGenerator.GridStatus[(int)Tile.x, (int)Tile.y].Tile.SetActive(true);
+                GridStatus[(int)Tile.x, (int)Tile.y].Tile.SetActive(true);
             }
         }
         else
         {
             foreach (Vector2 Tile in TilesInUseArray)
             {
-                GridGenerator.GridStatus[(int)Tile.x, (int)Tile.y].Tile.SetActive(false);
+                GridStatus[(int)Tile.x, (int)Tile.y].Tile.SetActive(false);
             }
         }
     }
 
-    public void SetGridPointAvailable(bool Available, Vector2 Point)
+    public static void SetGridPointAvailable(bool Available, Vector2 Point)
     {
         if (Available)
         {
@@ -87,8 +87,8 @@ public class GridGenerator : MonoBehaviour
                 }
             }
 
-            GridGenerator.GridStatus[(int)Point.x, (int)Point.y].Available = true;
-            GridGenerator.GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(false);
+            GridStatus[(int)Point.x, (int)Point.y].Available = true;
+            GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(false);
         }
         else
         {
@@ -105,8 +105,8 @@ public class GridGenerator : MonoBehaviour
             {
                 TilesInUseArray.Add(Point);
             }
-            GridGenerator.GridStatus[(int)Point.x, (int)Point.y].Available = false;
-            GridGenerator.GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(true);
+            GridStatus[(int)Point.x, (int)Point.y].Available = false;
+            GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(true);
         }
     }
 
@@ -119,9 +119,9 @@ public class GridGenerator : MonoBehaviour
                 GameObject NewTile = GameObject.Instantiate(TileInUseGO);
                 NewTile.transform.SetParent(InUseTilesStorage);
                 NewTile.transform.localScale = new Vector3(SF, SF, SF);
-                NewTile.transform.position = GridGenerator.GridStatus[x,y].Position;
+                NewTile.transform.position = GridStatus[x,y].Position;
                 NewTile.SetActive(false);
-                GridGenerator.GridStatus[x, y].Tile = NewTile;
+                GridStatus[x, y].Tile = NewTile;
             }
         }
     }

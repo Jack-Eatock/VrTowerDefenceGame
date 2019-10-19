@@ -21,7 +21,7 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private GameObject CancelGO;
     [SerializeField]
-    private  GameObject PlacedTowersStorage;
+    private GameObject PlacedTowersStorage;
 
     private GameObject GridGO;
     private GameObject GameWorld;
@@ -111,7 +111,7 @@ public class BuildingScript : MonoBehaviour
     {
 
         SF = Player.GetComponent<MovementScript>().LocalSF;
-        GridGenerator.GridSpacing = ((Ground.transform.localScale.x  * SF) / GridSize);
+        GridGenerator.GridSpacing = ((Ground.transform.localScale.x * SF) / GridSize);
 
         if (TowerBeingPlaced)
         {
@@ -137,7 +137,7 @@ public class BuildingScript : MonoBehaviour
                 float PosZ = CurrentlyDisplayedTower.transform.position.z;
                 float PosY = GameWorld.transform.position.y;
                 float GridSpacing = GridGenerator.GridSpacing / 2f;
-                
+
 
 
                 GridHeight = GridGenerator.GridStatus.GetLength(1);
@@ -145,7 +145,7 @@ public class BuildingScript : MonoBehaviour
 
                 for (int x = 0; x < GridWidth; x++)
                 {
-                    for(int y = 0;y < GridHeight; y++)
+                    for (int y = 0; y < GridHeight; y++)
                     {
                         Vector3 Point = GridGenerator.GridStatus[x, y].Position;
                         if (Point.x < PosX + GridSpacing && Point.x > PosX - GridSpacing)
@@ -153,7 +153,7 @@ public class BuildingScript : MonoBehaviour
                             if (Point.z < PosZ + GridSpacing && Point.z > PosZ - GridSpacing)
                             {
                                 CurrentPosition = new Vector3(Point.x, PosY, Point.z);
-                           
+
                                 if (GridGenerator.GridStatus[x, y].Available)
                                 {
                                     CanBePlaced = true;
@@ -165,7 +165,7 @@ public class BuildingScript : MonoBehaviour
                                     Debug.Log("NotPlaceable");
                                     CanBePlaced = false;
                                 }
-                                
+
                                 break;
                             }
                         }
@@ -178,7 +178,7 @@ public class BuildingScript : MonoBehaviour
                     CurrentlyDisplayedTowerHidden = true;
                     NewTower = GameObject.Instantiate(Towers[CurrentlyDisplayedTowerPos].TowerGO);
                     NewTower.transform.position = CurrentPosition;
-                    NewTower.transform.localScale = new Vector3 (SF, SF, SF);
+                    NewTower.transform.localScale = new Vector3(SF, SF, SF);
 
                 }
 
@@ -186,7 +186,7 @@ public class BuildingScript : MonoBehaviour
                 {
                     NewTower.transform.localScale = new Vector3(SF, SF, SF);
                     NewTower.transform.position = CurrentPosition;
-                   
+
                     if (NewTowerHidden)
                     {
                         NewTower.SetActive(true);
@@ -243,7 +243,7 @@ public class BuildingScript : MonoBehaviour
     }
 
     public void SetCurrentTowerPos(int Active = 0)
-    {  
+    {
         // Sets tower in the Menu. 
         if (Active == 0)
         {
@@ -262,6 +262,34 @@ public class BuildingScript : MonoBehaviour
 
     }
 
+    public void CircleRadius(Vector2 StartingCords, int Radius)
+    {
+        List<Vector2> Cords = new List<Vector2>();
+        int Offset = 0;
+        for (int Counter = 1; Counter <= (Radius + 1); Counter++)
+        {
+            if (Counter == Radius + 1)
+            {
+                Offset = 1;
+            }
+
+            for (int x = (int)StartingCords.x - Counter + Offset; x <= StartingCords.x + Counter - Offset; x++)
+            {
+                
+                Cords.Add(new Vector2(x, StartingCords.y + (4 - Counter)));
+                Cords.Add(new Vector2(x, StartingCords.y - (4 - Counter)));
+            }
+        }
+
+        foreach (Vector2 Cord in Cords)
+        {
+            Debug.Log(Cord);
+            GridGenerator.SetGridPointAvailable(false, Cord);
+        }
+        
+    }
+
+
     public void OnPlaceOrCancel(bool Place)
     {
         if (Place)
@@ -270,29 +298,8 @@ public class BuildingScript : MonoBehaviour
             NewTower.transform.SetParent(PlacedTowersStorage.transform);
             CanBePlaced = false;
             // Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
-            for (int x = CurrentPositionPosX - 3; x <= CurrentPositionPosX + 3; x++)
-            {
-                for (int y = CurrentPositionPosY -3; y <= CurrentPositionPosY + 3; y++)
-                {
-                    if (x < 0) {
-                        x = 0; 
-                    }
-                    else if ( x > GridWidth)   {
-                        x = GridWidth;
-                    }
-
-                    if (y < 0)  {
-                        y = 0; 
-                    }
-                    else if (y > GridHeight){
-                        y = GridHeight;
-                    }
-
-                    GridGO.GetComponent<GridGenerator>().SetGridPointAvailable(false, new Vector2(x, y));
-                }
-            }
-
-           
+            CircleRadius(new Vector2(CurrentPositionPosX,CurrentPositionPosY), 3); 
+                   
         }
         else
         {
