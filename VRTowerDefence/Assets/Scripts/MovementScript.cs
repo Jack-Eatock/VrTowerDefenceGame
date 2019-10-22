@@ -38,6 +38,11 @@ public class MovementScript : MonoBehaviour
     public  float LocalSF = 1;
     private float RS;
 
+    [SerializeField]
+    private float MaxHeight;
+    [SerializeField]
+    private float MinHeight;
+
     // References to GameObjects \\
     public GameObject GameWorld;
 
@@ -50,8 +55,9 @@ public class MovementScript : MonoBehaviour
 
 
     // Adjustable Properties to be used in Editior. \\
-    [SerializeField]
-    private float PullSpeed = 26f;
+    public AnimationCurve PullRatio;
+    private float PullSpeed;
+
     [SerializeField]
     private float MinVelocity = 0.5f;
 
@@ -86,8 +92,19 @@ public class MovementScript : MonoBehaviour
 
 
         UpdatePosition = Vector3.zero;
-        LocalSF = Mathf.Clamp(2 + GameWorld.transform.position.y - PlayerHead.transform.position.y  + Offset.y, 0.2f, 12f);
-        
+        if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) >= MaxHeight)
+        {
+            Offset.y = (MaxHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
+        }
+
+        else if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) <= MinHeight)
+        {
+            Offset.y = (MinHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
+        }
+
+        PullSpeed = this.PullRatio.Evaluate(LocalSF);
+        LocalSF = 2 + GameWorld.transform.position.y - PlayerHead.transform.position.y  + Offset.y;
+        float TempPullSpeed = PullSpeed * LocalSF;
 
         ControllerVelocityR = (RightHandGO.transform.position - LastRHandPos) / Time.deltaTime;
         ControllerVelocityL = (LeftHandGO.transform.position - LastLHandPos) / Time.deltaTime;
@@ -96,11 +113,11 @@ public class MovementScript : MonoBehaviour
         {
             if (new Vector3(0, ControllerVelocityL.y,0).magnitude > MinVelocity/2)
             {
-                ScalingOffset.y += ControllerVelocityL.y * Time.deltaTime * PullSpeed;
+                ScalingOffset.y += ControllerVelocityL.y * Time.deltaTime * TempPullSpeed; // Possibly multiply by the SF ?
             }
             if (new Vector3 (ControllerVelocityL.x,0,ControllerVelocityL.z).magnitude > MinVelocity)
             {
-                UpdatePosition += new Vector3(ControllerVelocityL.x, 0, ControllerVelocityL.z) * PullSpeed * Time.deltaTime;
+                UpdatePosition += new Vector3(ControllerVelocityL.x, 0, ControllerVelocityL.z) * TempPullSpeed * Time.deltaTime;
             }
         }
 
@@ -108,11 +125,11 @@ public class MovementScript : MonoBehaviour
         {
             if (new Vector3(0, ControllerVelocityR.y, 0).magnitude > MinVelocity / 2)
             {
-                ScalingOffset.y += ControllerVelocityR.y * Time.deltaTime * PullSpeed;
+                ScalingOffset.y += ControllerVelocityR.y * Time.deltaTime * TempPullSpeed;
             }
             if (new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z).magnitude > MinVelocity)
             {
-                UpdatePosition += new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z) * PullSpeed * Time.deltaTime;
+                UpdatePosition += new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z) * TempPullSpeed * Time.deltaTime;
             }
         }
 

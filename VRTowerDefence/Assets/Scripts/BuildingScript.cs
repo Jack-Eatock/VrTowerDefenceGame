@@ -283,8 +283,11 @@ public class BuildingScript : MonoBehaviour
 
         foreach (Vector2 Cord in Cords)
         {
-            //Debug.Log(Cord);
-            GridGenerator.SetGridPointAvailable(false, Cord);
+            if (Cord.x < 40 && Cord.x >= 0 && Cord.y < 40 && Cord.y >= 0)
+            {
+                GridGenerator.SetGridPointAvailable(false, Cord);
+            }
+      
         }
         
     }
