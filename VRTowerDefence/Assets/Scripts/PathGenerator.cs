@@ -23,10 +23,8 @@ public class PathGenerator : MonoBehaviour
 
     public List<PathTile> PathTiles = new List<PathTile>();
 
-    public GameObject UpGo;
-    public GameObject DownGo;
-    public GameObject leftGo;
-    public GameObject RightGo;
+    public GameObject StraightPathGo;
+    public GameObject CornerPieceGo;
 
     private float Sf;
 
@@ -70,40 +68,127 @@ public class PathGenerator : MonoBehaviour
             }
             else
             {
+
+                Debug.Log("Finished Generating. Now Loading path....");
+                LastDirection = 1;
                 Loop = false;
-                foreach (PathTile path in PathTiles)
+
+
+                for (int Tick = 0; Tick <= PathTiles.Count; Tick ++)
                 {
-                    GridGenerator.SetGridPointAvailable(false, path.Cords);
-                    
 
-                    GameObject NewTile = GameObject.Instantiate(UpGo);
-                    NewTile.transform.SetParent(GameObject.Find("World").transform);
-                    NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
-                    NewTile.transform.localPosition = GridGenerator.GridStatus[(int)path.Cords.x, (int)path.Cords.y].Position;
 
-                   /* if (path.Direction == 1) // UP
+                    if ( Tick != 0) // This function is working 1 ahead the current point in the array.
                     {
+
+                        GridGenerator.SetGridPointAvailable(false, PathTiles[Tick - 1].Cords);
+                        GameObject NewTile = null;
+
+                        if (Tick == PathTiles.Count) // Last Tile
+                        {
                         
+                            NewTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
+                            
+                          
+
+                            NewTile.transform.SetParent(GameObject.Find("World").transform);
+                            NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
+                            NewTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
+                            break;
+                        }
+
+                        if (PathTiles[Tick].Direction != LastDirection) // Changed Direction
+                        {
+                            if (Tick > 0 && Tick != PathTiles.Count)
+                            {
+                                NewTile = SpawnCornerTileWithRotation(PathTiles[Tick - 1].Direction, PathTiles[Tick].Direction);
+                            }
+                        }
+
+
+                        else
+                        {
+                            NewTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
+
+                            if (PathTiles[Tick].Direction == 2) // Left
+                            {
+                                NewTile.transform.eulerAngles = new Vector3(0, -90, 0);
+                            }
+                            if (PathTiles[Tick].Direction == 3) // Right
+                            {
+                                NewTile.transform.eulerAngles = new Vector3(0, 90, 0);
+                            }
+                            if (PathTiles[Tick].Direction == 4) // Down
+                            {
+                                NewTile.transform.eulerAngles = new Vector3(0, 180, 0);
+                            }
+                        }
+
+                        if (NewTile)
+                        {
+                            NewTile.transform.SetParent(GameObject.Find("World").transform);
+                            NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
+                            NewTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
+                        }
+
+                        LastDirection = PathTiles[Tick].Direction;
 
                     }
-                    if (path.Direction == 2) // Left
-                    {
 
-                    }
-                    if (path.Direction == 3) // Right
-                    {
-
-
-                    }
-                    if (path.Direction == 4) // Down
-                    {
-
-                    } */
                 }
+
+
+
+
             }
             Counter++;
         }
 
+    }
+
+    public GameObject SpawnCornerTileWithRotation(int First, int Second)
+    {
+        GameObject NewTile = GameObject.Instantiate(CornerPieceGo); 
+
+        if (First == 1) // UP
+        {
+            if (Second == 2) // Left
+            {
+                NewTile.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
+        }
+        else if (First == 2) // Left
+        {
+            if (Second == 1) // UP
+            {
+                NewTile.transform.eulerAngles = new Vector3(0, -90, 0);
+            }
+        }
+        else if (First == 3)// Right
+        {
+            if (Second == 1) // up
+            {
+                NewTile.transform.eulerAngles = new Vector3(0, 180, 0);
+            }
+            else if (Second == 4) // down
+            {
+                NewTile.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
+
+        }
+        else if (First == 4)// DOwn
+        {
+            if (Second == 2) // Left
+            {
+                NewTile.transform.eulerAngles = new Vector3(0, 180, 0);
+            }
+            else if (Second == 3) // Right
+            {
+                NewTile.transform.eulerAngles = new Vector3(0, -90, 0);
+            }
+        }
+
+        return (NewTile);
     }
 
     public void Worm()

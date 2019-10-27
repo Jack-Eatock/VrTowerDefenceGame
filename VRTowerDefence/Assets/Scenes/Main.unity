@@ -523,10 +523,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingCords: {x: 20, y: 0}
-  UpGo: {fileID: 6863290753396340285, guid: 35235e1348d889347ba012285a934545, type: 3}
-  DownGo: {fileID: 0}
-  leftGo: {fileID: 0}
-  RightGo: {fileID: 0}
+  StraightPathGo: {fileID: 8425580029902083451, guid: 9968f3a3720808141853d868e5e197d9,
+    type: 3}
+  CornerPieceGo: {fileID: 3006565296580370738, guid: 5ad4b604ff45f134bb8c6a621ab2bb3f,
+    type: 3}
 --- !u!1 &400354474
 GameObject:
   m_ObjectHideFlags: 0
