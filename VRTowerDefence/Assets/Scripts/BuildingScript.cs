@@ -82,7 +82,7 @@ public class BuildingScript : MonoBehaviour
         GridGO = GameObject.Find("Grid");
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
-        SF = Player.GetComponent<MovementScript>().LocalSF;
+        SF = MovementScript.LocalSF;
 
         MinitureTowers = new GameObject[Towers.Length];
         for (int SObject = 0; SObject < Towers.Length; SObject++)
@@ -110,7 +110,7 @@ public class BuildingScript : MonoBehaviour
     public void Update()
     {
 
-        SF = Player.GetComponent<MovementScript>().LocalSF;
+        SF = MovementScript.LocalSF;
         GridGenerator.GridSpacing = ((Ground.transform.localScale.x * SF) / GridSize);
 
         if (TowerBeingPlaced)

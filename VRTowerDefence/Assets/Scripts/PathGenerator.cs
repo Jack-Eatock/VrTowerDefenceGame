@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PathTile
 {
-    public static List<Vector2> Cords;
-    public int StartDirection; // 1, North, 2 East, 3 South, 4 west.
+    public Vector2 Cords;
+    public int Direction; // 1, up, 2 Left, 3 Right, 4 Down.
 }
 
 
@@ -15,17 +15,32 @@ public class PathGenerator : MonoBehaviour
     [SerializeField]
     private Vector2 StartingCords;
     private Vector2 CurrentCord;
-    private int LastDirection;
-    private int MaxIterations = 80;
+    private int LastDirection = 1;
+    private int MaxIterations = 400;
     private int Counter = 0;
-    private bool Loop = false;
+    private bool Loop = true;
+    private int FailureCount = 0;
 
-    public static List<Vector2> Cords = new List<Vector2>();
+    public List<PathTile> PathTiles = new List<PathTile>();
+
+    public GameObject UpGo;
+    public GameObject DownGo;
+    public GameObject leftGo;
+    public GameObject RightGo;
+
+    private float Sf;
 
 
     private void Start()
     {
-        Cords.Add(StartingCords);
+        Sf = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
+        PathTile NewTile = new PathTile
+        {
+            Direction = 1,
+            Cords = StartingCords
+        };
+
+        PathTiles.Add(NewTile);
         CurrentCord = StartingCords;
     }
 
@@ -36,25 +51,55 @@ public class PathGenerator : MonoBehaviour
         {
             if (Counter >= MaxIterations)
             {
-                Cords.Clear();
-                Cords.Add(StartingCords);
+                PathTiles.Clear();
+
+                PathTile NewTile = new PathTile
+                {
+                    Direction = 1,
+                    Cords = StartingCords
+                };
+
+                PathTiles.Add(NewTile);
                 CurrentCord = StartingCords;
                 Counter = 0;
             }
 
-            else if (CurrentCord.y != 40)
+            else if (CurrentCord.y != 39)
             {
-                Debug.Log(CurrentCord);
                 Worm();
             }
             else
             {
                 Loop = false;
-                foreach (Vector2 cord in Cords)
+                foreach (PathTile path in PathTiles)
                 {
-                    Debug.Log(cord);
+                    GridGenerator.SetGridPointAvailable(false, path.Cords);
+                    
+
+                    GameObject NewTile = GameObject.Instantiate(UpGo);
+                    NewTile.transform.SetParent(GameObject.Find("World").transform);
+                    NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
+                    NewTile.transform.localPosition = GridGenerator.GridStatus[(int)path.Cords.x, (int)path.Cords.y].Position;
+
+                   /* if (path.Direction == 1) // UP
+                    {
+                        
+
+                    }
+                    if (path.Direction == 2) // Left
+                    {
+
+                    }
+                    if (path.Direction == 3) // Right
+                    {
+
+
+                    }
+                    if (path.Direction == 4) // Down
+                    {
+
+                    } */
                 }
-                
             }
             Counter++;
         }
@@ -63,92 +108,105 @@ public class PathGenerator : MonoBehaviour
 
     public void Worm()
     {
-        int Direction = Random.Range(1, 5);
+        int Direction = Random.Range(0, 100);
 
-        switch (Direction)
+        if (Direction < 20) // Left 35 percent Chance.
         {
-            case 1: // Up 
-                if (!BackOnSelfChecker(CurrentCord + new Vector2(0, 1)))
+            LastDirection = 2;
+            AttemptToMove(new Vector2(-1, 0));
+        }
+
+        else if (Direction < 40) // Right 35 Percent Chance.
+        {
+            LastDirection = 3;
+            AttemptToMove(new Vector2(1, 0));
+
+        }
+
+        else if (Direction < 90) // Up 25 Percent
+        {
+            LastDirection = 1;
+            AttemptToMove(new Vector2(0, 1));
+
+        }
+
+        else if (Direction < 100) // Down 10 Percent
+        {
+            LastDirection = 4;
+            AttemptToMove(new Vector2(0, -1));
+
+        }
+    }
+
+    public void AttemptToMove(Vector2 Offset)
+    {
+        if (!BackOnSelfChecker(CurrentCord + Offset))
+        {
+            AddCord(Offset);
+            FailureCount = 0;
+        }
+        else
+        {
+            Debug.Log("Back on self");
+            if (FailureCount >= 3)
+            {
+                if (PathTiles.Count > 2)
                 {
-                    AddCord(new Vector2(0, 1));
+                    PathTiles.RemoveAt(PathTiles.Count - 1);
+                    CurrentCord = PathTiles[PathTiles.Count - 1].Cords;
                 }
                 else
                 {
-                    Debug.Log("Back on self");
-                }
-              
-                break;
 
-            case 2:  // Right
-                if (!BackOnSelfChecker(CurrentCord + new Vector2(1, 0)))
-                {
-                    AddCord(new Vector2(1, 0));
-                }
-                else
-                {
-                    Debug.Log("Back on self");
-                }
-                break;
+                    PathTiles.Clear();
 
-            case 3: // Down 
-                if (!BackOnSelfChecker(CurrentCord + new Vector2(0, -1)))
-                {
-                    AddCord(new Vector2(0, -1));
-                }
-                else
-                {
-                    Debug.Log("Back on self");
-                }
-                break;
+                    PathTile NewTile = new PathTile
+                    {
+                        Direction = 1,
+                        Cords = StartingCords
+                    };
 
-            case 4: // left 
-                if (!BackOnSelfChecker(CurrentCord + new Vector2(-1, 0)))
-                {
-                    AddCord(new Vector2(-1, 0));
-                }
-                else
-                {
-                    Debug.Log("Back on self");
-                }
-                break;
-
-            case 5: // Up 
-                if (!BackOnSelfChecker(CurrentCord + new Vector2(0, 1)))
-                {
-                    AddCord(new Vector2(0, 1));
-                }
-                else
-                {
-                    Debug.Log("Back on self");
+                    PathTiles.Add(NewTile);
+                    CurrentCord = StartingCords;
+                    Counter = 0;
                 }
 
-                break;
-
+                Debug.Log("BackTracking");
+            
+            }
+            else
+            {
+                FailureCount++;
+            }
         }
     }
 
     public void AddCord(Vector2 Offset)
     {
-        Cords.Add(CurrentCord + Offset);
+        PathTile NewTile = new PathTile
+        {
+            Direction = LastDirection,
+            Cords = CurrentCord + Offset
+        };
         CurrentCord = (CurrentCord + Offset);
+        PathTiles.Add(NewTile);
 
     }
 
     public bool BackOnSelfChecker(Vector2 NewCord)
     {
         bool Flag = false;
-        foreach (Vector2 Cord in Cords)
+        foreach (PathTile Path in PathTiles)
         {
-            if (Cord == NewCord)
+            if (Path.Cords == NewCord)
             {
                 Flag = true;
             }
         }
-        if (NewCord.x > 40 || NewCord.x < 0 || NewCord.y < 0)
+        if (NewCord.x >= 40 || NewCord.x < 0 || NewCord.y < 0)
         {
             Flag = true;
         }
-        Debug.Log(NewCord);
         return Flag;
 
     }

@@ -35,7 +35,7 @@ public class MovementScript : MonoBehaviour
     private Vector3 TargetPos;
     private Vector3 Pivot;
     private Vector3 DistanceBetween;
-    public  float LocalSF = 1;
+    public static float LocalSF = 1;
     private float RS;
 
     [SerializeField]

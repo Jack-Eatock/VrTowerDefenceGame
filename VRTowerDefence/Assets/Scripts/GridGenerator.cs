@@ -105,7 +105,7 @@ public class GridGenerator : MonoBehaviour
                 TilesInUseArray.Add(Point);
             }
             GridStatus[(int)Point.x, (int)Point.y].Available = false;
-            GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(true);
+            //GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(true);
         }
     }
 
