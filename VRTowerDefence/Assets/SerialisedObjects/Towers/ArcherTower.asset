@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
   m_Name: ArcherTower
   m_EditorClassIdentifier: 
-  TowerGO: {fileID: 130850878776100116, guid: 4c39df1c64460fe47b60387958c9eb98, type: 3}
+  TowerGO: {fileID: 2192878130571624040, guid: 4c39df1c64460fe47b60387958c9eb98, type: 3}
   Name: ArcherTower
-  DamagePerShot: 2
-  ReloadDuration: 0
-  ReloadTime: 0
-  Range: 0
-  MinitureVersion4Menu: {fileID: 5819722142168477846, guid: 0bcc7a4b56a038b4fbc249c214670ae0,
+  DamagePerShot: 0.5
+  FireRate: 0.5
+  Range: 0.8
+  MinitureVersion4Menu: {fileID: 9155996398986209919, guid: 0bcc7a4b56a038b4fbc249c214670ae0,
     type: 3}

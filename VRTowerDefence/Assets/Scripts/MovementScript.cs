@@ -14,7 +14,7 @@ public class MovementScript : MonoBehaviour
     public SteamVR_Input_Sources RightHand; // Right Controller - Set in Engine.
 
     // General Variables \\
-
+    private bool MovementControllsDisabled = false;
 
     // Controller Variables \\
     private bool IsGrippingL = false;
@@ -39,24 +39,24 @@ public class MovementScript : MonoBehaviour
     private float RS;
 
     [SerializeField]
-    private float MaxHeight;
+    private float MaxHeight = 0;
     [SerializeField]
-    private float MinHeight;
+    private float MinHeight = 0;
 
     // References to GameObjects \\
     public GameObject GameWorld;
 
     [SerializeField]
-    private GameObject LeftHandGO;
+    private GameObject LeftHandGO = null;
     [SerializeField]
-    private GameObject RightHandGO;
+    private GameObject RightHandGO = null;
     [SerializeField]
-    private GameObject PlayerHead;
+    private GameObject PlayerHead = null;
 
 
     // Adjustable Properties to be used in Editior. \\
     public AnimationCurve PullRatio;
-    private float PullSpeed;
+    private float PullSpeed = 0;
 
     [SerializeField]
     private float MinVelocity = 0.5f;
@@ -79,65 +79,69 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TargetPos = GameWorld.transform.position;
-        Pivot = PlayerHead.transform.position;
-
-        DistanceBetween = TargetPos - Pivot;
-        RS = LocalSF / GameWorld.transform.localScale.x;
-        Vector3 FP = new Vector3 (Pivot.x + DistanceBetween.x,0,Pivot.z + DistanceBetween.z) * RS;
-
-
-        GameWorld.transform.localScale = new Vector3(LocalSF, LocalSF, LocalSF);
-        GameWorld.transform.localPosition = FP + UpdatePosition;
-
-
-        UpdatePosition = Vector3.zero;
-        if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) >= MaxHeight)
+        if (!MovementControllsDisabled)
         {
-            Offset.y = (MaxHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
-        }
+            TargetPos = GameWorld.transform.position;
+            Pivot = PlayerHead.transform.position;
 
-        else if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) <= MinHeight)
-        {
-            Offset.y = (MinHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
-        }
+            DistanceBetween = TargetPos - Pivot;
+            RS = LocalSF / GameWorld.transform.localScale.x;
+            Vector3 FP = new Vector3(Pivot.x + DistanceBetween.x, 0, Pivot.z + DistanceBetween.z) * RS;
 
-        PullSpeed = this.PullRatio.Evaluate(LocalSF);
-        LocalSF = 2 + GameWorld.transform.position.y - PlayerHead.transform.position.y  + Offset.y;
-        float TempPullSpeed = PullSpeed * LocalSF;
 
-        ControllerVelocityR = (RightHandGO.transform.position - LastRHandPos) / Time.deltaTime;
-        ControllerVelocityL = (LeftHandGO.transform.position - LastLHandPos) / Time.deltaTime;
+            GameWorld.transform.localScale = new Vector3(LocalSF, LocalSF, LocalSF);
+            GameWorld.transform.localPosition = FP + UpdatePosition;
 
-        if (IsGrippingL && ControllerVelocityL.magnitude > MinVelocity)
-        {
-            if (new Vector3(0, ControllerVelocityL.y,0).magnitude > MinVelocity/2)
+
+            UpdatePosition = Vector3.zero;
+            if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) >= MaxHeight)
             {
-                ScalingOffset.y += ControllerVelocityL.y * Time.deltaTime * TempPullSpeed; // Possibly multiply by the SF ?
+                Offset.y = (MaxHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
             }
-            if (new Vector3 (ControllerVelocityL.x,0,ControllerVelocityL.z).magnitude > MinVelocity)
+
+            else if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) <= MinHeight)
             {
-                UpdatePosition += new Vector3(ControllerVelocityL.x, 0, ControllerVelocityL.z) * TempPullSpeed * Time.deltaTime;
+                Offset.y = (MinHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
             }
+
+            PullSpeed = this.PullRatio.Evaluate(LocalSF);
+            LocalSF = 2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y;
+            float TempPullSpeed = PullSpeed * LocalSF;
+
+            ControllerVelocityR = (RightHandGO.transform.position - LastRHandPos) / Time.deltaTime;
+            ControllerVelocityL = (LeftHandGO.transform.position - LastLHandPos) / Time.deltaTime;
+
+            if (IsGrippingL && ControllerVelocityL.magnitude > MinVelocity)
+            {
+                if (new Vector3(0, ControllerVelocityL.y, 0).magnitude > MinVelocity / 2)
+                {
+                    ScalingOffset.y += ControllerVelocityL.y * Time.deltaTime * TempPullSpeed; // Possibly multiply by the SF ?
+                }
+                if (new Vector3(ControllerVelocityL.x, 0, ControllerVelocityL.z).magnitude > MinVelocity)
+                {
+                    UpdatePosition += new Vector3(ControllerVelocityL.x, 0, ControllerVelocityL.z) * TempPullSpeed * Time.deltaTime;
+                }
+            }
+
+            if (IsGrippingR && ControllerVelocityR.magnitude > MinVelocity)
+            {
+                if (new Vector3(0, ControllerVelocityR.y, 0).magnitude > MinVelocity / 2)
+                {
+                    ScalingOffset.y += ControllerVelocityR.y * Time.deltaTime * TempPullSpeed;
+                }
+                if (new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z).magnitude > MinVelocity)
+                {
+                    UpdatePosition += new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z) * TempPullSpeed * Time.deltaTime;
+                }
+            }
+
+            Offset += new Vector3(0, ScalingOffset.y / 4f, 0);
+            ScalingOffset = Vector3.zero;
+
+            LastRHandPos = RightHandGO.transform.position;
+            LastLHandPos = LeftHandGO.transform.position;
+
         }
-
-        if (IsGrippingR && ControllerVelocityR.magnitude > MinVelocity)
-        {
-            if (new Vector3(0, ControllerVelocityR.y, 0).magnitude > MinVelocity / 2)
-            {
-                ScalingOffset.y += ControllerVelocityR.y * Time.deltaTime * TempPullSpeed;
-            }
-            if (new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z).magnitude > MinVelocity)
-            {
-                UpdatePosition += new Vector3(ControllerVelocityR.x, 0, ControllerVelocityR.z) * TempPullSpeed * Time.deltaTime;
-            }
-        }
-
-        Offset += new Vector3(0, ScalingOffset.y / 4f, 0);
-        ScalingOffset = Vector3.zero;
-
-        LastRHandPos = RightHandGO.transform.position;
-        LastLHandPos = LeftHandGO.transform.position;
 
     }
 

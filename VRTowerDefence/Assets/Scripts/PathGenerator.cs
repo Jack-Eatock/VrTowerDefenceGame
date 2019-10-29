@@ -13,24 +13,27 @@ public class PathTile
 public class PathGenerator : MonoBehaviour
 {
     [SerializeField]
-    private Vector2 StartingCords;
-    private Vector2 CurrentCord;
+    private Vector2 StartingCords = Vector2.zero;
+    private Vector2 CurrentCord = Vector2.zero;
     private int LastDirection = 1;
     private int MaxIterations = 400;
     private int Counter = 0;
     private bool Loop = true;
     private int FailureCount = 0;
 
-    public List<PathTile> PathTiles = new List<PathTile>();
-
+    public static List<PathTile> PathTiles = new List<PathTile>();
+    public GameObject PathStorage;
     public GameObject StraightPathGo;
     public GameObject CornerPieceGo;
+
+    public static bool PathGenerationComplete = false;
 
     private float Sf;
 
 
     private void Start()
     {
+        Debug.Log("Generating Path....");
         Sf = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
         PathTile NewTile = new PathTile
         {
@@ -91,7 +94,7 @@ public class PathGenerator : MonoBehaviour
                             
                           
 
-                            NewTile.transform.SetParent(GameObject.Find("World").transform);
+                            NewTile.transform.SetParent(PathStorage.transform);
                             NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
                             NewTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
                             break;
@@ -126,7 +129,7 @@ public class PathGenerator : MonoBehaviour
 
                         if (NewTile)
                         {
-                            NewTile.transform.SetParent(GameObject.Find("World").transform);
+                            NewTile.transform.SetParent(PathStorage.transform);
                             NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
                             NewTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
                         }
@@ -136,6 +139,11 @@ public class PathGenerator : MonoBehaviour
                     }
 
                 }
+
+                Debug.Log("Finished.");
+                PathGenerationComplete = true;
+                //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
+                this.GetComponent<EnemySpawner>().InitiateEnemySpawner();
 
 
 
@@ -232,7 +240,7 @@ public class PathGenerator : MonoBehaviour
         }
         else
         {
-            Debug.Log("Back on self");
+            //Debug.Log("Back on self");
             if (FailureCount >= 3)
             {
                 if (PathTiles.Count > 2)
@@ -256,7 +264,7 @@ public class PathGenerator : MonoBehaviour
                     Counter = 0;
                 }
 
-                Debug.Log("BackTracking");
+               // Debug.Log("BackTracking");
             
             }
             else

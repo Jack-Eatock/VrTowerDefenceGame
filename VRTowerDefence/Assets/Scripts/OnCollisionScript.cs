@@ -6,12 +6,13 @@ public class OnCollisionScript : MonoBehaviour
 {
     public int CollisionType;
     public bool IsColliding;
+    public List<GameObject> ObjectsWithinCollider = new List<GameObject>(); 
 
     public void OnTriggerEnter(Collider other)
     {
         if (CollisionType == 1)
         {
-            if (other.gameObject.name == "RightHand") // hand Colliding with Tower menu.
+            if (other.gameObject.name == "RightHand") // hand Interacted with Tower menu.
             {
                 IsColliding = true;
             }
@@ -23,6 +24,14 @@ public class OnCollisionScript : MonoBehaviour
             if (other.gameObject.name == "Ground") // hand Colliding with Tower menu.
             {
                 IsColliding = true;
+            }
+        }
+
+        else if (CollisionType == 3)
+        {
+            if (other.transform.parent.transform.tag == "Enemy")
+            {
+                ObjectsWithinCollider.Add(other.gameObject);
             }
         }
     }
@@ -42,6 +51,14 @@ public class OnCollisionScript : MonoBehaviour
             if (other.gameObject.name == "Ground") // hand Colliding with Tower menu.
             {
                 IsColliding = false;
+            }
+        }
+
+        else if (CollisionType == 3)
+        {
+            if (other.transform.parent.transform.tag == "Enemy")
+            {
+                ObjectsWithinCollider.Remove(other.gameObject);
             }
         }
     }

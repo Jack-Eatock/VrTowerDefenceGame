@@ -9,8 +9,7 @@ public class TowerSO :  ScriptableObject
     public GameObject TowerGO;
     public string Name;
     public float DamagePerShot;
-    public float ReloadDuration;
-    public float ReloadTime;
+    public float FireRate;
     public float Range;
     public GameObject MinitureVersion4Menu;
 

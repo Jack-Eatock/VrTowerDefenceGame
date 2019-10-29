@@ -14,13 +14,13 @@ public class GridGenerator : MonoBehaviour
 {
     // Generating Grid Placement
     [SerializeField]
-    private int GridWidth;
+    private int GridWidth = 0;
     [SerializeField]
-    private int GridHeight;
+    private int GridHeight = 0;
     [SerializeField]
-    private GameObject TileInUseGO;
+    private GameObject TileInUseGO = null;
     [SerializeField]
-    private Transform InUseTilesStorage;
+    private Transform InUseTilesStorage = null;
 
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
     private float SF;

@@ -8,8 +8,10 @@ public class BuildingScript : MonoBehaviour
 {
     // General Variables \\
 
+    public static bool MenuControllsDisabled = true;
+
     [SerializeField]
-    private GameObject Player;
+    private GameObject Player = null;
 
     public GameObject Ground;
     public GameObject TowerMenuPos;
@@ -19,12 +21,12 @@ public class BuildingScript : MonoBehaviour
 
     // Placing Towers
     [SerializeField]
-    private GameObject CancelGO;
+    private GameObject CancelGO = null;
     [SerializeField]
-    private GameObject PlacedTowersStorage;
+    private GameObject PlacedTowersStorage = null;
 
-    private GameObject GridGO;
-    private GameObject GameWorld;
+    private GameObject GridGO = null;
+    private GameObject GameWorld = null;
     private GameObject NewTower = null;
 
     private bool TowerBeingPlaced = false;
@@ -44,18 +46,23 @@ public class BuildingScript : MonoBehaviour
 
     //Menu 
     [SerializeField]
-    private GameObject MenuGameObject;
+    private GameObject HandMenuGO = null;
     [SerializeField]
-    private GameObject Text;
+    private GameObject BuildingMenuGo = null;
+    [SerializeField]
+    private GameObject GeneralMenuGO = null;
+    [SerializeField]
+    private GameObject Text = null;
 
     private GameObject[] MinitureTowers;
     private Text NameText;
-    private bool MenuActive = false;
+    private bool BuildMenuActive = false;
+    private bool GeneralMenuActive = false;
 
     //Towers
     public TowerSO[] Towers;
-    private GameObject CurrentlyDisplayedTower;
-    private int CurrentlyDisplayedTowerPos;
+    private GameObject CurrentlyDisplayedTower = null;
+    private int CurrentlyDisplayedTowerPos = 0;
 
     // Steam VR ACtions
     public SteamVR_Action_Boolean GrabL;
@@ -69,9 +76,9 @@ public class BuildingScript : MonoBehaviour
 
     // Switching grid ON/OFF Visual only \\
     [SerializeField]
-    private Material GrassGridMat;
+    private Material GrassGridMat = null;
     [SerializeField]
-    private Material GrassMat;
+    private Material GrassMat = null;
 
     private bool IsGroundGrid = false;
 
@@ -82,6 +89,7 @@ public class BuildingScript : MonoBehaviour
         GridGO = GameObject.Find("Grid");
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
+
         SF = MovementScript.LocalSF;
 
         MinitureTowers = new GameObject[Towers.Length];
@@ -214,30 +222,55 @@ public class BuildingScript : MonoBehaviour
             }
         }
     }
+    
 
 
-    public void ActivateMenu(bool Activate)
+    public void ActivateMenu(bool Activate , int MenuType)
     {
         if (Activate)
         {
-            GridGenerator.GridCanBeUpdated = true;
-            MenuGameObject.SetActive(true);
-            GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
-            MenuActive = true;
-            GridSwitch();
+            if (MenuType == 0) // Building Menu Set Active
+            {
+                GridGenerator.GridCanBeUpdated = true;
+                HandMenuGO.SetActive(true);
+                BuildingMenuGo.SetActive(true); 
+                GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
+                BuildMenuActive = true;
+                GridSwitch();
+            }
+
+            else if (MenuType == 1) // Start Wave Menu. Active.
+            {
+                HandMenuGO.SetActive(true);
+                GeneralMenuGO.SetActive(true);
+                GeneralMenuActive = true;
+               
+            }
 
         }
         else
         {
-            GridGenerator.GridCanBeUpdated = false;
-            if (TowerBeingPlaced)
+            if (MenuType == 0) // Building Menu Set Not active.
             {
-                SetTowerBeingPlacedTrueFalse(false);
+                GridGenerator.GridCanBeUpdated = false;
+                if (TowerBeingPlaced)
+                {
+                    SetTowerBeingPlacedTrueFalse(false);
+                }
+                HandMenuGO.SetActive(false);
+                BuildingMenuGo.SetActive(false);
+                GenerateRemoveMiniTowerFromMenu(0, false);
+                BuildMenuActive = false;
+                GridSwitch();
             }
-            MenuGameObject.SetActive(false);
-            GenerateRemoveMiniTowerFromMenu(0, false);
-            MenuActive = false;
-            GridSwitch();
+
+            else if (MenuType == 1) // Start Wave Menu. Not Active.
+            {
+                HandMenuGO.SetActive(false);
+                GeneralMenuGO.SetActive(false);
+                GeneralMenuActive = false;
+            }
+
         }
 
     }
@@ -276,8 +309,8 @@ public class BuildingScript : MonoBehaviour
             for (int x = (int)StartingCords.x - Counter + Offset; x <= StartingCords.x + Counter - Offset; x++)
             {
                 
-                Cords.Add(new Vector2(x, StartingCords.y + (4 - Counter)));
-                Cords.Add(new Vector2(x, StartingCords.y - (4 - Counter)));
+                Cords.Add(new Vector2(x, StartingCords.y + ((Radius +1) - Counter)));
+                Cords.Add(new Vector2(x, StartingCords.y - ((Radius +1) - Counter)));
             }
         }
 
@@ -297,11 +330,28 @@ public class BuildingScript : MonoBehaviour
     {
         if (Place)
         {
+            SphereCollider SphereCol = NewTower.AddComponent<SphereCollider>();
+            SphereCol.center = new Vector3(0, 0.5f, 0);
+            SphereCol.isTrigger = true;
+
+            OnCollisionScript TempColScript = NewTower.AddComponent<OnCollisionScript>();
+            TempColScript.CollisionType = 3;
+
+            TowerScript TempTowerScript = NewTower.AddComponent<TowerScript>();
+
+            TempTowerScript.Damage = Towers[CurrentlyDisplayedTowerPos].DamagePerShot;
+            TempTowerScript.Name = Towers[CurrentlyDisplayedTowerPos].Name;
+            TempTowerScript.Range = Towers[CurrentlyDisplayedTowerPos].Range;
+            TempTowerScript.FireRate = Towers[CurrentlyDisplayedTowerPos].FireRate;
+          
+           
+
             NewTower.transform.position = new Vector3( GridGenerator.GridStatus[CurrentPositionPosX,CurrentPositionPosY].Position.x, GameWorld.transform.position.y, GridGenerator.GridStatus[CurrentPositionPosX, CurrentPositionPosY].Position.z);
             NewTower.transform.SetParent(PlacedTowersStorage.transform);
             CanBePlaced = false;
             // Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
-            CircleRadius(new Vector2(CurrentPositionPosX,CurrentPositionPosY), 3); 
+            CircleRadius(new Vector2(CurrentPositionPosX,CurrentPositionPosY), 2); 
+
                    
         }
         else
@@ -320,9 +370,9 @@ public class BuildingScript : MonoBehaviour
         if (Activate)
         {
             TowerBeingPlaced = true;
-            MenuGameObject.SetActive(true);
+            HandMenuGO.SetActive(true);
             GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
-            MenuActive = true;
+            BuildMenuActive = true;
             SetCurrentTowerPos(1);
         }
         else
@@ -415,9 +465,15 @@ public class BuildingScript : MonoBehaviour
     {
         if (!TowerBeingPlaced)
         {
-            if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding)
+            if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && BuildMenuActive)
             {
                 SetTowerBeingPlacedTrueFalse(true);
+            }
+            else if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && GeneralMenuActive && PathGenerator.PathGenerationComplete)
+            {
+                gameObject.GetComponent<EnemySpawner>().StartWave();
+                ActivateMenu(false, 1);
+                BuildingScript.MenuControllsDisabled = false;
             }
         }
 
@@ -450,7 +506,7 @@ public class BuildingScript : MonoBehaviour
     {
         if (!TowerBeingPlaced)
         {
-            if (MenuActive)
+            if (BuildMenuActive)
             {
                 SwitchDisplayedTower(false);
             }
@@ -461,7 +517,7 @@ public class BuildingScript : MonoBehaviour
     {
         if (!TowerBeingPlaced)
         {
-            if (MenuActive)
+            if (BuildMenuActive)
             {
                 SwitchDisplayedTower(true);
             }
@@ -470,15 +526,23 @@ public class BuildingScript : MonoBehaviour
     }
     public void MenuDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        if (MenuActive)
+        if (!MenuControllsDisabled)
         {
-            ActivateMenu(false);
+            if (BuildMenuActive)
+            {
+
+                ActivateMenu(false, 0);
+            }
+            else
+            {
+                if (GeneralMenuActive)
+                {
+                    ActivateMenu(false, 1);
+                }
+
+                ActivateMenu(true, 0);
+            }
         }
-        else
-        {
-            ActivateMenu(true);
-        }
-      
     }
     public void MenuUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
