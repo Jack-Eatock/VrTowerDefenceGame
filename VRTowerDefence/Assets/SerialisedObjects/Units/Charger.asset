@@ -16,5 +16,5 @@ MonoBehaviour:
   Name: Charger
   Speed: 0.45
   Health: 3
-  Points: 0
+  Points: 1
   Description: Medium Tank

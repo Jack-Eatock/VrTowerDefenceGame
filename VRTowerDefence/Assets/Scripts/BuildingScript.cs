@@ -155,7 +155,7 @@ public class BuildingScript : MonoBehaviour
                 {
                     for (int y = 0; y < GridHeight; y++)
                     {
-                        Vector3 Point = GridGenerator.GridStatus[x, y].Position;
+                        Vector3 Point = GridGenerator.GridStatus[x, y].Tile.transform.position;
                         if (Point.x < PosX + GridSpacing && Point.x > PosX - GridSpacing)
                         {
                             if (Point.z < PosZ + GridSpacing && Point.z > PosZ - GridSpacing)
@@ -231,7 +231,6 @@ public class BuildingScript : MonoBehaviour
         {
             if (MenuType == 0) // Building Menu Set Active
             {
-                GridGenerator.GridCanBeUpdated = true;
                 HandMenuGO.SetActive(true);
                 BuildingMenuGo.SetActive(true); 
                 GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
@@ -241,6 +240,10 @@ public class BuildingScript : MonoBehaviour
 
             else if (MenuType == 1) // Start Wave Menu. Active.
             {
+                if (BuildMenuActive)
+                {
+                    ActivateMenu(false, 0);
+                }
                 HandMenuGO.SetActive(true);
                 GeneralMenuGO.SetActive(true);
                 GeneralMenuActive = true;
@@ -252,7 +255,6 @@ public class BuildingScript : MonoBehaviour
         {
             if (MenuType == 0) // Building Menu Set Not active.
             {
-                GridGenerator.GridCanBeUpdated = false;
                 if (TowerBeingPlaced)
                 {
                     SetTowerBeingPlacedTrueFalse(false);
@@ -338,21 +340,15 @@ public class BuildingScript : MonoBehaviour
             TempColScript.CollisionType = 3;
 
             TowerScript TempTowerScript = NewTower.AddComponent<TowerScript>();
+            TempTowerScript.TowerProperties = Towers[CurrentlyDisplayedTowerPos];
 
-            TempTowerScript.Damage = Towers[CurrentlyDisplayedTowerPos].DamagePerShot;
-            TempTowerScript.Name = Towers[CurrentlyDisplayedTowerPos].Name;
-            TempTowerScript.Range = Towers[CurrentlyDisplayedTowerPos].Range;
-            TempTowerScript.FireRate = Towers[CurrentlyDisplayedTowerPos].FireRate;
-          
-           
-
-            NewTower.transform.position = new Vector3( GridGenerator.GridStatus[CurrentPositionPosX,CurrentPositionPosY].Position.x, GameWorld.transform.position.y, GridGenerator.GridStatus[CurrentPositionPosX, CurrentPositionPosY].Position.z);
+            Vector3 TilePosition = GridGenerator.GridStatus[CurrentPositionPosX, CurrentPositionPosY].Tile.transform.position;
+            NewTower.transform.position = new Vector3( TilePosition.x, GameWorld.transform.position.y, TilePosition.z);
             NewTower.transform.SetParent(PlacedTowersStorage.transform);
             CanBePlaced = false;
             // Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
-            CircleRadius(new Vector2(CurrentPositionPosX,CurrentPositionPosY), 2); 
+            CircleRadius(new Vector2(CurrentPositionPosX,CurrentPositionPosY), 2);
 
-                   
         }
         else
         {
@@ -439,13 +435,13 @@ public class BuildingScript : MonoBehaviour
     {
         if (IsGroundGrid)
         {
-            GridGO.GetComponent<GridGenerator>().OnLoadInUseTiles(false);
+            GridGenerator.OnLoadInUseTiles(false);
             Ground.GetComponent<Renderer>().material = GrassMat;
             IsGroundGrid = false;
         }
         else
         {
-            GridGO.GetComponent<GridGenerator>().OnLoadInUseTiles(true);
+            GridGenerator.OnLoadInUseTiles(true);
             Ground.GetComponent<Renderer>().material = GrassGridMat;
             IsGroundGrid = true;
         }

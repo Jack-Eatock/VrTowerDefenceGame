@@ -37,7 +37,9 @@ public class GameScript : MonoBehaviour
 
     public void InitiateWave()
     {
-        WaveIncoming = true;
+       
+        BuildingScript.MenuControllsDisabled = true;
+        //gameObject.GetComponent<BuildingScript>().ActivateMenu(false, 0);
         gameObject.GetComponent<BuildingScript>().ActivateMenu(true, 1);
         SetCanvasMesage("Start Wave: " + CurrentRound + "?");
     }

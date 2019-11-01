@@ -48,7 +48,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
         
-        else if (EnemiesFinished == UnitsInWave.Count - 1 && UnitsInWave.Count > 0)
+        else if (EnemiesFinished == UnitsInWave.Count && UnitsInWave.Count > 0)
         {
             Debug.Log("Wave Finished");
             GameScript.WaveIncoming = false;
@@ -56,6 +56,11 @@ public class EnemySpawner : MonoBehaviour
             UnitsInWave.Clear();
             Counter = 0;
             GameScript.CurrentRound++;
+
+            
+            
+
+
             gameObject.GetComponent<GameScript>().InitiateWave();
             
     
@@ -80,7 +85,8 @@ public class EnemySpawner : MonoBehaviour
     }
 
     public void StartWave()
-    {    
+    {
+        GameScript.WaveIncoming = true;
         int CurrentRound = GameScript.CurrentRound;
         int NumEnemies = Mathf.FloorToInt(CurrentRound * GameScript.RoundEnemySpawnRatio);
         int RandomValue = 0;
@@ -122,11 +128,7 @@ public class EnemySpawner : MonoBehaviour
         NewUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
 
         TempEnemyScript = NewUnit.GetComponent<EnemyScript>();
-
-        TempEnemyScript.Speed = UnitType.Speed;
-        TempEnemyScript.Health = UnitType.Health;
-        TempEnemyScript.Points = UnitType.Points;
-        TempEnemyScript.Name = UnitType.Name;
+        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points);
 
         NewUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
     }

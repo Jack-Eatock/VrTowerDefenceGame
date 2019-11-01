@@ -49,13 +49,9 @@ public class GridGenerator : MonoBehaviour
 
     public void Update()
     {
-         if (GridCanBeUpdated) // Updates when the build menu is opn
-         {
-            GenerateGrid(GridSpacing);
-         }
     }
 
-    public void OnLoadInUseTiles(bool Load)
+    public static void OnLoadInUseTiles(bool Load)
     {
         if (Load)
         {
@@ -105,6 +101,7 @@ public class GridGenerator : MonoBehaviour
                 TilesInUseArray.Add(Point);
             }
             GridStatus[(int)Point.x, (int)Point.y].Available = false;
+            GridGenerator.OnLoadInUseTiles(true);
             //GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(true);
         }
     }

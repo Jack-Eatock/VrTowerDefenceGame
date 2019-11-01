@@ -6,7 +6,8 @@ public class OnCollisionScript : MonoBehaviour
 {
     public int CollisionType;
     public bool IsColliding;
-    public List<GameObject> ObjectsWithinCollider = new List<GameObject>(); 
+    public List<GameObject> ObjectsWithinCollider = new List<GameObject>();
+    int Counter = 0;
 
     public void OnTriggerEnter(Collider other)
     {
@@ -29,9 +30,13 @@ public class OnCollisionScript : MonoBehaviour
 
         else if (CollisionType == 3)
         {
-            if (other.transform.parent.transform.tag == "Enemy")
+            if (other.transform.parent)
             {
-                ObjectsWithinCollider.Add(other.gameObject);
+                if (other.transform.parent.transform.tag == "Enemy")
+                {
+                    ObjectsWithinCollider.Add(other.gameObject);
+                }
+
             }
         }
     }
@@ -56,10 +61,25 @@ public class OnCollisionScript : MonoBehaviour
 
         else if (CollisionType == 3)
         {
-            if (other.transform.parent.transform.tag == "Enemy")
+            if (other.transform.parent)
             {
-                ObjectsWithinCollider.Remove(other.gameObject);
+
+                if (other.transform.parent.transform.tag == "Enemy")
+                {
+                    Counter = 0;
+                    foreach (GameObject Obj in ObjectsWithinCollider)
+                    {
+                        if (Obj == other.gameObject)
+                        {
+                            ObjectsWithinCollider.RemoveAt(Counter);
+                            break;
+                        }
+                        Counter++;
+                    }
+                }
             }
+
+              
         }
     }
 }

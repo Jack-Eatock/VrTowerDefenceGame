@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    public float Speed;
-    public int Points;
-    public string Name;
     public float Health;
+    private float Speed;
+    private int Points;
 
     public List<Vector2> PathPoints = new List<Vector2>();
     public List<Vector3> LocalPathPoints = new List<Vector3>();
+    public List<GameObject> TowersTargetingUnit = new List<GameObject>();
+
     private int CheckPoint = 0;
 
     private bool Loop = true;
@@ -23,17 +24,24 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    public void EnemySetUP(float _Health, float _Speed, int _Points)
+    {
+        Health = _Health;
+        Speed = _Speed;
+        Points = _Points;
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (Loop)
         {
-            if ( Health <= 0)
+            if (Health <= 0)
             {
-                Debug.Log(name + " Is Dead");
-                TowerScript.EnemiesInRange.Remove(gameObject.transform.GetChild(0).gameObject);
+                Debug.Log("Enemy Killed");
+                Destroy(gameObject);
                 EnemySpawner.EnemiesFinished++;
-                Destroy(gameObject);          
+
             }
 
             if (CheckPoint < PathPoints.Count - 1)
