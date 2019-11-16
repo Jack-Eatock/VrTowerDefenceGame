@@ -13,15 +13,13 @@ public class GameScript : MonoBehaviour
     public static float SpawRate = 0.5f;
     public static bool WaveIncoming = false;
     public static int PointPool = 0;
-
+    public static int Points = 40;
 
 
     // Start is called before the first frame update
     void Start()
     {
         InitiateWave();
-
-
         // BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
     }
 

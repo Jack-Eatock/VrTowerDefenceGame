@@ -11,6 +11,7 @@ public class UnitSO : ScriptableObject
     public float Speed;
     public float Health;
     public int Points;
+    public int Mass;
 
     public string Description;
 }

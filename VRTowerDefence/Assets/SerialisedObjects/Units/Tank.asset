@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3d7c712de7c8c428397d6e18b1c091, type: 3}
   m_Name: Tank
   m_EditorClassIdentifier: 
-  UnitGO: {fileID: 0}
-  Name: 
-  Speed: 0
-  Health: 0
-  Damage: 0
+  UnitGO: {fileID: 6964569119548220669, guid: 5b17ff3e71ea0864e81da991ba697ecf, type: 3}
+  Name: Tank
+  Speed: 0.1
+  Health: 15
+  Points: 15
+  Mass: 5
   Description: Strong but Slow

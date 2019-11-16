@@ -25,9 +25,9 @@ public class EnemySpawner : MonoBehaviour
     private float LastRecordedTime;
     private int Counter = 0;
 
+    public int[] UnitSpawnChance;
     private EnemyScript TempEnemyScript;
 
-    
 
     public void Update()
     {
@@ -84,6 +84,8 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
+
+
     public void StartWave()
     {
         GameScript.WaveIncoming = true;
@@ -93,17 +95,26 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < NumEnemies; i++)
         {
-            RandomValue = Random.Range(1, 3);
-            Debug.Log(RandomValue);
+
+
+            RandomValue = UtilitiesScript.RandomiseByWeight(UnitSpawnChance);
 
             switch (RandomValue)
             {
-                case 1 :
+                case 0 :
                     UnitsInWave.Add(Soldier);
                     break;
 
-                case 2:
+                case 1:
                     UnitsInWave.Add(Charger);
+                    break;
+
+                case 2:
+                    UnitsInWave.Add(Tank);
+                    break;
+
+                case 3:
+                    UnitsInWave.Add(Swarmer);
                     break;
             }
         }
@@ -128,7 +139,7 @@ public class EnemySpawner : MonoBehaviour
         NewUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
 
         TempEnemyScript = NewUnit.GetComponent<EnemyScript>();
-        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points);
+        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points,UnitType.Mass);
 
         NewUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
     }

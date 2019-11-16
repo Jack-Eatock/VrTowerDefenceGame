@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
   m_Name: SniperTower
   m_EditorClassIdentifier: 
-  TowerGO: {fileID: 1516305788248351965, guid: 5c3b32017ccef2d4db24026747088607, type: 3}
   Name: SniperTower
-  DamagePerShot: 0
-  ReloadDuration: 0
-  ReloadTime: 0
+  FireRate: 0
   Range: 0
+  ProjectileSpeed: 0
+  ProjectileDamagePerEnemyHit: 0
+  Cost: 40
+  TowerGO: {fileID: 1516305788248351965, guid: 5c3b32017ccef2d4db24026747088607, type: 3}
   MinitureVersion4Menu: {fileID: 1411364240495763864, guid: f23eecd42a51e3244b04cf542c34fd07,
     type: 3}
+  ProjectileGO: {fileID: 0}
+  ProjectileType: 0

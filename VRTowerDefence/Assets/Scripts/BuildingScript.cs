@@ -53,11 +53,16 @@ public class BuildingScript : MonoBehaviour
     private GameObject GeneralMenuGO = null;
     [SerializeField]
     private GameObject Text = null;
+    [SerializeField]
+    private GameObject PointsText = null;
 
     private GameObject[] MinitureTowers;
     private Text NameText;
+    private Text PointsTextDisplayer;
     private bool BuildMenuActive = false;
     private bool GeneralMenuActive = false;
+    private bool SufficientFunds = false;
+    private int Points;
 
     //Towers
     public TowerSO[] Towers;
@@ -89,6 +94,8 @@ public class BuildingScript : MonoBehaviour
         GridGO = GameObject.Find("Grid");
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
+        PointsTextDisplayer = PointsText.GetComponent<Text>();
+
 
         SF = MovementScript.LocalSF;
 
@@ -117,6 +124,15 @@ public class BuildingScript : MonoBehaviour
 
     public void Update()
     {
+
+        if (BuildMenuActive)
+        {
+            if (GameScript.Points != Points)
+            {
+                Points = GameScript.Points;
+                UpdateBuildMenuText();
+            }
+        }
 
         SF = MovementScript.LocalSF;
         GridGenerator.GridSpacing = ((Ground.transform.localScale.x * SF) / GridSize);
@@ -277,6 +293,24 @@ public class BuildingScript : MonoBehaviour
 
     }
 
+    public void UpdateBuildMenuText()
+    {
+        NameText.text = Towers[CurrentlyDisplayedTowerPos].Name;
+        int PointsAfter = GameScript.Points - Towers[CurrentlyDisplayedTowerPos].Cost;
+        if (PointsAfter >= 0)
+        {
+            PointsTextDisplayer.text = "Points: " + Points + " (-" + Towers[CurrentlyDisplayedTowerPos].Cost + ") Purchasable!";
+            SufficientFunds = true;
+        }
+
+        else
+        {
+            PointsTextDisplayer.text = "Points: " + Points + " (-" + Towers[CurrentlyDisplayedTowerPos].Cost + ") Insufficient Funds!";
+            SufficientFunds = false;
+        }
+    }
+
+
     public void SetCurrentTowerPos(int Active = 0)
     {
         // Sets tower in the Menu. 
@@ -332,6 +366,8 @@ public class BuildingScript : MonoBehaviour
     {
         if (Place)
         {
+            GameScript.Points -= Towers[CurrentlyDisplayedTowerPos].Cost;
+
             SphereCollider SphereCol = NewTower.AddComponent<SphereCollider>();
             SphereCol.center = new Vector3(0, 0.5f, 0);
             SphereCol.isTrigger = true;
@@ -422,11 +458,15 @@ public class BuildingScript : MonoBehaviour
             CurrentlyDisplayedTower.SetActive(false);
             CurrentlyDisplayedTower = null;
         }
+
         if (Generate)
         {
             MinitureTowers[x].gameObject.SetActive(true);
             CurrentlyDisplayedTower = MinitureTowers[x].gameObject;
-            NameText.text = Towers[CurrentlyDisplayedTowerPos].Name;
+
+            UpdateBuildMenuText();
+
+        
         }
     }
 
@@ -465,6 +505,7 @@ public class BuildingScript : MonoBehaviour
             {
                 SetTowerBeingPlacedTrueFalse(true);
             }
+
             else if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && GeneralMenuActive && PathGenerator.PathGenerationComplete)
             {
                 gameObject.GetComponent<EnemySpawner>().StartWave();
@@ -473,15 +514,17 @@ public class BuildingScript : MonoBehaviour
             }
         }
 
-        else if (TowerBeingPlaced && TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding)
-        {
-            OnPlaceOrCancel(false);
-        }
-
-        else if (CanBePlaced)
+        else if (CanBePlaced && SufficientFunds) // IF they can place the Tower, Place tower.
         {
             OnPlaceOrCancel(true);
         }
+
+        else if (TowerBeingPlaced && TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding) // If they click on the X and we know that the tower cant be placed. Cancel.
+        {
+            OnPlaceOrCancel(false);    
+        }
+
+       
        
     }
     public void TriggerUpRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)

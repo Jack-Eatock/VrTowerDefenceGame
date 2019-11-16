@@ -17,20 +17,23 @@ public class ProjectileScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Initiated)
         {
             if (Target == null)
             {
-                Destroy(gameObject);
+                HitTarget(false);
                 return;
             }
 
-            Vector3 TargetDir = Target.position - transform.position; // Distance between Bullet and target.
+            Vector3 TargetPos = Target.GetChild(0).transform.position;
+
+            Vector3 TargetDir = TargetPos - transform.position; // Distance between Bullet and target.
             float DistanceThisFrame = FiringTowerProperties.ProjectileSpeed * Time.deltaTime;  // Calculates how much the bullet can travel in this frame.
 
             if (TargetDir.magnitude <= DistanceThisFrame) // Hit the object
             {
-                HitTarget();
+                HitTarget(true);
                 return;
             }
 
@@ -40,12 +43,34 @@ public class ProjectileScript : MonoBehaviour
     }
 
 
-    void HitTarget()
+    void HitTarget(bool Hit)
     {
-       // Debug.Log("We hit Something");
-        Target.GetComponent<EnemyScript>().Health -= FiringTowerProperties.ProjectileDamagePerEnemyHit;
+        if (Hit) // If hits Target
+        {
+            Target.GetComponent<EnemyScript>().OnHit(FiringTowerProperties);
 
+            // Debug.Log("We hit Something");
+            switch (FiringTowerProperties.ProjectileType)
+            {
+                case TowerSO.ProjectileTypes.Explosive:
+                    Debug.Log("Explosion");
+                    break;
 
+                case TowerSO.ProjectileTypes.Default:
+                    Debug.Log("Default");
+                    
+                    break;
+
+                case TowerSO.ProjectileTypes.Explosive2:
+
+                    break;
+
+                case TowerSO.ProjectileTypes.Gas:
+
+                    break;
+            }
+
+        }
         Destroy(gameObject);
     }
 }

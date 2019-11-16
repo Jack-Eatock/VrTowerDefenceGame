@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
   m_Name: CannonTower
   m_EditorClassIdentifier: 
-  TowerGO: {fileID: 7847366527757139458, guid: 4b55886fc5129de4b91b392585cd2f42, type: 3}
   Name: CannonTower
-  DamagePerShot: 0
-  ReloadDuration: 0
-  ReloadTime: 0
+  FireRate: 0
   Range: 0
+  ProjectileSpeed: 0
+  ProjectileDamagePerEnemyHit: 0
+  Cost: 20
+  TowerGO: {fileID: 7847366527757139458, guid: 4b55886fc5129de4b91b392585cd2f42, type: 3}
   MinitureVersion4Menu: {fileID: 2397627034583750687, guid: 7e18d35b91519b8479c73dbabd20907c,
     type: 3}
+  ProjectileGO: {fileID: 0}
+  ProjectileType: 0
