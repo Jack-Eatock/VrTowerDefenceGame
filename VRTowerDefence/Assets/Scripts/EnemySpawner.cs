@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public static int EnemiesFinished = 0; // could have made it to the end or died ..
+    public GameObject DeathEffect;
 
     // Unit Serialised Objects \\
     public UnitSO Soldier;
@@ -139,7 +140,7 @@ public class EnemySpawner : MonoBehaviour
         NewUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
 
         TempEnemyScript = NewUnit.GetComponent<EnemyScript>();
-        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points,UnitType.Mass);
+        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points,UnitType.Mass, DeathEffect);
 
         NewUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
     }

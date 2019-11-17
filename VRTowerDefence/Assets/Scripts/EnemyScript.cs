@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
+    private GameObject DeathEffect;
+
     public float Health;
     private float Speed;
     private int Points;
@@ -14,6 +16,7 @@ public class EnemyScript : MonoBehaviour
     public List<GameObject> TowersTargetingUnit = new List<GameObject>();
 
     private int CheckPoint = 0;
+    private Transform Hit;
 
     private bool Loop = true;
     // Start is called before the first frame update
@@ -25,8 +28,9 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_)
+    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_)
     {
+        DeathEffect = DeathEffect_;
         Health = _Health;
         Speed = _Speed;
         Points = _Points;
@@ -42,8 +46,14 @@ public class EnemyScript : MonoBehaviour
             {
                 Debug.Log("Enemy Killed");
                 GameScript.Points += Points;
-                Destroy(gameObject);
                 EnemySpawner.EnemiesFinished++;
+                GameObject DeathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
+                DeathEffectGO.transform.SetParent(GameObject.Find("World").transform);
+                DeathEffectGO.transform.localScale = new Vector3(MovementScript.LocalSF, MovementScript.LocalSF, MovementScript.LocalSF);
+               
+
+                Destroy(gameObject);
+          
 
             }
 
@@ -71,8 +81,9 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    public void OnHit(TowerSO FiringTowerProperties)
+    public void OnHit(TowerSO FiringTowerProperties, Transform Hit_)
     {
+        Hit = Hit_;
         Health -= FiringTowerProperties.ProjectileDamagePerEnemyHit;
 
         switch (FiringTowerProperties.ProjectileType)

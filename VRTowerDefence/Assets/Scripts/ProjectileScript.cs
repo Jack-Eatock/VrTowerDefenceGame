@@ -47,7 +47,7 @@ public class ProjectileScript : MonoBehaviour
     {
         if (Hit) // If hits Target
         {
-            Target.GetComponent<EnemyScript>().OnHit(FiringTowerProperties);
+            Target.GetComponent<EnemyScript>().OnHit(FiringTowerProperties, transform);
 
             // Debug.Log("We hit Something");
             switch (FiringTowerProperties.ProjectileType)

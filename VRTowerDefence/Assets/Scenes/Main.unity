@@ -547,6 +547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80872065785c894886accd338048132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeathEffect: {fileID: 4004145648382068831, guid: 6e1b73aa352755d4ba15fee0c4cc8963,
+    type: 3}
   Soldier: {fileID: 11400000, guid: e8629f2d08db4de4b9e17d70df43a0cf, type: 2}
   Tank: {fileID: 11400000, guid: 5c002d6ff62d06b48841e1bcb72a5f8d, type: 2}
   Swarmer: {fileID: 11400000, guid: 3666be8d94fa2474e8e32725078f00c7, type: 2}
@@ -579,7 +581,8 @@ GameObject:
   - component: {fileID: 400354476}
   - component: {fileID: 400354475}
   - component: {fileID: 400354479}
-  m_Layer: 0
+  - component: {fileID: 400354480}
+  m_Layer: 8
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -675,6 +678,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &400354480
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400354474}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &495581805
 GameObject:
   m_ObjectHideFlags: 0
