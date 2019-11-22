@@ -5,7 +5,7 @@ using UnityEngine;
 public class OnCollisionScript : MonoBehaviour
 {
     public int CollisionType;
-    public bool IsColliding;
+    public bool IsColliding = false;
     public List<GameObject> ObjectsWithinCollider = new List<GameObject>();
     int Counter = 0;
 

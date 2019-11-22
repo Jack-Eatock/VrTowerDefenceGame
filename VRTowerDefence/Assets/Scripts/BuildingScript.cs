@@ -25,7 +25,6 @@ public class BuildingScript : MonoBehaviour
     [SerializeField]
     private GameObject PlacedTowersStorage = null;
 
-    private GameObject GridGO = null;
     private GameObject GameWorld = null;
     private GameObject NewTower = null;
 
@@ -91,7 +90,6 @@ public class BuildingScript : MonoBehaviour
 
     public void Start()
     {
-        GridGO = GameObject.Find("Grid");
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
         PointsTextDisplayer = PointsText.GetComponent<Text>();
@@ -238,6 +236,7 @@ public class BuildingScript : MonoBehaviour
             }
         }
     }
+
     
 
 
@@ -497,16 +496,20 @@ public class BuildingScript : MonoBehaviour
 
 
 
+
+
+
+
     public void TriggerDownRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
         if (!TowerBeingPlaced)
         {
-            if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && BuildMenuActive)
+            if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && BuildMenuActive) // Move the tower from menu to the users hand.
             {
                 SetTowerBeingPlacedTrueFalse(true);
             }
 
-            else if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && GeneralMenuActive && PathGenerator.PathGenerationComplete)
+            else if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && GeneralMenuActive && PathGenerator.PathGenerationComplete) // Start Next wave.
             {
                 gameObject.GetComponent<EnemySpawner>().StartWave();
                 ActivateMenu(false, 1);
@@ -514,14 +517,27 @@ public class BuildingScript : MonoBehaviour
             }
         }
 
-        else if (CanBePlaced && SufficientFunds) // IF they can place the Tower, Place tower.
+        else if (CanBePlaced ) // IF they can place the Tower, Place tower.
         {
-            OnPlaceOrCancel(true);
+            if (SufficientFunds)
+            {
+                OnPlaceOrCancel(true);
+            }
+            else
+            {
+                StartCoroutine(UtilitiesScript.ObjectBlinkColour(NewTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
+            }
+            
         }
 
         else if (TowerBeingPlaced && TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding) // If they click on the X and we know that the tower cant be placed. Cancel.
         {
             OnPlaceOrCancel(false);    
+        }
+
+        else
+        {
+           StartCoroutine(UtilitiesScript.ObjectBlinkColour(NewTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
         }
 
        

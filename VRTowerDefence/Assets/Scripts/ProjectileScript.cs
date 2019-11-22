@@ -49,15 +49,15 @@ public class ProjectileScript : MonoBehaviour
         {
             Target.GetComponent<EnemyScript>().OnHit(FiringTowerProperties, transform);
 
-            // Debug.Log("We hit Something");
+            //Debug.Log("We hit Something");
             switch (FiringTowerProperties.ProjectileType)
             {
                 case TowerSO.ProjectileTypes.Explosive:
-                    Debug.Log("Explosion");
+                    //Debug.Log("Explosion");
                     break;
 
                 case TowerSO.ProjectileTypes.Default:
-                    Debug.Log("Default");
+                    //Debug.Log("Default");
                     
                     break;
 

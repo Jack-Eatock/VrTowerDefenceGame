@@ -547,7 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80872065785c894886accd338048132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeathEffect: {fileID: 4004145648382068831, guid: 6e1b73aa352755d4ba15fee0c4cc8963,
+  DeathEffect: {fileID: 8586148564292064510, guid: cc855b1b3679ab247becc8514122856d,
     type: 3}
   Soldier: {fileID: 11400000, guid: e8629f2d08db4de4b9e17d70df43a0cf, type: 2}
   Tank: {fileID: 11400000, guid: 5c002d6ff62d06b48841e1bcb72a5f8d, type: 2}

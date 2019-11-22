@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class UtilitiesScript
 {
+    public static List<GameObject> ObjectsAffected = new List<GameObject>();
 
     public static int RandomiseByWeight(int[] Weights)
     {
@@ -30,5 +31,81 @@ public static class UtilitiesScript
         // No Other index was selected.
         return Index;
 
+    }
+
+
+    public static IEnumerator ObjectBlinkColour(GameObject Object, Color Col, float BlinkTime)
+    {
+        //Debug.Log(ObjectsAffected);
+
+        bool Flag = false;
+        foreach (GameObject Obj in ObjectsAffected)
+        {
+            //Debug.Log(Obj + " : " + Object.name);
+
+            if (Object == Obj)
+            {
+                //Debug.Log("Same");
+                Flag = true;
+            }
+        }
+
+
+        if (!Object)
+        {
+            Flag = true;
+        }
+
+        if (!Flag)
+        {
+           
+
+           // Debug.Log("Did it");
+            ObjectsAffected.Add(Object);
+
+            List<Color> ColourList = new List<Color>();
+            Renderer[] ObjRenderers = Object.GetComponentsInChildren<Renderer>();
+
+            foreach (Renderer Rend in ObjRenderers)
+            {
+                if (Rend.material.HasProperty("_Color")) // Checks the renderer actually has a colour property... Particle renderer does not ;)
+                {
+                    ColourList.Add(Rend.material.color); // Saves the original Colours of the object.
+                    Rend.material.color = Col;           // Sets the object Color to the Color specificed (mostly Red)         
+                }
+                else
+                {
+                    ColourList.Add(Col); // If the renderer does not have a colour variable. Set that element in the list to the desired colour, so taht it is ignored.
+                }
+               
+            }
+
+            yield return new WaitForSeconds(BlinkTime); // Waits the desired time. and then we set the colours back to normal.
+
+            int Counter = 0;
+            foreach (Renderer Rend in ObjRenderers)
+            {
+                if (ColourList[Counter] != Col) // If the original colour is the same as the new colour then ignore.
+                {
+                    Rend.material.color = ColourList[Counter];          // Sets the colours back to normal.
+                    Counter++;
+                }
+ 
+            }
+
+            if (Object)
+            {
+                foreach (GameObject OBJ in ObjectsAffected.ToArray()) // Creates a new list of the ObjectAffected List before looping through it. Other wise it would change the values "under the hood" Causing the Coroutine to possibly not be executable.
+                {
+                    if (OBJ == Object)
+                    {
+                        ObjectsAffected.RemoveAt(ObjectsAffected.IndexOf(Object)); // Removes the Current object from the currently being used objects array, as it is no longer needed.
+                    }
+                }
+                                             
+            }
+        }
+
+        yield return null;
     }
 }

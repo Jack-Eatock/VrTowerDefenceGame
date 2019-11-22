@@ -45,12 +45,25 @@ public class EnemyScript : MonoBehaviour
             if (Health <= 0)
             {
                 Debug.Log("Enemy Killed");
+                
+                foreach (GameObject GO in UtilitiesScript.ObjectsAffected)
+                {
+                    if (GO == gameObject)
+                    {
+                        UtilitiesScript.ObjectsAffected.RemoveAt(UtilitiesScript.ObjectsAffected.IndexOf(gameObject));
+                        break;
+                    }
+                }
+
+               
                 GameScript.Points += Points;
                 EnemySpawner.EnemiesFinished++;
                 GameObject DeathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
                 DeathEffectGO.transform.SetParent(GameObject.Find("World").transform);
                 DeathEffectGO.transform.localScale = new Vector3(MovementScript.LocalSF, MovementScript.LocalSF, MovementScript.LocalSF);
-               
+                
+
+
 
                 Destroy(gameObject);
           
@@ -83,6 +96,7 @@ public class EnemyScript : MonoBehaviour
 
     public void OnHit(TowerSO FiringTowerProperties, Transform Hit_)
     {
+        StartCoroutine(UtilitiesScript.ObjectBlinkColour(gameObject, Color.red, 0.1f));
         Hit = Hit_;
         Health -= FiringTowerProperties.ProjectileDamagePerEnemyHit;
 
@@ -108,7 +122,7 @@ public class EnemyScript : MonoBehaviour
     }
 
 
-    public void DisplayhealthBar()
+    public void DisplayhealthBar(bool Activate)
     {
 
     }

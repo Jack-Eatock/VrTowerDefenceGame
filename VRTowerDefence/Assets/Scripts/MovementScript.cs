@@ -162,22 +162,22 @@ public class MovementScript : MonoBehaviour
 
     public void GripUpL(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        Debug.Log("Left Grip released");
+        //Debug.Log("Left Grip released");
         IsGrippingL = false;
     }
     public void GripDownL(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        Debug.Log("Left Grip Pressed");
+        //Debug.Log("Left Grip Pressed");
         IsGrippingL = true;
     }
     public void GripUpR(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        Debug.Log("Right Grip released");
+        //Debug.Log("Right Grip released");
         IsGrippingR = false;
     }
     public void GripDownR(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        Debug.Log("Right Grip Pressed");
+        //Debug.Log("Right Grip Pressed");
         IsGrippingR = true;
     }
 
