@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyScript : MonoBehaviour
 {
     private GameObject DeathEffect;
 
     public float Health;
+    private float StartHealth;
     private float Speed;
     private int Points;
     private int Mass;
@@ -14,6 +16,13 @@ public class EnemyScript : MonoBehaviour
     public List<Vector2> PathPoints = new List<Vector2>();
     public List<Vector3> LocalPathPoints = new List<Vector3>();
     public List<GameObject> TowersTargetingUnit = new List<GameObject>();
+
+
+    // Healthbar UI Stuff
+
+    private GameObject HealthBarGO;
+    private Image HealthBar;
+
 
     private int CheckPoint = 0;
     private Transform Hit;
@@ -26,6 +35,11 @@ public class EnemyScript : MonoBehaviour
         {
             LocalPathPoints.Add(GridGenerator.GridStatus[(int)PathPoints[x].x, (int)PathPoints[x].y].Position);
         }
+
+        HealthBarGO = gameObject.transform.GetChild(0).gameObject;
+        HealthBar = HealthBarGO.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+
+
     }
 
     public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_)
@@ -35,6 +49,7 @@ public class EnemyScript : MonoBehaviour
         Speed = _Speed;
         Points = _Points;
         Mass = Mass_;
+        StartHealth = _Health;
     }
 
     // Update is called once per frame
@@ -42,6 +57,8 @@ public class EnemyScript : MonoBehaviour
     {
         if (Loop)
         {
+            HealthBarGO.transform.LookAt(Camera.main.transform.position);
+
             if (Health <= 0)
             {
                 Debug.Log("Enemy Killed");
@@ -98,7 +115,15 @@ public class EnemyScript : MonoBehaviour
     {
         StartCoroutine(UtilitiesScript.ObjectBlinkColour(gameObject, Color.red, 0.1f));
         Hit = Hit_;
+
+        
         Health -= FiringTowerProperties.ProjectileDamagePerEnemyHit;
+
+        if(HealthBar != null)
+        {
+            HealthBar.fillAmount = Health / StartHealth;
+        }
+     
 
         switch (FiringTowerProperties.ProjectileType)
         {
