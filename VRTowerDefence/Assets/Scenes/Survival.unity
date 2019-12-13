@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 396353084}
   - component: {fileID: 396353085}
   - component: {fileID: 396353086}
+  - component: {fileID: 396353087}
   m_Layer: 0
   m_Name: GAMEMANAGER
   m_TagString: Untagged
@@ -208,25 +209,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SF: 0
   GridSize: 40
-  GrabL:
-    actionPath: /actions/GrabPullLocomotion/in/GrabL
-    needsReinit: 0
-  GrabR:
-    actionPath: /actions/GrabPullLocomotion/in/GrabR
-    needsReinit: 0
-  Menu:
-    actionPath: /actions/GrabPullLocomotion/in/Menu
-    needsReinit: 0
-  DPEast:
-    actionPath: /actions/GrabPullLocomotion/in/East
-    needsReinit: 0
-  DPWest:
-    actionPath: /actions/GrabPullLocomotion/in/West
-    needsReinit: 0
-  LeftHand: 1
-  RightHand: 2
   CancelGO: {fileID: 1638906427}
   PlacedTowersStorage: {fileID: 249267436}
+  NewTower: {fileID: 0}
+  TowerBeingPlaced: 0
+  CanBePlaced: 0
   Player: {fileID: 617815456}
   Ground: {fileID: 400354474}
   TowerMenuPos: {fileID: 271813728}
@@ -236,10 +223,13 @@ MonoBehaviour:
   GeneralMenuGO: {fileID: 1371439404}
   Text: {fileID: 38611343}
   PointsText: {fileID: 818679599}
+  BuildMenuActive: 0
+  GeneralMenuActive: 0
+  SufficientFunds: 0
   Towers:
   - {fileID: 11400000, guid: 4285661fb0ba195499af532c3c4a3a38, type: 2}
-  - {fileID: 11400000, guid: 5b4b3b4a9ebd4e640ae7b276bd2f7a8d, type: 2}
   - {fileID: 11400000, guid: 8860f5bdcc4a342439e0b4431b328f3b, type: 2}
+  - {fileID: 11400000, guid: 5b4b3b4a9ebd4e640ae7b276bd2f7a8d, type: 2}
   - {fileID: 11400000, guid: 812d3784d71acdc47b9aaa4c544f88d8, type: 2}
   GrassGridMat: {fileID: 2100000, guid: 3c42915d0b78e1144a454c7281e64354, type: 2}
   GrassMat: {fileID: 2100000, guid: d2981e57d7016354885ad5a697694654, type: 2}
@@ -308,6 +298,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GeneralMenuTextGO: {fileID: 1513618746}
+--- !u!114 &396353087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396353081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ae491401dc1844cb4eb9fcdf0bdf9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GrabL:
+    actionPath: /actions/GrabPullLocomotion/in/GrabL
+    needsReinit: 0
+  GrabR:
+    actionPath: /actions/GrabPullLocomotion/in/GrabR
+    needsReinit: 0
+  Menu:
+    actionPath: /actions/GrabPullLocomotion/in/Menu
+    needsReinit: 0
+  DPEast:
+    actionPath: /actions/GrabPullLocomotion/in/East
+    needsReinit: 0
+  DPWest:
+    actionPath: /actions/GrabPullLocomotion/in/West
+    needsReinit: 0
+  GripL:
+    actionPath: /actions/GrabPullLocomotion/in/GripL
+    needsReinit: 0
+  GripR:
+    actionPath: /actions/GrabPullLocomotion/in/GripR
+    needsReinit: 0
+  LeftHand: 1
+  RightHand: 2
 --- !u!1 &400354474
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,6 +792,10 @@ PrefabInstance:
       propertyPath: GameWorld
       value: 
       objectReference: {fileID: 1868694158}
+    - target: {fileID: 617815457, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: WorldOffset
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
 --- !u!1001 &1352164125

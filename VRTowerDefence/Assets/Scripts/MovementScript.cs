@@ -1,24 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
 
 public class MovementScript : MonoBehaviour
 {
-    // Reference to Steam Action's \\
-    public SteamVR_Action_Boolean GripL;
-    public SteamVR_Action_Boolean GripR;
 
-    // References to Input devices \\
-    public SteamVR_Input_Sources LeftHand; // Left Controller - Set in Engine.
-    public SteamVR_Input_Sources RightHand; // Right Controller - Set in Engine.
 
     // General Variables \\
-    private bool MovementControllsDisabled = false;
+    public bool MovementControllsDisabled = false;
 
     // Controller Variables \\
-    private bool IsGrippingL = false;
-    private bool IsGrippingR = false;
+    public static bool IsGrippingL = false;
+    public static bool IsGrippingR = false;
 
     private Vector3 LastRHandPos;
     private Vector3 LastLHandPos;
@@ -45,12 +38,9 @@ public class MovementScript : MonoBehaviour
     // References to GameObjects \\
     public GameObject GameWorld;
 
-    [SerializeField]
-    private GameObject LeftHandGO = null;
-    [SerializeField]
-    private GameObject RightHandGO = null;
-    [SerializeField]
-    private GameObject PlayerHead = null;
+    [SerializeField] private GameObject LeftHandGO = null;
+    [SerializeField] private GameObject RightHandGO = null;
+    [SerializeField] private GameObject PlayerHead = null;
 
 
     // Adjustable Properties to be used in Editior. \\
@@ -64,14 +54,6 @@ public class MovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        GripL.AddOnStateDownListener(GripDownL, LeftHand);
-        GripL.AddOnStateUpListener(GripUpL, LeftHand);
-
-        GripR.AddOnStateDownListener(GripDownR, RightHand);
-        GripR.AddOnStateUpListener(GripUpR, RightHand);
-
-      
     }
 
     // Update is called once per frame
@@ -111,7 +93,7 @@ public class MovementScript : MonoBehaviour
             ControllerVelocityR = (RightHandGO.transform.position - LastRHandPos) / Time.deltaTime;
             ControllerVelocityL = (LeftHandGO.transform.position - LastLHandPos) / Time.deltaTime;
 
-            if (IsGrippingL && ControllerVelocityL.magnitude > MinVelocity)
+            if (MovementScript.IsGrippingL && ControllerVelocityL.magnitude > MinVelocity)
             {
                 if (new Vector3(0, ControllerVelocityL.y, 0).magnitude > MinVelocity / 2)
                 {
@@ -123,7 +105,7 @@ public class MovementScript : MonoBehaviour
                 }
             }
 
-            if (IsGrippingR && ControllerVelocityR.magnitude > MinVelocity)
+            if (MovementScript.IsGrippingR && ControllerVelocityR.magnitude > MinVelocity)
             {
                 if (new Vector3(0, ControllerVelocityR.y, 0).magnitude > MinVelocity / 2)
                 {
@@ -145,40 +127,10 @@ public class MovementScript : MonoBehaviour
 
     }
 
-
-
-
-
     // Check if the controller is moving.
     //If the controller is moving, Work out the distance moved since clicked,
     // and then move world accordingly. ( transform.psoition ... * time.deltatime)
 
+ }
 
 
-
-
-
-
-
-    public void GripUpL(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
-    {
-        //Debug.Log("Left Grip released");
-        IsGrippingL = false;
-    }
-    public void GripDownL(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
-    {
-        //Debug.Log("Left Grip Pressed");
-        IsGrippingL = true;
-    }
-    public void GripUpR(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
-    {
-        //Debug.Log("Right Grip released");
-        IsGrippingR = false;
-    }
-    public void GripDownR(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
-    {
-        //Debug.Log("Right Grip Pressed");
-        IsGrippingR = true;
-    }
-
-}
