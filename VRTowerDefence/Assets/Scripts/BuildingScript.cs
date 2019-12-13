@@ -7,66 +7,14 @@ using UnityEngine.UI;
 public class BuildingScript : MonoBehaviour
 {
     // General Variables \\
-
-    public static bool MenuControllsDisabled = true;
-
-    [SerializeField]
-    private GameObject Player = null;
-
-    public GameObject Ground;
-    public GameObject TowerMenuPos;
-    public GameObject RightHandGO;
-
-    public float GridSize = 40;
-
-    // Placing Towers
-    [SerializeField]
-    private GameObject CancelGO = null;
-    [SerializeField]
-    private GameObject PlacedTowersStorage = null;
-
-    private GameObject GameWorld = null;
-    private GameObject NewTower = null;
-
-    private bool TowerBeingPlaced = false;
-    private bool NewTowerHidden = false;
-    private bool CurrentlyDisplayedTowerHidden = true;
-    private bool CanBePlaced = false;
-
-    private int CurrentPositionPosX;
-    private int CurrentPositionPosY;
-    private int GridWidth;
-    private int GridHeight;
+    [Header("Tweekables")]
 
     public float SF;
+    public float GridSize = 40;
 
-    private Vector3 CurrentPosition;
+    //
 
-
-    //Menu 
-    [SerializeField]
-    private GameObject HandMenuGO = null;
-    [SerializeField]
-    private GameObject BuildingMenuGo = null;
-    [SerializeField]
-    private GameObject GeneralMenuGO = null;
-    [SerializeField]
-    private GameObject Text = null;
-    [SerializeField]
-    private GameObject PointsText = null;
-
-    private GameObject[] MinitureTowers;
-    private Text NameText;
-    private Text PointsTextDisplayer;
-    private bool BuildMenuActive = false;
-    private bool GeneralMenuActive = false;
-    private bool SufficientFunds = false;
-    private int Points;
-
-    //Towers
-    public TowerSO[] Towers;
-    private GameObject CurrentlyDisplayedTower = null;
-    private int CurrentlyDisplayedTowerPos = 0;
+    [Header ("SteamVR References")]
 
     // Steam VR ACtions
     public SteamVR_Action_Boolean GrabL;
@@ -78,11 +26,72 @@ public class BuildingScript : MonoBehaviour
     public SteamVR_Input_Sources LeftHand; // Left Controller - Set in Engine.
     public SteamVR_Input_Sources RightHand; // Right Controller - Set in Engine.
 
+    //
+
+    [Header("Placing Towers")]
+
+    [SerializeField] private GameObject CancelGO = null;
+    [SerializeField] private GameObject PlacedTowersStorage = null;
+
+    private GameObject GameWorld = null;
+    private GameObject NewTower = null;
+
+    private bool TowerBeingPlaced = false;
+    private bool NewTowerHidden = false;
+    private bool CurrentlyDisplayedTowerHidden = true;
+    private bool CanBePlaced = false;
+    public static bool MenuControllsDisabled = true;
+
+    //
+
+    [Header("General References")]
+
+    [SerializeField] private GameObject Player = null;
+    public GameObject Ground;
+    public GameObject TowerMenuPos;
+    public GameObject RightHandGO;
+
+    private int CurrentPositionPosX;
+    private int CurrentPositionPosY;
+    private int GridWidth;
+    private int GridHeight;
+
+    private Vector3 CurrentPosition;
+
+    //
+    
+    [Header("Menu Variables")]
+
+    [SerializeField] private GameObject HandMenuGO = null;
+    [SerializeField] private GameObject BuildingMenuGo = null;
+    [SerializeField] private GameObject GeneralMenuGO = null;
+    [SerializeField] private GameObject Text = null;
+    [SerializeField] private GameObject PointsText = null;
+
+
+    private GameObject[] MinitureTowers;
+    private Text NameText;
+    private Text PointsTextDisplayer;
+    private bool BuildMenuActive = false;
+    private bool GeneralMenuActive = false;
+    private bool SufficientFunds = false;
+    private int Points;
+
+    //
+
+    [Header("Tower Variables")]
+    //Towers
+    public TowerSO[] Towers;
+    private GameObject CurrentlyDisplayedTower = null;
+    private int CurrentlyDisplayedTowerPos = 0;
+
+    //
+
+    [Header("Ground Grid Variables")]
+
     // Switching grid ON/OFF Visual only \\
-    [SerializeField]
-    private Material GrassGridMat = null;
-    [SerializeField]
-    private Material GrassMat = null;
+    [SerializeField] private Material GrassGridMat = null;
+    [SerializeField] private Material GrassMat = null;
 
     private bool IsGroundGrid = false;
 
@@ -116,7 +125,6 @@ public class BuildingScript : MonoBehaviour
 
         Menu.AddOnStateDownListener(MenuDown, LeftHand);
         Menu.AddOnStateUpListener(MenuUp, LeftHand);
-
     }
 
 

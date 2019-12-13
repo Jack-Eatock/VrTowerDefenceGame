@@ -16,6 +16,6 @@ MonoBehaviour:
   Name: Swarm
   Speed: 0.7
   Health: 1
-  Points: 2
+  Points: 1
   Mass: 1
   Description: Weak but Split up into little ones

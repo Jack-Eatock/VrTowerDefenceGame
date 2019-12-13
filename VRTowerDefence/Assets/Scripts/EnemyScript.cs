@@ -17,7 +17,7 @@ public class EnemyScript : MonoBehaviour
     public List<Vector3> LocalPathPoints = new List<Vector3>();
     public List<GameObject> TowersTargetingUnit = new List<GameObject>();
 
-
+    private CharacterController Player;
     // Healthbar UI Stuff
 
     private GameObject HealthBarGO;

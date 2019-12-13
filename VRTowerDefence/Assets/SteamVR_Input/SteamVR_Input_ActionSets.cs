@@ -21,8 +21,6 @@ namespace Valve.VR
         
         private static SteamVR_Input_ActionSet_GrabPullLocomotion p_GrabPullLocomotion;
         
-        private static SteamVR_Input_ActionSet_NewSet p_NewSet;
-        
         public static SteamVR_Input_ActionSet_default _default
         {
             get
@@ -39,23 +37,13 @@ namespace Valve.VR
             }
         }
         
-        public static SteamVR_Input_ActionSet_NewSet NewSet
-        {
-            get
-            {
-                return SteamVR_Actions.p_NewSet.GetCopy<SteamVR_Input_ActionSet_NewSet>();
-            }
-        }
-        
         private static void StartPreInitActionSets()
         {
             SteamVR_Actions.p__default = ((SteamVR_Input_ActionSet_default)(SteamVR_ActionSet.Create<SteamVR_Input_ActionSet_default>("/actions/default")));
             SteamVR_Actions.p_GrabPullLocomotion = ((SteamVR_Input_ActionSet_GrabPullLocomotion)(SteamVR_ActionSet.Create<SteamVR_Input_ActionSet_GrabPullLocomotion>("/actions/GrabPullLocomotion")));
-            SteamVR_Actions.p_NewSet = ((SteamVR_Input_ActionSet_NewSet)(SteamVR_ActionSet.Create<SteamVR_Input_ActionSet_NewSet>("/actions/NewSet")));
             Valve.VR.SteamVR_Input.actionSets = new Valve.VR.SteamVR_ActionSet[] {
                     SteamVR_Actions._default,
-                    SteamVR_Actions.GrabPullLocomotion,
-                    SteamVR_Actions.NewSet};
+                    SteamVR_Actions.GrabPullLocomotion};
         }
     }
 }

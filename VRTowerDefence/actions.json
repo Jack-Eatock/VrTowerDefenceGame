@@ -85,10 +85,6 @@
     {
       "name": "/actions/GrabPullLocomotion",
       "usage": "single"
-    },
-    {
-      "name": "/actions/NewSet",
-      "usage": "single"
     }
   ],
   "default_bindings": [

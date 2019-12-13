@@ -15,7 +15,7 @@ MonoBehaviour:
   UnitGO: {fileID: 6964569119548220669, guid: 5b17ff3e71ea0864e81da991ba697ecf, type: 3}
   Name: Tank
   Speed: 0.1
-  Health: 15
-  Points: 15
+  Health: 13
+  Points: 8
   Mass: 5
   Description: Strong but Slow

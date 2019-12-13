@@ -27,8 +27,6 @@ public class MovementScript : MonoBehaviour
     private Vector3 ControllerVelocityR = Vector3.zero;
     private Vector3 UpdatePosition = Vector3.zero;
 
-    // Moving the World \\
-
 
     // Scaling the World \\
     private Vector3 Offset;
@@ -42,6 +40,7 @@ public class MovementScript : MonoBehaviour
     private float MaxHeight = 0;
     [SerializeField]
     private float MinHeight = 0;
+    [SerializeField] private float WorldOffset = 0.5f;
 
     // References to GameObjects \\
     public GameObject GameWorld;
@@ -66,7 +65,6 @@ public class MovementScript : MonoBehaviour
     void Start()
     {
 
-
         GripL.AddOnStateDownListener(GripDownL, LeftHand);
         GripL.AddOnStateUpListener(GripUpL, LeftHand);
 
@@ -79,33 +77,35 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        TargetPos = GameWorld.transform.position;
+        Pivot = PlayerHead.transform.position;
+
+        DistanceBetween = TargetPos - Pivot;
+        RS = LocalSF / GameWorld.transform.localScale.x;
+        Vector3 FP = new Vector3(Pivot.x + DistanceBetween.x, 0, Pivot.z + DistanceBetween.z) * RS;
+
+
+        GameWorld.transform.localScale = new Vector3(LocalSF, LocalSF, LocalSF);
+        GameWorld.transform.localPosition = FP + UpdatePosition + new Vector3(0, WorldOffset, 0);
+
+
+        UpdatePosition = Vector3.zero;
+
         if (!MovementControllsDisabled)
         {
-            TargetPos = GameWorld.transform.position;
-            Pivot = PlayerHead.transform.position;
-
-            DistanceBetween = TargetPos - Pivot;
-            RS = LocalSF / GameWorld.transform.localScale.x;
-            Vector3 FP = new Vector3(Pivot.x + DistanceBetween.x, 0, Pivot.z + DistanceBetween.z) * RS;
-
-
-            GameWorld.transform.localScale = new Vector3(LocalSF, LocalSF, LocalSF);
-            GameWorld.transform.localPosition = FP + UpdatePosition;
-
-
-            UpdatePosition = Vector3.zero;
-            if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) >= MaxHeight)
+        
+            if ((GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) >= MaxHeight)
             {
-                Offset.y = (MaxHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
+                Offset.y = (MaxHeight - (GameWorld.transform.position.y - PlayerHead.transform.position.y));
             }
 
-            else if ((2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) <= MinHeight)
+            else if ((GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y) <= MinHeight)
             {
-                Offset.y = (MinHeight - (2 + GameWorld.transform.position.y - PlayerHead.transform.position.y));
+                Offset.y = (MinHeight - (GameWorld.transform.position.y - PlayerHead.transform.position.y));
             }
 
             PullSpeed = this.PullRatio.Evaluate(LocalSF);
-            LocalSF = 2 + GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y;
+            LocalSF = GameWorld.transform.position.y - PlayerHead.transform.position.y + Offset.y;
             float TempPullSpeed = PullSpeed * LocalSF;
 
             ControllerVelocityR = (RightHandGO.transform.position - LastRHandPos) / Time.deltaTime;

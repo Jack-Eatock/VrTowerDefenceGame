@@ -92,16 +92,14 @@ public class EnemySpawner : MonoBehaviour
         GameScript.WaveIncoming = true;
         int CurrentRound = GameScript.CurrentRound;
         int NumEnemies = Mathf.FloorToInt(CurrentRound * GameScript.RoundEnemySpawnRatio);
-        int RandomValue = 0;
+        int RandomValue;
 
         for (int i = 0; i < NumEnemies; i++)
         {
-
-
             RandomValue = UtilitiesScript.RandomiseByWeight(UnitSpawnChance);
 
             switch (RandomValue)
-            {
+            { 
                 case 0 :
                     UnitsInWave.Add(Soldier);
                     break;

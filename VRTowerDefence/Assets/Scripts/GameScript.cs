@@ -9,11 +9,14 @@ public class GameScript : MonoBehaviour
     private GameObject GeneralMenuTextGO = null;
 
     public static int CurrentRound = 1;
-    public static float RoundEnemySpawnRatio = 2.5f;
-    public static float SpawRate = 0.5f;
+    public static float RoundEnemySpawnRatio = 3f;
+    public static float SpawRate = 0.5f;  // Time between Spawning
     public static bool WaveIncoming = false;
     public static int PointPool = 0;
-    public static int Points = 40;
+    public static int Points = 30;
+
+
+
 
 
     // Start is called before the first frame update

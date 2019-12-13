@@ -50,16 +50,13 @@ public static class UtilitiesScript
             }
         }
 
-
         if (!Object)
         {
             Flag = true;
         }
 
         if (!Flag)
-        {
-           
-
+        {         
            // Debug.Log("Did it");
             ObjectsAffected.Add(Object);
 

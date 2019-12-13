@@ -16,6 +16,6 @@ MonoBehaviour:
   Name: Soldier
   Speed: 0.3
   Health: 4
-  Points: 4
+  Points: 2
   Mass: 1
   Description: basic Soldier
