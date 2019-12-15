@@ -58,13 +58,7 @@ public class EnemySpawner : MonoBehaviour
             Counter = 0;
             GameScript.CurrentRound++;
 
-            
-            
-
-
             gameObject.GetComponent<GameScript>().InitiateWave();
-            
-    
         }
 
     }
@@ -133,7 +127,7 @@ public class EnemySpawner : MonoBehaviour
         NewUnit.AddComponent<EnemyScript>();
 
         // Setting the Unit to Scale and possition , linked with the World at the current time.
-        NewUnit.transform.localScale = new Vector3(MovementScript.LocalSF, MovementScript.LocalSF, MovementScript.LocalSF);
+        NewUnit.transform.localScale = new Vector3(MovementScript.SF, MovementScript.SF, MovementScript.SF);
         NewUnit.transform.SetParent(UnitStorage.transform);
         NewUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
 

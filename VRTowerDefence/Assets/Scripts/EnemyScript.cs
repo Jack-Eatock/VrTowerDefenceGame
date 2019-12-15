@@ -77,7 +77,7 @@ public class EnemyScript : MonoBehaviour
                 EnemySpawner.EnemiesFinished++;
                 GameObject DeathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
                 DeathEffectGO.transform.SetParent(GameObject.Find("World").transform);
-                DeathEffectGO.transform.localScale = new Vector3(MovementScript.LocalSF, MovementScript.LocalSF, MovementScript.LocalSF);
+                DeathEffectGO.transform.localScale = new Vector3(MovementScript.SF, MovementScript.SF, MovementScript.SF);
                 
 
 

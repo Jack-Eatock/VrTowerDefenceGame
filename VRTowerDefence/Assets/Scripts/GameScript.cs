@@ -15,10 +15,6 @@ public class GameScript : MonoBehaviour
     public static int PointPool = 0;
     public static int Points = 30;
 
-
-
-
-
     // Start is called before the first frame update
     void Start()
     {

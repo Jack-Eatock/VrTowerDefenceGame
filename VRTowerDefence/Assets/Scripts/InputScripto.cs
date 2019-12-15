@@ -52,13 +52,6 @@ public class InputScripto : MonoBehaviour
         GripR.AddOnStateUpListener(GripUpR, RightHand);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
     // Inputs for the Building Script \\
 
     public void TriggerDownRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)

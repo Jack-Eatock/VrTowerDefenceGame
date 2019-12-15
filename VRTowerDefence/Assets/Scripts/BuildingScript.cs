@@ -89,7 +89,7 @@ public class BuildingScript : MonoBehaviour
         PointsTextDisplayer = PointsText.GetComponent<Text>();
 
 
-        SF = MovementScript.LocalSF;
+        SF = MovementScript.SF;
 
         MinitureTowers = new GameObject[Towers.Length];
         for (int SObject = 0; SObject < Towers.Length; SObject++)
@@ -114,7 +114,7 @@ public class BuildingScript : MonoBehaviour
             }
         }
 
-        SF = MovementScript.LocalSF;
+        SF = MovementScript.SF;
         GridGenerator.GridSpacing = ((Ground.transform.localScale.x * SF) / GridSize);
 
         if (TowerBeingPlaced)
