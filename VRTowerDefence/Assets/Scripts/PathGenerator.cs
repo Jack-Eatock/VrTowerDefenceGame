@@ -142,6 +142,7 @@ public class PathGenerator : MonoBehaviour
 
                 Debug.Log("Finished.");
                 PathGenerationComplete = true;
+                MovementScript.MovementControllsDisabled = false;
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
                 this.GetComponent<EnemySpawner>().InitiateEnemySpawner();
 

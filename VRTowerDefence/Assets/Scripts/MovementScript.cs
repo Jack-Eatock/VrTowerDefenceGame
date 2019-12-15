@@ -7,7 +7,7 @@ public class MovementScript : MonoBehaviour
 
 
     // General Variables \\
-    public bool MovementControllsDisabled = false;
+    public static bool MovementControllsDisabled = true;
 
     // Controller Variables \\
     public static bool IsGrippingL = false;
@@ -22,8 +22,12 @@ public class MovementScript : MonoBehaviour
 
     // Scaling the World \\
     public static float SF = 1;
+
     [SerializeField] private float ScaleSpeed = 40;
     [SerializeField] private float PullSpeed = 1;
+    [SerializeField] private float MaxScale = 10;
+    [SerializeField] private float MinScale = 0.3f;
+    [SerializeField] private float PlayerHeight = 0.55f;
 
     // References to GameObjects \\
     public GameObject GameWorld;
@@ -32,11 +36,16 @@ public class MovementScript : MonoBehaviour
     [SerializeField] private GameObject RightHandGO = null;
     [SerializeField] private float MinVelocity = 0.5f;
 
+    private void Start()
+    {
+         //GameWorld.transform.localPosition = new Vector3(0,PlayerHeight,0);
+    }
+
     // Update is called once per frame
     void Update()
     {
         SF = GameWorld.transform.localScale.z;
-        if (!MovementControllsDisabled)
+        if (!MovementScript.MovementControllsDisabled)
         {
             GameWorld.transform.localPosition += UpdatePosition;  
             UpdatePosition = Vector3.zero;
@@ -79,18 +88,17 @@ public class MovementScript : MonoBehaviour
 
         if (HorizontalVelocity.magnitude > MinVelocity) // The Horizontal velocity of the controller is fast enough. Move the world.
         {
-            Vector3 MoveBY = ControllerVelocity * PullSpeed;
-            UpdatePosition += new Vector3(MoveBY.x, 0, MoveBY.z) * Time.deltaTime * 4;
+            Vector3 MoveBY = ControllerVelocity * PullSpeed; //* PullSpeed * SF;
+            UpdatePosition += new Vector3(MoveBY.x, 0, MoveBY.z) * Time.deltaTime;
         }
 
         float VerticalVelocity = ControllerVelocity.y;
 
         if (Mathf.Abs(VerticalVelocity) > MinVelocity)
         {
-            float IncreaseScale = VerticalVelocity * ScaleSpeed * Time.deltaTime;
+            float IncreaseScale = VerticalVelocity * ScaleSpeed * Time.deltaTime * SF;
             float FinalScale = IncreaseScale + SF;
             ScaleAround(GameWorld, gameObject.transform.position, new Vector3(FinalScale, FinalScale, FinalScale));
-            Debug.Log("Scale");
         }
 
     }
@@ -103,8 +111,6 @@ public class MovementScript : MonoBehaviour
 
         float IncreaseScale = ChangeInDist * ScaleSpeed * Time.deltaTime;
         float FinalScale = IncreaseScale + SF;
-
-        Debug.Log(FinalScale + "AKASDK");
 
         ScaleAround(GameWorld, gameObject.transform.position, new Vector3(FinalScale, FinalScale, FinalScale));
     }
@@ -122,9 +128,17 @@ public class MovementScript : MonoBehaviour
         // calc final position post-scale
         Vector3 FP = B + C * RS;
 
-        // finally, actually perform the scale/translation
-        target.transform.localScale = newScale;
-        target.transform.localPosition = FP;
+        if (newScale.x < MaxScale && newScale.x > MinScale)
+        {
+            // finally, actually perform the scale/translation
+            target.transform.localScale = newScale;
+            target.transform.localPosition = FP;
+        }
+        else
+        {
+            Debug.Log("Scaling out of bounds.");
+        }
+
     }
 }
 
