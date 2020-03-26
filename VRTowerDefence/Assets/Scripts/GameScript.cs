@@ -15,9 +15,17 @@ public class GameScript : MonoBehaviour
     public static int PointPool = 0;
     public static int Points = 30;
 
+    public bool FirstTime = true;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (FirstTime)
+        {
+            DontDestroyOnLoad(gameObject);
+            FirstTime = false;
+        }
+
         InitiateWave();
         // BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
     }

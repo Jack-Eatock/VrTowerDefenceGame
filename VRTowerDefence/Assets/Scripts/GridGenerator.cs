@@ -115,7 +115,7 @@ public class GridGenerator : MonoBehaviour
                 GameObject NewTile = GameObject.Instantiate(TileInUseGO);
                 NewTile.transform.SetParent(InUseTilesStorage);
                 NewTile.transform.localScale = new Vector3(SF, SF, SF);
-                NewTile.transform.position = GridStatus[x,y].Position;
+                NewTile.transform.localPosition = GridStatus[x,y].Position;
                 NewTile.SetActive(false);
                 GridStatus[x, y].Tile = NewTile;
             }
@@ -128,7 +128,7 @@ public class GridGenerator : MonoBehaviour
         {
             for (int y = 0; y < GridHeight; y++)
             {
-                GridStatus[x, y].Position = new Vector3(transform.position.x + (x * GridSpacing), transform.position.y, transform.position.z + (y * GridSpacing));
+                GridStatus[x, y].Position = new Vector3(transform.position.x + (x * GridSpacing), transform.localPosition.y, transform.position.z + (y * GridSpacing));
             }
         }
         OnLoadInUseTiles(true);

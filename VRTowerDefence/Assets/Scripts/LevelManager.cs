@@ -7,9 +7,14 @@ public class LevelManager : MonoBehaviour
 {
 
     public enum Levels { MainMenu, Survival, Campaign, COOP };
-    public Levels CurrentLevel = Levels.MainMenu;
+    public static Levels CurrentLevel = Levels.MainMenu;
 
-    public void SwitchLevel(Levels NewLevel)
+    public void Start()
+    {
+       // SwitchLevel(Levels.MainMenu);
+    }
+
+    public static void SwitchLevel(Levels NewLevel)
     {
         CurrentLevel = NewLevel;
         switch (CurrentLevel)
@@ -21,7 +26,7 @@ public class LevelManager : MonoBehaviour
 
             case Levels.MainMenu:
                 Debug.Log("Loading MainMenu");
-                SceneManager.LoadScene("MainMenu");
+                SceneManager.LoadScene("Menu");
                 break;
 
             case Levels.COOP:
