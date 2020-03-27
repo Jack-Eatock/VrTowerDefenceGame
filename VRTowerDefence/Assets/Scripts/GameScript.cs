@@ -26,7 +26,7 @@ public class GameScript : MonoBehaviour
             FirstTime = false;
         }
 
-        InitiateWave();
+       // InitiateWave();
         // BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
     }
 

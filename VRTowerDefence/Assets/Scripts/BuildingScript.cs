@@ -10,14 +10,16 @@ public class BuildingScript : MonoBehaviour
 
     public float SF;
     public float GridSize = 40;
+    public bool Running = false;
 
     //
 
     [Header("Placing Towers")]
 
     [SerializeField] private GameObject CancelGO = null;
-    [SerializeField] private GameObject PlacedTowersStorage = null;
+    [SerializeField] private GameObject PlacedTowerStorageGO = null;
 
+    private GameObject PlacedTowersStorage = null;
     private GameObject GameWorld = null;
     public GameObject NewTower = null;
 
@@ -84,6 +86,14 @@ public class BuildingScript : MonoBehaviour
 
     public void Start()
     {
+
+        InputScripto.OnRightTriggerClick += RightTriggerClick;    //// REMEBVER U DID THIS!!!!
+    }
+
+    public void InitatiateBuildingScript()
+    {
+        Debug.Log("Initiating BuidlingSCript.");
+
         GameWorld = Player.GetComponent<MovementScript>().GameWorld;
         NameText = Text.GetComponent<Text>();
         PointsTextDisplayer = PointsText.GetComponent<Text>();
@@ -99,11 +109,18 @@ public class BuildingScript : MonoBehaviour
             MinitureTowers[SObject].gameObject.SetActive(false);
         }
 
+        Running = true;
     }
 
 
     public void Update()
     {
+        if (!Running)
+        {
+            return;
+        }
+
+
 
         if (BuildMenuActive)
         {
@@ -361,6 +378,12 @@ public class BuildingScript : MonoBehaviour
 
             Vector3 TilePosition = GridGenerator.GridStatus[CurrentPositionPosX, CurrentPositionPosY].Tile.transform.position;
             NewTower.transform.position = new Vector3(TilePosition.x, GameWorld.transform.position.y, TilePosition.z);
+
+            if(PlacedTowersStorage == null)
+            {
+                PlacedTowersStorage = GameObject.Instantiate(PlacedTowerStorageGO, GameWorld.transform);
+            }
+
             NewTower.transform.SetParent(PlacedTowersStorage.transform);
             CanBePlaced = false;
             // Debug.Log(CurrentPositionPosX + " : " + CurrentPositionPosY);
@@ -474,6 +497,48 @@ public class BuildingScript : MonoBehaviour
         float TempGroundScaleX = Ground.transform.localScale.x;
         float TempGroundScaleZ = Ground.transform.localScale.z;
         GrassGridMat.mainTextureScale = new Vector2(TempGroundScaleX, TempGroundScaleZ);
+    }
+
+    public void RightTriggerClick()
+    {
+        if (!TowerBeingPlaced)
+        {
+            if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && BuildMenuActive) // Move the tower from menu to the users hand.
+            {
+                SetTowerBeingPlacedTrueFalse(true);
+            }
+
+            else if (TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && GeneralMenuActive && PathGenerator.PathGenerationComplete) // Start Next wave.
+            {
+                gameObject.GetComponent<EnemySpawner>().StartWave();
+                ActivateMenu(false, 1);
+                BuildingScript.MenuControllsDisabled = false;
+            }
+        }
+
+        else if (CanBePlaced) // IF they can place the Tower, Place tower.
+        {
+            if (SufficientFunds)
+            {
+                OnPlaceOrCancel(true);
+            }
+            else
+            {
+                StartCoroutine(UtilitiesScript.ObjectBlinkColour(NewTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
+            }
+
+        }
+
+        else if (TowerBeingPlaced && TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding) // If they click on the X and we know that the tower cant be placed. Cancel.
+        {
+            OnPlaceOrCancel(false);
+        }
+
+        else
+        {
+            StartCoroutine(UtilitiesScript.ObjectBlinkColour(NewTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
+        }
+
     }
 
 }

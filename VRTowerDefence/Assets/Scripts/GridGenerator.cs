@@ -34,11 +34,16 @@ public class GridGenerator : MonoBehaviour
   
     public void Start()
     {
+      
+    }
+
+    public void InitiateGridGeneration()
+    {
         SF = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
         GridStatus = new GridPoint[GridWidth, GridHeight];
         for (int x = 0; x < GridWidth; x++)
         {
-            for (int y = 0; y< GridHeight; y++)
+            for (int y = 0; y < GridHeight; y++)
             {
                 GridStatus[x, y] = new GridPoint();
             }
@@ -46,6 +51,8 @@ public class GridGenerator : MonoBehaviour
         GenerateGrid(GridSpacing);
         GenerateTiles();
     }
+
+
 
     public void Update()
     {

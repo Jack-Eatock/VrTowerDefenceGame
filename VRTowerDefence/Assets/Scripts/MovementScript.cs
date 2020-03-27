@@ -7,7 +7,7 @@ public class MovementScript : MonoBehaviour
 
 
     // General Variables \\
-    public static bool MovementControllsDisabled = true;
+    public static bool MovementControllsDisabled = false;
 
     // Controller Variables \\
     public static bool IsGrippingL = false;
@@ -25,8 +25,8 @@ public class MovementScript : MonoBehaviour
 
     [SerializeField] private float ScaleSpeed = 40;
     [SerializeField] private float PullSpeed = 1;
-    [SerializeField] private float MaxScale = 10;
-    [SerializeField] private float MinScale = 0.3f;
+    [SerializeField] private float MaxScale = 10000; // 10
+    [SerializeField] private float MinScale = 0f;  // 0.3
     [SerializeField] private float PlayerHeight = 0.55f;
 
     // References to GameObjects \\
@@ -44,9 +44,10 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SF = GameWorld.transform.localScale.z;
+       
         if (!MovementScript.MovementControllsDisabled)
         {
+            UpdateSF();
             GameWorld.transform.localPosition += UpdatePosition;  
             UpdatePosition = Vector3.zero;
 
@@ -64,6 +65,11 @@ public class MovementScript : MonoBehaviour
             LastRHandPos = RightHandGO.transform.position; // Stores the last position of the controller, used to calculate the velocity.
             LastLHandPos = LeftHandGO.transform.position;
         }
+    }
+
+    public void UpdateSF()
+    {
+        SF =  GameWorld.transform.localScale.z;
     }
 
     public void MoveWorldBasedOnHandVelocity()
@@ -128,6 +134,10 @@ public class MovementScript : MonoBehaviour
         // calc final position post-scale
         Vector3 FP = B + C * RS;
 
+        target.transform.localScale = newScale;
+        target.transform.localPosition = FP;
+
+        /*
         if (newScale.x < MaxScale && newScale.x > MinScale)
         {
             // finally, actually perform the scale/translation
@@ -138,7 +148,7 @@ public class MovementScript : MonoBehaviour
         {
             Debug.Log("Scaling out of bounds.");
         }
-
+        */
     }
 }
 

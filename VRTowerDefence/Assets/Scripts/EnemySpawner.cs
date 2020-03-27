@@ -18,7 +18,7 @@ public class EnemySpawner : MonoBehaviour
     public static List<Vector2> PathPoints = new List<Vector2>();
     public static List<Vector3> ActualPathPoints = new List<Vector3>();
     public static Vector2 StartPoint;
-    public GameObject UnitStorage;
+    public GameObject UnitStorage = null;
 
     // Wave Variables
     private List<UnitSO> UnitsInWave = new List<UnitSO>();

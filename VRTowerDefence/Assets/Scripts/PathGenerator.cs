@@ -29,12 +29,19 @@ public class PathGenerator : MonoBehaviour
     public static bool PathGenerationComplete = false;
 
     private float Sf;
+    private bool Running = false;
 
 
     private void Start()
     {
-        Debug.Log("Generating Path....");
+    
+    }
+
+    public void InitiatePathGeneration()
+    {
+       
         Sf = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
+        Debug.Log("Generating Path...." + Sf);
         PathTile NewTile = new PathTile
         {
             Direction = 1,
@@ -43,11 +50,18 @@ public class PathGenerator : MonoBehaviour
 
         PathTiles.Add(NewTile);
         CurrentCord = StartingCords;
+        Running = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!Running)
+        {
+            return;
+        }
+
+
         if (Loop)
         {
             if (Counter >= MaxIterations)
@@ -144,7 +158,8 @@ public class PathGenerator : MonoBehaviour
                 PathGenerationComplete = true;
                 MovementScript.MovementControllsDisabled = false;
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
-                this.GetComponent<EnemySpawner>().InitiateEnemySpawner();
+                EnemySpawner EnemySpawnero = GameObject.Find("GAMEMANAGER").GetComponent<EnemySpawner>();
+                EnemySpawnero.InitiateEnemySpawner();
 
 
 

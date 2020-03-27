@@ -5,6 +5,14 @@ using Valve.VR;
 
 public class InputScripto : MonoBehaviour
 {
+    public delegate void RightTriggerClick();
+    public delegate void LeftTriggerClick();
+
+
+    public static event RightTriggerClick OnRightTriggerClick;
+    public static event LeftTriggerClick OnLeftTriggerClick;
+
+
     [Header("SteamVR References")]
 
     // Steam VR ACtions
@@ -24,8 +32,8 @@ public class InputScripto : MonoBehaviour
 
     private BuildingScript BuildingScripto;
 
-
-
+    public static bool RightTriggerDown = false;
+    public static bool LeftTriggerDown = false;
 
     // Start is called before the first frame update
     void Start()
@@ -56,58 +64,24 @@ public class InputScripto : MonoBehaviour
 
     public void TriggerDownRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        if (!BuildingScripto.TowerBeingPlaced)
-        {
-            if (BuildingScripto.TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && BuildingScripto.BuildMenuActive) // Move the tower from menu to the users hand.
-            {
-                BuildingScripto.SetTowerBeingPlacedTrueFalse(true);
-            }
-
-            else if (BuildingScripto.TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding && BuildingScripto.GeneralMenuActive && PathGenerator.PathGenerationComplete) // Start Next wave.
-            {
-                gameObject.GetComponent<EnemySpawner>().StartWave();
-                BuildingScripto.ActivateMenu(false, 1);
-                BuildingScript.MenuControllsDisabled = false;
-            }
-        }
-
-        else if (BuildingScripto.CanBePlaced) // IF they can place the Tower, Place tower.
-        {
-            if (BuildingScripto.SufficientFunds)
-            {
-                BuildingScripto.OnPlaceOrCancel(true);
-            }
-            else
-            {
-                StartCoroutine(UtilitiesScript.ObjectBlinkColour(BuildingScripto.NewTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
-            }
-
-        }
-
-        else if (BuildingScripto.TowerBeingPlaced && BuildingScripto.TowerMenuPos.GetComponent<OnCollisionScript>().IsColliding) // If they click on the X and we know that the tower cant be placed. Cancel.
-        {
-            BuildingScripto.OnPlaceOrCancel(false);
-        }
-
-        else
-        {
-            StartCoroutine(UtilitiesScript.ObjectBlinkColour(BuildingScripto.NewTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
-        }
+      
+       OnRightTriggerClick();
+        
+       
 
     }
 
 
     public void TriggerUpRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-
+        
     }
     public void TriggerDownLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-
+        OnLeftTriggerClick();
     }
     public void TriggerUpLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-
     }
 
     public void OnDPLeftClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)

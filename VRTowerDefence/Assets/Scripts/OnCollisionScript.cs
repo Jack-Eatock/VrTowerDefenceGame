@@ -39,6 +39,20 @@ public class OnCollisionScript : MonoBehaviour
 
             }
         }
+
+        else if (CollisionType == 4) // General Button press.
+        {
+            if (other.gameObject.name == "RightHand" || other.gameObject.name == "LeftHand") // Colliding with a hand.
+            {
+                Counter++;
+
+                if (Counter != 0)
+                {
+                    IsColliding = true;
+                    gameObject.GetComponent<ButtonScript>().IsCollidingWithHands = true;
+                }
+            }
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -80,6 +94,20 @@ public class OnCollisionScript : MonoBehaviour
             }
 
               
+        }
+
+        else if (CollisionType == 4) // General Button press.
+        {
+            if (other.gameObject.name == "RightHand" || other.gameObject.name == "LeftHand") // Colliding with a hand.
+            {
+                Counter--;
+
+                if (Counter == 0)
+                {
+                    IsColliding = false;
+                    gameObject.GetComponent<ButtonScript>().IsCollidingWithHands = false;
+                }
+            }
         }
     }
 }

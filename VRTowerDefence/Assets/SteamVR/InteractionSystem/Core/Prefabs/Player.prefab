@@ -219,7 +219,6 @@ GameObject:
   - component: {fileID: 447954}
   - component: {fileID: 11465950}
   - component: {fileID: 617815457}
-  - component: {fileID: 617815458}
   - component: {fileID: 617815460}
   m_Layer: 0
   m_Name: Player
@@ -288,77 +287,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90e88ec4e73b3ed4c983bd111aa56488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GripL:
-    actionPath: /actions/GrabPullLocomotion/in/GripL
-    needsReinit: 0
-  GripR:
-    actionPath: /actions/GrabPullLocomotion/in/GripR
-    needsReinit: 0
-  LeftHand: 1
-  RightHand: 2
-  MaxHeight: 8
-  MinHeight: 0.2
-  WorldOffset: 0.5
+  ScaleSpeed: 40
+  PullSpeed: 1
+  MaxScale: 10
+  MinScale: 0.3
+  PlayerHeight: 0.55
   GameWorld: {fileID: 0}
   LeftHandGO: {fileID: 144230}
   RightHandGO: {fileID: 160596}
-  PlayerHead: {fileID: 101548}
-  PullRatio:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.17268038
-      value: 9.705589
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1.225967
-      value: 7.2705846
-      inSlope: -2.3944883
-      outSlope: -2.3944883
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.15829492
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.9071217
-      value: 6.6961536
-      inSlope: -0.06359694
-      outSlope: -0.06359694
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1930639
-      outWeight: 0
-    - serializedVersion: 3
-      time: 3.4845805
-      value: 9.7564125
-      inSlope: 0.6145425
-      outSlope: 0.6145425
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   MinVelocity: 0.02
---- !u!114 &617815458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85ca19deb6dd69946bb97df1240cb46f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurrentLevel: 0
 --- !u!114 &617815460
 MonoBehaviour:
   m_ObjectHideFlags: 0
