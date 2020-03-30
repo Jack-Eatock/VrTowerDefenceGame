@@ -69,7 +69,7 @@ public class MovementScript : MonoBehaviour
 
     public void UpdateSF()
     {
-        SF =  GameWorld.transform.localScale.z;
+        SF = GameWorld.transform.localScale.z;
     }
 
     public void MoveWorldBasedOnHandVelocity()

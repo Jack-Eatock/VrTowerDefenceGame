@@ -25,7 +25,7 @@ public class TowerScript : MonoBehaviour
     void Update()
     {
         
-        if (GameScript.WaveIncoming && EnemiesInRange.Count > 0)
+        if ( EnemiesInRange.Count > 0)
         {
             if (EnemiesInRange[0] == null)
             {

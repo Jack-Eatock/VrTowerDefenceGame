@@ -22,6 +22,10 @@ public class GridGenerator : MonoBehaviour
     [SerializeField]
     private Transform InUseTilesStorage = null;
 
+    [SerializeField] private Material GrassGridMat;
+    [SerializeField] private Material GrassMat;
+    private bool IsGroundGrid = false;
+
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
     private float SF;
 
@@ -31,15 +35,15 @@ public class GridGenerator : MonoBehaviour
 
     public static float GridSpacing = 0.25f;
 
-  
-    public void Start()
-    {
-      
-    }
-
     public void InitiateGridGeneration()
     {
-        SF = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
+        Debug.Log("Initiating Grid Generation...");
+
+        TilesInUseArray = new List<Vector2>();
+        GridCanBeUpdated = false;
+
+        SF = MovementScript.SF;
+
         GridStatus = new GridPoint[GridWidth, GridHeight];
         for (int x = 0; x < GridWidth; x++)
         {
@@ -48,15 +52,16 @@ public class GridGenerator : MonoBehaviour
                 GridStatus[x, y] = new GridPoint();
             }
         }
+
         GenerateGrid(GridSpacing);
+
+        Debug.Log("[Completed] Generated Grid!");
+        Debug.Log("Generating Tiles...");
         GenerateTiles();
+
+        Debug.Log("[Completed] Generated Tiles");
     }
 
-
-
-    public void Update()
-    {
-    }
 
     public static void OnLoadInUseTiles(bool Load)
     {
@@ -127,6 +132,8 @@ public class GridGenerator : MonoBehaviour
                 GridStatus[x, y].Tile = NewTile;
             }
         }
+
+
     }
 
     public void GenerateGrid(float GridSpacing)
@@ -139,6 +146,26 @@ public class GridGenerator : MonoBehaviour
             }
         }
         OnLoadInUseTiles(true);
+    }
+
+
+
+    public void GridSwitch()
+    {
+        GameObject Ground = GameObject.Find("Ground");
+
+        if (IsGroundGrid)
+        {
+            GridGenerator.OnLoadInUseTiles(false);
+            Ground.GetComponent<Renderer>().material = GrassMat;
+            IsGroundGrid = false;
+        }
+        else
+        {
+            GridGenerator.OnLoadInUseTiles(true);
+            Ground.GetComponent<Renderer>().material = GrassGridMat;
+            IsGroundGrid = true;
+        }
     }
 
 

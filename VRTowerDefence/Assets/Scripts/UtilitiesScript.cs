@@ -6,6 +6,39 @@ public static class UtilitiesScript
 {
     public static List<GameObject> ObjectsAffected = new List<GameObject>();
 
+    public static void CircleRadius(Vector2 StartingCords, int Radius)
+    {
+        List<Vector2> Cords = new List<Vector2>();
+        int Offset = 0;
+        for (int Counter = 1; Counter <= (Radius + 1); Counter++)
+        {
+            if (Counter == Radius + 1)
+            {
+                Offset = 1;
+            }
+
+            for (int x = (int)StartingCords.x - Counter + Offset; x <= StartingCords.x + Counter - Offset; x++)
+            {
+
+                Cords.Add(new Vector2(x, StartingCords.y + ((Radius + 1) - Counter)));
+                Cords.Add(new Vector2(x, StartingCords.y - ((Radius + 1) - Counter)));
+            }
+        }
+
+        foreach (Vector2 Cord in Cords)
+        {
+            if (Cord.x < 40 && Cord.x >= 0 && Cord.y < 40 && Cord.y >= 0)
+            {
+                GridGenerator.SetGridPointAvailable(false, Cord);
+            }
+
+        }
+
+    }
+
+  
+
+
     public static int RandomiseByWeight(int[] Weights)
     {
         int TotalSum = 0;

@@ -7,11 +7,12 @@ public class EnemyScript : MonoBehaviour
 {
     private GameObject DeathEffect;
 
-    public float Health;
+    public  float Health;
     private float StartHealth;
     private float Speed;
-    private int Points;
-    private int Mass;
+    private int   Points;
+    private int   Mass;
+    private GameModeScript GameModeScripto;
 
     public List<Vector2> PathPoints = new List<Vector2>();
     public List<Vector3> LocalPathPoints = new List<Vector3>();
@@ -42,7 +43,7 @@ public class EnemyScript : MonoBehaviour
 
     }
 
-    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_)
+    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_ , GameModeScript _GameModeScripto)
     {
         DeathEffect = DeathEffect_;
         Health = _Health;
@@ -50,6 +51,7 @@ public class EnemyScript : MonoBehaviour
         Points = _Points;
         Mass = Mass_;
         StartHealth = _Health;
+        GameModeScripto = _GameModeScripto;
     }
 
     // Update is called once per frame
@@ -73,7 +75,7 @@ public class EnemyScript : MonoBehaviour
                 }
 
                
-                GameScript.Points += Points;
+                GameModeScript.Points += Points;
                 EnemySpawner.EnemiesFinished++;
                 GameObject DeathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
                 DeathEffectGO.transform.SetParent(GameObject.Find("World").transform);
@@ -105,7 +107,7 @@ public class EnemyScript : MonoBehaviour
                 Debug.Log("Enemy made it to the Finish");
                 EnemySpawner.EnemiesFinished++;
                 Loop = false;
-                GameScript.PointPool += Mass;
+                GameModeScripto.PointPool += Mass;
                 Destroy(gameObject);
             }
         }

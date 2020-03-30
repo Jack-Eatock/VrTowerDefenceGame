@@ -20,9 +20,9 @@ public class OnCollisionScript : MonoBehaviour
 
         }
 
-        else if (CollisionType == 2) // MiniTower COlliding with Ground.
+        else if (CollisionType == 2) // MiniTower Colliding with Ground.
         {
-            if (other.gameObject.name == "Ground") // hand Colliding with Tower menu.
+            if (other.gameObject.name == "Ground") 
             {
                 IsColliding = true;
             }

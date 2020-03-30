@@ -12,8 +12,9 @@ public class PathTile
 
 public class PathGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private Vector2 StartingCords = Vector2.zero;
+    [SerializeField] private Vector2 StartingCords = Vector2.zero;
+    [SerializeField] private GameObject LocalGameManager = null;
+
     private Vector2 CurrentCord = Vector2.zero;
     private int LastDirection = 1;
     private int MaxIterations = 400;
@@ -39,9 +40,12 @@ public class PathGenerator : MonoBehaviour
 
     public void InitiatePathGeneration()
     {
-       
-        Sf = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
-        Debug.Log("Generating Path...." + Sf);
+        Debug.Log("Generating virtual Pathway....");
+
+        PathTiles = new List<PathTile>();
+        PathGenerationComplete = false;
+
+        Sf = MovementScript.SF;
         PathTile NewTile = new PathTile
         {
             Direction = 1,
@@ -86,7 +90,9 @@ public class PathGenerator : MonoBehaviour
             else
             {
 
-                Debug.Log("Finished Generating. Now Loading path....");
+                Debug.Log("[Completed] Generated virtual Pathway!");
+                Debug.Log("Generating physical Pathway...");
+
                 LastDirection = 1;
                 Loop = false;
 
@@ -154,12 +160,13 @@ public class PathGenerator : MonoBehaviour
 
                 }
 
-                Debug.Log("Finished.");
+                Debug.Log("[Completed] Physical Pathway Generated!");
                 PathGenerationComplete = true;
-                MovementScript.MovementControllsDisabled = false;
+
+
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
-                EnemySpawner EnemySpawnero = GameObject.Find("GAMEMANAGER").GetComponent<EnemySpawner>();
-                EnemySpawnero.InitiateEnemySpawner();
+
+
 
 
 

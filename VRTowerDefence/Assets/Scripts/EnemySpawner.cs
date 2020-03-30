@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public static int EnemiesFinished = 0; // could have made it to the end or died ..
-    public GameObject DeathEffect;
+    [SerializeField] private GameObject DeathEffect;
+    private GameModeScript GameModeScripto;
 
     // Unit Serialised Objects \\
     public UnitSO Soldier;
@@ -13,22 +14,52 @@ public class EnemySpawner : MonoBehaviour
     public UnitSO Swarmer;
     public UnitSO Charger;
 
-
     // General Variables \\
-    public static List<Vector2> PathPoints = new List<Vector2>();
-    public static List<Vector3> ActualPathPoints = new List<Vector3>();
-    public static Vector2 StartPoint;
-    public GameObject UnitStorage = null;
+    public  List<Vector2> PathPoints = new List<Vector2>();
+    public  List<Vector3> ActualPathPoints = new List<Vector3>();
+    public  Vector2 StartPoint;
+    public  GameObject UnitStorage = null;
+
+    public static bool EnemySpawnerComplete = false;
 
     // Wave Variables
-    private List<UnitSO> UnitsInWave = new List<UnitSO>();
-    private bool SpawningWaveUnits = false;
-    private float LastRecordedTime;
-    private int Counter = 0;
+    private List<UnitSO>    UnitsInWave = new List<UnitSO>();
+    private bool            SpawningWaveUnits = false;
+    private float           LastRecordedTime;
+    private int             Counter = 0;
+    private float           SpawnRate;
+    private float           RoundEnemySpawnRatio; 
 
     public int[] UnitSpawnChance;
+
     private EnemyScript TempEnemyScript;
 
+    public void InitiateEnemySpawner(float TempSpawnRate, float TempRoundEnemySpawnRatio, GameModeScript _GameModeScript)
+    {
+        Debug.Log("Establishing Enenemy Spawner...");
+
+
+        foreach (PathTile Path in PathGenerator.PathTiles)
+        {
+            PathPoints.Add(Path.Cords);
+        }
+
+        StartPoint = PathPoints[PathPoints.Count - 1]; // Start point of the enemy.
+        PathPoints.Reverse(); // Now going the correct direction
+
+        SpawnRate = TempSpawnRate;
+        RoundEnemySpawnRatio = TempRoundEnemySpawnRatio;
+        GameModeScripto = _GameModeScript;
+
+        Debug.Log("[Completed] Enemey Spawner has been established!");
+        EnemySpawnerComplete = true;
+
+    }
+
+    public void Interupt()
+    {
+
+    }
 
     public void Update()
     {
@@ -40,7 +71,7 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log("Finished Spawning Units");
             }
 
-            else if (Time.time - LastRecordedTime > GameScript.SpawRate)
+            else if (Time.time - LastRecordedTime > SpawnRate)
             {
                 SpawnEnemy(UnitsInWave[Counter]);
                 Counter++;
@@ -52,40 +83,21 @@ public class EnemySpawner : MonoBehaviour
         else if (EnemiesFinished == UnitsInWave.Count && UnitsInWave.Count > 0)
         {
             Debug.Log("Wave Finished");
-            GameScript.WaveIncoming = false;
+            GameModeScripto.WaveIncoming = false;
             EnemiesFinished = 0;
             UnitsInWave.Clear();
             Counter = 0;
-            GameScript.CurrentRound++;
+            GameModeScripto.CurrentRound++;
 
-            gameObject.GetComponent<GameScript>().InitiateWave();
+            gameObject.GetComponent<GameModeScript>().PrepareWave();
         }
 
     }
 
-
-    public void InitiateEnemySpawner()
+    public void StartWave(int CurrentRound)
     {
-        Debug.Log("Initiating Spawner.");
-        foreach (PathTile Path in PathGenerator.PathTiles)
-        {
-            PathPoints.Add(Path.Cords);
-        }
-
-        StartPoint = PathPoints[PathPoints.Count - 1]; // Start point of the enemy.
-        PathPoints.Reverse(); // Now going the correct direction
-
-        //Debug.Log("IamHere?");
-
-    }
-
-
-
-    public void StartWave()
-    {
-        GameScript.WaveIncoming = true;
-        int CurrentRound = GameScript.CurrentRound;
-        int NumEnemies = Mathf.FloorToInt(CurrentRound * GameScript.RoundEnemySpawnRatio);
+        GameModeScripto.WaveIncoming = true;
+        int NumEnemies = Mathf.FloorToInt(CurrentRound * RoundEnemySpawnRatio);
         int RandomValue;
 
         for (int i = 0; i < NumEnemies; i++)
@@ -132,7 +144,7 @@ public class EnemySpawner : MonoBehaviour
         NewUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
 
         TempEnemyScript = NewUnit.GetComponent<EnemyScript>();
-        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points,UnitType.Mass, DeathEffect);
+        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points,UnitType.Mass, DeathEffect, GameModeScripto);
 
         NewUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
     }
