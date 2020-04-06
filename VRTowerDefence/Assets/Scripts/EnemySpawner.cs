@@ -60,7 +60,6 @@ public class EnemySpawner : MonoBehaviour
             _counter = 0;
             GameScript.CurrentRound++;
 
-            gameObject.GetComponent<GameScript>().InitiateWave();
         }
 
     }

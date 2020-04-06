@@ -32,13 +32,13 @@ public class LevelInitiationScript : MonoBehaviour
         {
             Gamemanager.GetComponent<EnemySpawner>().UnitStorage = _enemeyStorage;
 
-            BuildingScripto.Ground = _ground;
-            BuildingScripto.InitatiateBuildingScript();
+            //BuildingScripto.Ground = _ground;
+            //BuildingScripto.InitatiateBuildingScript();
 
             _grid.GetComponent<GridGenerator>().InitiateGridGeneration();
             _gameWorld.GetComponent<PathGenerator>().InitiatePathGeneration();
 
-            Gamemanager.GetComponent<GameScript>().InitiateWave();
+            //Gamemanager.GetComponent<GameScript>().InitiateWave();
 
         }
 

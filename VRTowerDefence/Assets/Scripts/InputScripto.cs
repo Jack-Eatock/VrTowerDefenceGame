@@ -7,11 +7,15 @@ public class InputScripto : MonoBehaviour
 {
     public delegate void RightTriggerClick();
     public delegate void LeftTriggerClick();
+    public delegate void DPLeftClick();
+    public delegate void DPRightClick();
+    public delegate void LeftMenuPress();
 
-
-    public static event RightTriggerClick OnRightTriggerClick;
-    public static event LeftTriggerClick OnLeftTriggerClick;
-
+    public static event RightTriggerClick   OnRightTriggerClick;
+    public static event LeftTriggerClick    OnLeftTriggerClick;
+    public static event DPLeftClick         OnDPLeftClick;
+    public static event DPRightClick        OnDPRightClick;
+    public static event LeftMenuPress       OnLeftMenuPress;
 
     [Header("SteamVR References")]
 
@@ -47,8 +51,8 @@ public class InputScripto : MonoBehaviour
         GrabL.AddOnStateDownListener(TriggerDownLeft, LeftHand);
         GrabL.AddOnStateUpListener(TriggerUpLeft, LeftHand);
 
-        DPWest.AddOnStateDownListener(OnDPLeftClick, LeftHand);
-        DPEast.AddOnStateDownListener(OnDPRightClick, LeftHand);
+        DPWest.AddOnStateDownListener(OnDPLeftPress, LeftHand);
+        DPEast.AddOnStateDownListener(OnDPRightPress, LeftHand);
 
         Menu.AddOnStateDownListener(MenuDown, LeftHand);
         Menu.AddOnStateUpListener(MenuUp, LeftHand);
@@ -84,8 +88,11 @@ public class InputScripto : MonoBehaviour
     {
     }
 
-    public void OnDPLeftClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
+    public void OnDPLeftPress(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
+        OnDPLeftClick();
+
+        /*
         if (!_buildingScripto.TowerBeingPlaced)
         {
             if (_buildingScripto.BuildMenuActive)
@@ -93,10 +100,12 @@ public class InputScripto : MonoBehaviour
                 _buildingScripto.SwitchDisplayedTower(false);
             }
         }
-
+        */
     }
-    public void OnDPRightClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
+    public void OnDPRightPress(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
+        OnDPRightClick();
+        /*
         if (!_buildingScripto.TowerBeingPlaced)
         {
             if (_buildingScripto.BuildMenuActive)
@@ -104,10 +113,13 @@ public class InputScripto : MonoBehaviour
                 _buildingScripto.SwitchDisplayedTower(true);
             }
         }
-
+        */
     }
     public void MenuDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
+        OnLeftMenuPress();
+
+        /*
         if (!BuildingScript.MenuControllsDisabled)
         {
             if (_buildingScripto.BuildMenuActive)
@@ -125,6 +137,8 @@ public class InputScripto : MonoBehaviour
                 _buildingScripto.ActivateMenu(true, 0);
             }
         }
+        */
+
     }
 
     // Inputs for The Movement Script \\

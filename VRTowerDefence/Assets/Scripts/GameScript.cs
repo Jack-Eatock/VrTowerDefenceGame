@@ -1,12 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameScript : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject GeneralMenuTextGO = null;
 
     public static int   CurrentRound = 1;
     public static float RoundEnemySpawnRatio = 3f;
@@ -23,7 +20,7 @@ public class GameScript : MonoBehaviour
     {
         if (FirstTime)
         {
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);   
             FirstTime = false;
         }
 
@@ -40,7 +37,7 @@ public class GameScript : MonoBehaviour
         }
         
     }
-
+/*
     public void InitiateWave()
     {
        
@@ -56,4 +53,6 @@ public class GameScript : MonoBehaviour
         nameText.text = Message;
 
     }
+
+    */
 }

@@ -1,9 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class BuildingScript : MonoBehaviour
+{
+
+
+
+
+
+
+
+}
+
+
+
+/*
+public class BuildingScript : GameScript
 {
     // General Variables \\
     [Header("Tweekables")]
@@ -56,39 +70,15 @@ public class BuildingScript : MonoBehaviour
     [SerializeField] private GameObject PointsText = null;
 
 
-    private GameObject[] MinitureTowers;
+    
     private Text NameText;
     private Text PointsTextDisplayer;
     public bool BuildMenuActive = false;
     public bool GeneralMenuActive = false;
     public bool SufficientFunds = false;
-    private int Points;
-
-    //
-
-    [Header("Tower Variables")]
-    //Towers
-    public TowerSO[] Towers;
-    private GameObject CurrentlyDisplayedTower = null;
-    private int CurrentlyDisplayedTowerPos = 0;
-
-    //
-
-    [Header("Ground Grid Variables")]
-
-    // Switching grid ON/OFF Visual only \\
-    [SerializeField] private Material GrassGridMat = null;
-    [SerializeField] private Material GrassMat = null;
-
-    private bool IsGroundGrid = false;
+    private int _points;
 
 
-
-    public void Start()
-    {
-
-        InputScripto.OnRightTriggerClick += RightTriggerClick;    //// REMEBVER U DID THIS!!!!
-    }
 
     public void InitatiateBuildingScript()
     {
@@ -101,14 +91,7 @@ public class BuildingScript : MonoBehaviour
 
         SF = MovementScript.ScaleFactor;
 
-        MinitureTowers = new GameObject[Towers.Length];
-        for (int SObject = 0; SObject < Towers.Length; SObject++)
-        {
-            MinitureTowers[SObject] = GameObject.Instantiate(Towers[SObject].MinitureVersion4Menu, TowerMenuPos.transform.position, TowerMenuPos.transform.rotation);
-            MinitureTowers[SObject].transform.SetParent(TowerMenuPos.transform);
-            MinitureTowers[SObject].gameObject.SetActive(false);
-        }
-
+        
         Running = true;
     }
 
@@ -124,9 +107,9 @@ public class BuildingScript : MonoBehaviour
 
         if (BuildMenuActive)
         {
-            if (GameScript.Points != Points)
+            if (Points != _points)
             {
-                Points = GameScript.Points;
+                _points = Points;
                 UpdateBuildMenuText();
             }
         }
@@ -294,16 +277,16 @@ public class BuildingScript : MonoBehaviour
     public void UpdateBuildMenuText()
     {
         NameText.text = Towers[CurrentlyDisplayedTowerPos].Name;
-        int PointsAfter = GameScript.Points - Towers[CurrentlyDisplayedTowerPos].Cost;
+        int PointsAfter = Points - Towers[CurrentlyDisplayedTowerPos].Cost;
         if (PointsAfter >= 0)
         {
-            PointsTextDisplayer.text = "Points: " + Points + " (-" + Towers[CurrentlyDisplayedTowerPos].Cost + ") Purchasable!";
+            PointsTextDisplayer.text = "Points: " + _points + " (-" + Towers[CurrentlyDisplayedTowerPos].Cost + ") Purchasable!";
             SufficientFunds = true;
         }
 
         else
         {
-            PointsTextDisplayer.text = "Points: " + Points + " (-" + Towers[CurrentlyDisplayedTowerPos].Cost + ") Insufficient Funds!";
+            PointsTextDisplayer.text = "Points: " + _points + " (-" + Towers[CurrentlyDisplayedTowerPos].Cost + ") Insufficient Funds!";
             SufficientFunds = false;
         }
     }
@@ -329,34 +312,7 @@ public class BuildingScript : MonoBehaviour
 
     }
 
-    public void CircleRadius(Vector2 StartingCords, int Radius)
-    {
-        List<Vector2> Cords = new List<Vector2>();
-        int Offset = 0;
-        for (int Counter = 1; Counter <= (Radius + 1); Counter++)
-        {
-            if (Counter == Radius + 1)
-            {
-                Offset = 1;
-            }
-
-            for (int x = (int)StartingCords.x - Counter + Offset; x <= StartingCords.x + Counter - Offset; x++)
-            {
-
-                Cords.Add(new Vector2(x, StartingCords.y + ((Radius + 1) - Counter)));
-                Cords.Add(new Vector2(x, StartingCords.y - ((Radius + 1) - Counter)));
-            }
-        }
-
-        foreach (Vector2 Cord in Cords)
-        {
-            if (Cord.x < 40 && Cord.x >= 0 && Cord.y < 40 && Cord.y >= 0)
-            {
-                GridGenerator.SetGridPointAvailable(false, Cord);
-            }
-
-        }
-
+ 
     }
 
 
@@ -364,7 +320,7 @@ public class BuildingScript : MonoBehaviour
     {
         if (Place)
         {
-            GameScript.Points -= Towers[CurrentlyDisplayedTowerPos].Cost;
+            Points -= Towers[CurrentlyDisplayedTowerPos].Cost;
 
             SphereCollider SphereCol = NewTower.AddComponent<SphereCollider>();
             SphereCol.center = new Vector3(0, 0.5f, 0);
@@ -474,22 +430,7 @@ public class BuildingScript : MonoBehaviour
         }
     }
 
-    // Function called to switch the ground material from having a grid or not. 
-    public void GridSwitch()
-    {
-        if (IsGroundGrid)
-        {
-            GridGenerator.OnLoadInUseTiles(false);
-            Ground.GetComponent<Renderer>().material = GrassMat;
-            IsGroundGrid = false;
-        }
-        else
-        {
-            GridGenerator.OnLoadInUseTiles(true);
-            Ground.GetComponent<Renderer>().material = GrassGridMat;
-            IsGroundGrid = true;
-        }
-    }
+   
 
     // If the ground is made larger use this function to scale the grid along with it. If not the gird will look strange.
     public void UpdateGroundScale()
@@ -542,3 +483,4 @@ public class BuildingScript : MonoBehaviour
     }
 
 }
+*/

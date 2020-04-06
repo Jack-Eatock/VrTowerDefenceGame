@@ -28,9 +28,9 @@ public class MovementScript : MonoBehaviour
 
     [SerializeField] private float _scaleSpeed = 1;
     [SerializeField] private float _pullSpeed = 3;
-    [SerializeField] private float _maxScale = 2.2f; // 10
-    [SerializeField] private float _minScale = 0.2f;  // 0.3
-    [SerializeField] private float _playerHeight = 0.55f;
+    //[SerializeField] private float _maxScale = 2.2f; // 10
+    //[SerializeField] private float _minScale = 0.2f;  // 0.3
+    //[SerializeField] private float _playerHeight = 0.55f;
 
     // References to GameObjects \\
     public GameObject GameWorld;

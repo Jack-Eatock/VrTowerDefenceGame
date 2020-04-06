@@ -424,7 +424,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 4.694e-42, y: 1.05e-43, z: 8.13e-43, w: 0}
+  m_BoundingSphereOverride: {x: 8.83e-43, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -476,6 +476,8 @@ MonoBehaviour:
   _tileInUseGO: {fileID: 3091173940046910673, guid: 8917a20e858d2234393a99a59d19818d,
     type: 3}
   _inUseTilesStorage: {fileID: 495581806}
+  GrassGridMat: {fileID: 2100000, guid: 3c42915d0b78e1144a454c7281e64354, type: 2}
+  GrassMat: {fileID: 2100000, guid: d2981e57d7016354885ad5a697694654, type: 2}
 --- !u!4 &734318215
 Transform:
   m_ObjectHideFlags: 0
@@ -600,7 +602,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: cd1ca00e4486de942b3a23e6bd810187,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: cd1ca00e4486de942b3a23e6bd810187,
         type: 3}

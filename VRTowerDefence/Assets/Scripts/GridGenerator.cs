@@ -26,7 +26,14 @@ public class GridGenerator : MonoBehaviour
     [SerializeField]  private Transform _inUseTilesStorage = null;
 
     private float _scaleFactor;
-  
+
+
+    [Header("Grid Switch Variables")] // Switching grid ON/OFF Visual only \\
+
+     public Material GrassGridMat = null;
+     public Material GrassMat = null;
+
+
     public void Start()
     {
       
@@ -34,7 +41,7 @@ public class GridGenerator : MonoBehaviour
 
     public void InitiateGridGeneration()
     {
-        _scaleFactor = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
+        _scaleFactor = MovementScript.ScaleFactor;
         GridStatus = new GridPoint[_gridWidth, _gridHeight];
         for (int x = 0; x < _gridWidth; x++)
         {
@@ -138,6 +145,23 @@ public class GridGenerator : MonoBehaviour
         OnLoadInUseTiles(true);
     }
 
+
+    // Function called to switch the ground material from having a grid or not. 
+    public static void GridSwitch(bool activateGrid)
+    {
+        if (activateGrid)
+        {
+            Material _grassMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassMat;
+            GridGenerator.OnLoadInUseTiles(false);
+            GameObject.Find("Ground").GetComponent<Renderer>().material = _grassMat;
+        }
+        else
+        {
+            Material _grassGridMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassGridMat;
+            GridGenerator.OnLoadInUseTiles(true);
+            GameObject.Find("Ground").GetComponent<Renderer>().material = _grassGridMat;
+        }
+    }
 
 
     /* public void OnDrawGizmos()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 // cleared \\
 
-public class TowerScript : MonoBehaviour
+public class TowerScript : GameScript
 {
     public TowerSO TowerProperties;
 
@@ -27,7 +27,7 @@ public class TowerScript : MonoBehaviour
     void Update()
     {
         
-        if (GameScript.WaveIncoming && EnemiesInRange.Count > 0)
+        if (WaveIncoming && EnemiesInRange.Count > 0)
         {
             if (EnemiesInRange[0] == null)
             {

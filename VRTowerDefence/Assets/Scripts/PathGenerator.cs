@@ -162,7 +162,7 @@ public class PathGenerator : MonoBehaviour
     public void InitiatePathGeneration()
     {
 
-        _scaleFactor = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
+        _scaleFactor = MovementScript.ScaleFactor;
         Debug.Log("Generating Path...." + _scaleFactor);
         PathTile NewTile = new PathTile
         {
