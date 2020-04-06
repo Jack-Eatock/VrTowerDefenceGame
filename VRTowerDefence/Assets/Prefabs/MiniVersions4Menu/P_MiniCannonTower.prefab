@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6296745171981085745}
   m_Layer: 0
-  m_Name: P_MiniCannonTower
+  m_Name: MiniCannonTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6296745171981085745
 Transform:
   m_ObjectHideFlags: 0

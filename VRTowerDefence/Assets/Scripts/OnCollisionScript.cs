@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Cleared \\
+
 public class OnCollisionScript : MonoBehaviour
 {
-    public int CollisionType;
+    public int  CollisionType;
     public bool IsColliding = false;
     public List<GameObject> ObjectsWithinCollider = new List<GameObject>();
-    int Counter = 0;
+
+    private int _counter = 0;
 
     public void OnTriggerEnter(Collider other)
     {
@@ -20,9 +23,9 @@ public class OnCollisionScript : MonoBehaviour
 
         }
 
-        else if (CollisionType == 2) // MiniTower Colliding with Ground.
+        else if (CollisionType == 2) // MiniTower COlliding with Ground.
         {
-            if (other.gameObject.name == "Ground") 
+            if (other.gameObject.name == "Ground") // hand Colliding with Tower menu.
             {
                 IsColliding = true;
             }
@@ -44,9 +47,9 @@ public class OnCollisionScript : MonoBehaviour
         {
             if (other.gameObject.name == "RightHand" || other.gameObject.name == "LeftHand") // Colliding with a hand.
             {
-                Counter++;
+                _counter++;
 
-                if (Counter != 0)
+                if (_counter != 0)
                 {
                     IsColliding = true;
                     gameObject.GetComponent<ButtonScript>().IsCollidingWithHands = true;
@@ -80,15 +83,15 @@ public class OnCollisionScript : MonoBehaviour
 
                 if (other.transform.parent.transform.tag == "Enemy")
                 {
-                    Counter = 0;
+                    _counter = 0;
                     foreach (GameObject Obj in ObjectsWithinCollider)
                     {
                         if (Obj == other.gameObject)
                         {
-                            ObjectsWithinCollider.RemoveAt(Counter);
+                            ObjectsWithinCollider.RemoveAt(_counter);
                             break;
                         }
-                        Counter++;
+                        _counter++;
                     }
                 }
             }
@@ -100,9 +103,9 @@ public class OnCollisionScript : MonoBehaviour
         {
             if (other.gameObject.name == "RightHand" || other.gameObject.name == "LeftHand") // Colliding with a hand.
             {
-                Counter--;
+                _counter--;
 
-                if (Counter == 0)
+                if (_counter == 0)
                 {
                     IsColliding = false;
                     gameObject.GetComponent<ButtonScript>().IsCollidingWithHands = false;

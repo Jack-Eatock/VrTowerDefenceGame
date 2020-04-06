@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Cleared \\
+
 public class EnemySpawner : MonoBehaviour
 {
     public static int EnemiesFinished = 0; // could have made it to the end or died ..
-    [SerializeField] private GameObject DeathEffect;
-    private GameModeScript GameModeScripto;
+    public GameObject DeathEffect;
 
     // Unit Serialised Objects \\
     public UnitSO Soldier;
@@ -14,31 +15,60 @@ public class EnemySpawner : MonoBehaviour
     public UnitSO Swarmer;
     public UnitSO Charger;
 
-    // General Variables \\
-    public  List<Vector2> PathPoints = new List<Vector2>();
-    public  List<Vector3> ActualPathPoints = new List<Vector3>();
-    public  Vector2 StartPoint;
-    public  GameObject UnitStorage = null;
 
-    public static bool EnemySpawnerComplete = false;
+    // General Variables \\
+    public static List<Vector2> PathPoints = new List<Vector2>();
+    public static List<Vector3> ActualPathPoints = new List<Vector3>();
+    public static Vector2 StartPoint;
+    public GameObject UnitStorage = null;
 
     // Wave Variables
-    private List<UnitSO>    UnitsInWave = new List<UnitSO>();
-    private bool            SpawningWaveUnits = false;
-    private float           LastRecordedTime;
-    private int             Counter = 0;
-    private float           SpawnRate;
-    private float           RoundEnemySpawnRatio; 
+    private List<UnitSO> _unitsInWave = new List<UnitSO>();
+    private bool _spawningWaveUnits = false;
+    private float _lastRecordedTime;
+    private int _counter = 0;
 
     public int[] UnitSpawnChance;
+    private EnemyScript _tempEnemyScript;
 
-    private EnemyScript TempEnemyScript;
 
-    public void InitiateEnemySpawner(float TempSpawnRate, float TempRoundEnemySpawnRatio, GameModeScript _GameModeScript)
+    public void Update()
     {
-        Debug.Log("Establishing Enenemy Spawner...");
+        if (_spawningWaveUnits)
+        {
+            if (_counter >= _unitsInWave.Count)
+            {
+                _spawningWaveUnits = false;
+                Debug.Log("Finished Spawning Units");
+            }
+
+            else if (Time.time - _lastRecordedTime > GameScript.SpawRate)
+            {
+                SpawnEnemy(_unitsInWave[_counter]);
+                _counter++;
+                _lastRecordedTime = Time.time;
+
+            }
+        }
+        
+        else if (EnemiesFinished == _unitsInWave.Count && _unitsInWave.Count > 0)
+        {
+            Debug.Log("Wave Finished");
+            GameScript.WaveIncoming = false;
+            EnemiesFinished = 0;
+            _unitsInWave.Clear();
+            _counter = 0;
+            GameScript.CurrentRound++;
+
+            gameObject.GetComponent<GameScript>().InitiateWave();
+        }
+
+    }
 
 
+    public void InitiateEnemySpawner()
+    {
+        Debug.Log("Initiating Spawner.");
         foreach (PathTile Path in PathGenerator.PathTiles)
         {
             PathPoints.Add(Path.Cords);
@@ -47,106 +77,66 @@ public class EnemySpawner : MonoBehaviour
         StartPoint = PathPoints[PathPoints.Count - 1]; // Start point of the enemy.
         PathPoints.Reverse(); // Now going the correct direction
 
-        SpawnRate = TempSpawnRate;
-        RoundEnemySpawnRatio = TempRoundEnemySpawnRatio;
-        GameModeScripto = _GameModeScript;
-
-        Debug.Log("[Completed] Enemey Spawner has been established!");
-        EnemySpawnerComplete = true;
+        //Debug.Log("IamHere?");
 
     }
 
-    public void Interupt()
+
+
+    public void StartWave()
     {
+        GameScript.WaveIncoming = true;
+        int currentRound = GameScript.CurrentRound;
+        int numEnemies = Mathf.FloorToInt(currentRound * GameScript.RoundEnemySpawnRatio);
+        int randomValue;
 
-    }
-
-    public void Update()
-    {
-        if (SpawningWaveUnits)
+        for (int i = 0; i < numEnemies; i++)
         {
-            if (Counter >= UnitsInWave.Count)
-            {
-                SpawningWaveUnits = false;
-                Debug.Log("Finished Spawning Units");
-            }
+            randomValue = UtilitiesScript.RandomiseByWeight(UnitSpawnChance);
 
-            else if (Time.time - LastRecordedTime > SpawnRate)
-            {
-                SpawnEnemy(UnitsInWave[Counter]);
-                Counter++;
-                LastRecordedTime = Time.time;
-
-            }
-        }
-        
-        else if (EnemiesFinished == UnitsInWave.Count && UnitsInWave.Count > 0)
-        {
-            Debug.Log("Wave Finished");
-            GameModeScripto.WaveIncoming = false;
-            EnemiesFinished = 0;
-            UnitsInWave.Clear();
-            Counter = 0;
-            GameModeScripto.CurrentRound++;
-
-            gameObject.GetComponent<GameModeScript>().PrepareWave();
-        }
-
-    }
-
-    public void StartWave(int CurrentRound)
-    {
-        GameModeScripto.WaveIncoming = true;
-        int NumEnemies = Mathf.FloorToInt(CurrentRound * RoundEnemySpawnRatio);
-        int RandomValue;
-
-        for (int i = 0; i < NumEnemies; i++)
-        {
-            RandomValue = UtilitiesScript.RandomiseByWeight(UnitSpawnChance);
-
-            switch (RandomValue)
+            switch (randomValue)
             { 
                 case 0 :
-                    UnitsInWave.Add(Soldier);
+                    _unitsInWave.Add(Soldier);
                     break;
 
                 case 1:
-                    UnitsInWave.Add(Charger);
+                    _unitsInWave.Add(Charger);
                     break;
 
                 case 2:
-                    UnitsInWave.Add(Tank);
+                    _unitsInWave.Add(Tank);
                     break;
 
                 case 3:
-                    UnitsInWave.Add(Swarmer);
+                    _unitsInWave.Add(Swarmer);
                     break;
             }
         }
 
-        LastRecordedTime = Time.time;
-        SpawningWaveUnits = true;
+        _lastRecordedTime = Time.time;
+        _spawningWaveUnits = true;
 
         Debug.Log("Starting Wave"); // Make Wave thing better. ;)
     }
 
-    public void SpawnEnemy(UnitSO UnitType)
+    public void SpawnEnemy(UnitSO unitType)
     {
 
-        GameObject NewUnit = GameObject.Instantiate(UnitType.UnitGO);
+        GameObject newUnit = GameObject.Instantiate(unitType.UnitGO);
 
-        NewUnit.transform.tag = "Enemy";
-        NewUnit.AddComponent<EnemyScript>();
+        newUnit.transform.tag = "Enemy";
+        newUnit.AddComponent<EnemyScript>();
 
         // Setting the Unit to Scale and possition , linked with the World at the current time.
-        NewUnit.transform.localScale = new Vector3(MovementScript.SF, MovementScript.SF, MovementScript.SF);
-        NewUnit.transform.SetParent(UnitStorage.transform);
-        NewUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
+        newUnit.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
+        newUnit.transform.SetParent(UnitStorage.transform);
+        newUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
 
-        TempEnemyScript = NewUnit.GetComponent<EnemyScript>();
-        TempEnemyScript.EnemySetUP(UnitType.Health, UnitType.Speed, UnitType.Points,UnitType.Mass, DeathEffect, GameModeScripto);
+        _tempEnemyScript = newUnit.GetComponent<EnemyScript>();
+        _tempEnemyScript.EnemySetUP(unitType.Health, unitType.Speed, unitType.Points,unitType.Mass, DeathEffect);
 
-        NewUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
+        newUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
     }
 }
 

@@ -2,55 +2,58 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Cleared \\
+
 public class ProjectileScript : MonoBehaviour
 {
-    private TowerSO FiringTowerProperties;
-    private Transform Target;
-    private bool Initiated = false;
+    private TowerSO _firingTowerProperties;
+    private Transform _target;
+    private bool _initiated = false;
 
-    public void SetTarget(Transform _Target, TowerSO _Properties) {
-        Target = _Target;
-        FiringTowerProperties = _Properties;
-        Initiated = true;
+    public void SetTarget(Transform target, TowerSO properties) {
+
+        _target = target;
+        _firingTowerProperties = properties;
+        _initiated = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        if (Initiated)
+        if (_initiated)
         {
-            if (Target == null)
+            if (_target == null)
             {
                 HitTarget(false);
                 return;
             }
 
-            Vector3 TargetPos = Target.GetChild(0).transform.position;
+            Vector3 targetPos = _target.GetChild(0).transform.position;
+            Vector3 targetDir = targetPos - transform.position; // Distance between Bullet and target.
 
-            Vector3 TargetDir = TargetPos - transform.position; // Distance between Bullet and target.
-            float DistanceThisFrame = FiringTowerProperties.ProjectileSpeed * Time.deltaTime;  // Calculates how much the bullet can travel in this frame.
+            float distanceThisFrame = _firingTowerProperties.ProjectileSpeed * Time.deltaTime;  // Calculates how much the bullet can travel in this frame.
 
-            if (TargetDir.magnitude <= DistanceThisFrame) // Hit the object
+            if (targetDir.magnitude <= distanceThisFrame) // Hit the object
             {
                 HitTarget(true);
                 return;
             }
 
-            transform.Translate(TargetDir.normalized * DistanceThisFrame, Space.World); // Normalises the Distance so that it retainains the direction but magnitude of 1. And then moves in that direction based on move per frame.
+            transform.Translate(targetDir.normalized * distanceThisFrame, Space.World); // Normalises the Distance so that it retainains the direction but magnitude of 1. And then moves in that direction based on move per frame.
 
         }
     }
 
 
-    void HitTarget(bool Hit)
+    void HitTarget(bool hasHitTarget)
     {
-        if (Hit) // If hits Target
+        if (hasHitTarget) // If hits Target
         {
-            Target.GetComponent<EnemyScript>().OnHit(FiringTowerProperties, transform);
+            _target.GetComponent<EnemyScript>().OnHit(_firingTowerProperties);
 
             //Debug.Log("We hit Something");
-            switch (FiringTowerProperties.ProjectileType)
+            switch (_firingTowerProperties.ProjectileType)
             {
                 case TowerSO.ProjectileTypes.Explosive:
                     //Debug.Log("Explosion");

@@ -2,35 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Cleaned \\
+
+
 public class PathTile
 {
     public Vector2 Cords;
     public int Direction; // 1, up, 2 Left, 3 Right, 4 Down.
 }
 
-
-
 public class PathGenerator : MonoBehaviour
 {
-    [SerializeField] private Vector2 StartingCords = Vector2.zero;
-    [SerializeField] private GameObject LocalGameManager = null;
-
-    private Vector2 CurrentCord = Vector2.zero;
-    private int LastDirection = 1;
-    private int MaxIterations = 400;
-    private int Counter = 0;
-    private bool Loop = true;
-    private int FailureCount = 0;
-
     public static List<PathTile> PathTiles = new List<PathTile>();
+    public static bool PathGenerationComplete = false;
+
+    [SerializeField] private Vector2 _startingCords = Vector2.zero;
+
+    private Vector2 _currentCord = Vector2.zero;
+    private int     _lastDirection = 1;
+    private int     _maxIterations = 400;
+    private int     _counter = 0;
+    private bool    _loop = true;
+    private int     _failureCount = 0;
+
+ 
     public GameObject PathStorage;
     public GameObject StraightPathGo;
     public GameObject CornerPieceGo;
 
-    public static bool PathGenerationComplete = false;
+    
 
-    private float Sf;
-    private bool Running = false;
+    private float _scaleFactor;
+    private bool  _running = false;
 
 
     private void Start()
@@ -38,63 +42,42 @@ public class PathGenerator : MonoBehaviour
     
     }
 
-    public void InitiatePathGeneration()
-    {
-        Debug.Log("Generating virtual Pathway....");
-
-        PathTiles = new List<PathTile>();
-        PathGenerationComplete = false;
-
-        Sf = MovementScript.SF;
-        PathTile NewTile = new PathTile
-        {
-            Direction = 1,
-            Cords = StartingCords
-        };
-
-        PathTiles.Add(NewTile);
-        CurrentCord = StartingCords;
-        Running = true;
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (!Running)
+        if (!_running)
         {
             return;
         }
 
 
-        if (Loop)
+        if (_loop)
         {
-            if (Counter >= MaxIterations)
+            if (_counter >= _maxIterations)
             {
                 PathTiles.Clear();
 
                 PathTile NewTile = new PathTile
                 {
                     Direction = 1,
-                    Cords = StartingCords
+                    Cords = _startingCords
                 };
 
                 PathTiles.Add(NewTile);
-                CurrentCord = StartingCords;
-                Counter = 0;
+                _currentCord = _startingCords;
+                _counter = 0;
             }
 
-            else if (CurrentCord.y != 39)
+            else if (_currentCord.y != 39)
             {
                 Worm();
             }
             else
             {
 
-                Debug.Log("[Completed] Generated virtual Pathway!");
-                Debug.Log("Generating physical Pathway...");
-
-                LastDirection = 1;
-                Loop = false;
+                Debug.Log("Finished Generating. Now Loading path....");
+                _lastDirection = 1;
+                _loop = false;
 
 
                 for (int Tick = 0; Tick <= PathTiles.Count; Tick ++)
@@ -105,115 +88,131 @@ public class PathGenerator : MonoBehaviour
                     {
 
                         GridGenerator.SetGridPointAvailable(false, PathTiles[Tick - 1].Cords);
-                        GameObject NewTile = null;
+                        GameObject newTile = null;
 
                         if (Tick == PathTiles.Count) // Last Tile
                         {
                         
-                            NewTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
+                            newTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
                             
                           
 
-                            NewTile.transform.SetParent(PathStorage.transform);
-                            NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
-                            NewTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
+                            newTile.transform.SetParent(PathStorage.transform);
+                            newTile.transform.localScale = new Vector3(_scaleFactor, _scaleFactor, _scaleFactor);
+                            newTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
                             break;
                         }
 
-                        if (PathTiles[Tick].Direction != LastDirection) // Changed Direction
+                        if (PathTiles[Tick].Direction != _lastDirection) // Changed Direction
                         {
                             if (Tick > 0 && Tick != PathTiles.Count)
                             {
-                                NewTile = SpawnCornerTileWithRotation(PathTiles[Tick - 1].Direction, PathTiles[Tick].Direction);
+                                newTile = SpawnCornerTileWithRotation(PathTiles[Tick - 1].Direction, PathTiles[Tick].Direction);
                             }
                         }
 
 
                         else
                         {
-                            NewTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
+                            newTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
 
                             if (PathTiles[Tick].Direction == 2) // Left
                             {
-                                NewTile.transform.eulerAngles = new Vector3(0, -90, 0);
+                                newTile.transform.eulerAngles = new Vector3(0, -90, 0);
                             }
                             if (PathTiles[Tick].Direction == 3) // Right
                             {
-                                NewTile.transform.eulerAngles = new Vector3(0, 90, 0);
+                                newTile.transform.eulerAngles = new Vector3(0, 90, 0);
                             }
                             if (PathTiles[Tick].Direction == 4) // Down
                             {
-                                NewTile.transform.eulerAngles = new Vector3(0, 180, 0);
+                                newTile.transform.eulerAngles = new Vector3(0, 180, 0);
                             }
                         }
 
-                        if (NewTile)
+                        if (newTile)
                         {
-                            NewTile.transform.SetParent(PathStorage.transform);
-                            NewTile.transform.localScale = new Vector3(Sf, Sf, Sf);
-                            NewTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
+                            newTile.transform.SetParent(PathStorage.transform);
+                            newTile.transform.localScale = new Vector3(_scaleFactor, _scaleFactor, _scaleFactor);
+                            newTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
                         }
 
-                        LastDirection = PathTiles[Tick].Direction;
+                        _lastDirection = PathTiles[Tick].Direction;
 
                     }
 
                 }
 
-                Debug.Log("[Completed] Physical Pathway Generated!");
+                Debug.Log("Finished.");
                 PathGenerationComplete = true;
-
-
+                MovementScript.MovementControllsDisabled = false;
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
-
-
+                EnemySpawner EnemySpawnero = GameObject.Find("GAMEMANAGER").GetComponent<EnemySpawner>();
+                EnemySpawnero.InitiateEnemySpawner();
 
 
 
 
             }
-            Counter++;
+            _counter++;
         }
 
     }
 
-    public GameObject SpawnCornerTileWithRotation(int First, int Second)
+    public void InitiatePathGeneration()
+    {
+
+        _scaleFactor = GameObject.Find("GAMEMANAGER").GetComponent<BuildingScript>().SF;
+        Debug.Log("Generating Path...." + _scaleFactor);
+        PathTile NewTile = new PathTile
+        {
+            Direction = 1,
+            Cords = _startingCords
+        };
+
+        PathTiles.Add(NewTile);
+        _currentCord = _startingCords;
+        _running = true;
+    }
+
+
+    public GameObject SpawnCornerTileWithRotation(int first, int second)
     {
         GameObject NewTile = GameObject.Instantiate(CornerPieceGo); 
 
-        if (First == 1) // UP
+        if (first == 1) // UP
         {
-            if (Second == 2) // Left
+            if (second == 2) // Left
             {
                 NewTile.transform.eulerAngles = new Vector3(0, 90, 0);
             }
         }
-        else if (First == 2) // Left
+        else if (first == 2) // Left
         {
-            if (Second == 1) // UP
+            if (second == 1) // UP
             {
                 NewTile.transform.eulerAngles = new Vector3(0, -90, 0);
             }
         }
-        else if (First == 3)// Right
+        else if (first == 3)// Right
         {
-            if (Second == 1) // up
+            if (second == 1) // up
             {
                 NewTile.transform.eulerAngles = new Vector3(0, 180, 0);
             }
-            else if (Second == 4) // down
+            else if (second == 4) // down
             {
                 NewTile.transform.eulerAngles = new Vector3(0, 90, 0);
             }
 
         }
-        else if (First == 4)// DOwn
+        else if (first == 4)// DOwn
         {
-            if (Second == 2) // Left
+            if (second == 2) // Left
             {
                 NewTile.transform.eulerAngles = new Vector3(0, 180, 0);
             }
-            else if (Second == 3) // Right
+            else if (second == 3) // Right
             {
                 NewTile.transform.eulerAngles = new Vector3(0, -90, 0);
             }
@@ -228,48 +227,48 @@ public class PathGenerator : MonoBehaviour
 
         if (Direction < 20) // Left 35 percent Chance.
         {
-            LastDirection = 2;
+            _lastDirection = 2;
             AttemptToMove(new Vector2(-1, 0));
         }
 
         else if (Direction < 40) // Right 35 Percent Chance.
         {
-            LastDirection = 3;
+            _lastDirection = 3;
             AttemptToMove(new Vector2(1, 0));
 
         }
 
         else if (Direction < 90) // Up 25 Percent
         {
-            LastDirection = 1;
+            _lastDirection = 1;
             AttemptToMove(new Vector2(0, 1));
 
         }
 
         else if (Direction < 100) // Down 10 Percent
         {
-            LastDirection = 4;
+            _lastDirection = 4;
             AttemptToMove(new Vector2(0, -1));
 
         }
     }
 
-    public void AttemptToMove(Vector2 Offset)
+    public void AttemptToMove(Vector2 offset)
     {
-        if (!BackOnSelfChecker(CurrentCord + Offset))
+        if (!BackOnSelfChecker(_currentCord + offset))
         {
-            AddCord(Offset);
-            FailureCount = 0;
+            AddCord(offset);
+            _failureCount = 0;
         }
         else
         {
             //Debug.Log("Back on self");
-            if (FailureCount >= 3)
+            if (_failureCount >= 3)
             {
                 if (PathTiles.Count > 2)
                 {
                     PathTiles.RemoveAt(PathTiles.Count - 1);
-                    CurrentCord = PathTiles[PathTiles.Count - 1].Cords;
+                    _currentCord = PathTiles[PathTiles.Count - 1].Cords;
                 }
                 else
                 {
@@ -279,12 +278,12 @@ public class PathGenerator : MonoBehaviour
                     PathTile NewTile = new PathTile
                     {
                         Direction = 1,
-                        Cords = StartingCords
+                        Cords = _startingCords
                     };
 
                     PathTiles.Add(NewTile);
-                    CurrentCord = StartingCords;
-                    Counter = 0;
+                    _currentCord = _startingCords;
+                    _counter = 0;
                 }
 
                // Debug.Log("BackTracking");
@@ -292,38 +291,38 @@ public class PathGenerator : MonoBehaviour
             }
             else
             {
-                FailureCount++;
+                _failureCount++;
             }
         }
     }
 
-    public void AddCord(Vector2 Offset)
+    public void AddCord(Vector2 offset)
     {
         PathTile NewTile = new PathTile
         {
-            Direction = LastDirection,
-            Cords = CurrentCord + Offset
+            Direction = _lastDirection,
+            Cords = _currentCord + offset
         };
-        CurrentCord = (CurrentCord + Offset);
+        _currentCord = (_currentCord + offset);
         PathTiles.Add(NewTile);
 
     }
 
-    public bool BackOnSelfChecker(Vector2 NewCord)
+    public bool BackOnSelfChecker(Vector2 newCord)
     {
-        bool Flag = false;
+        bool flag = false;
         foreach (PathTile Path in PathTiles)
         {
-            if (Path.Cords == NewCord)
+            if (Path.Cords == newCord)
             {
-                Flag = true;
+                flag = true;
             }
         }
-        if (NewCord.x >= 40 || NewCord.x < 0 || NewCord.y < 0)
+        if (newCord.x >= 40 || newCord.x < 0 || newCord.y < 0)
         {
-            Flag = true;
+            flag = true;
         }
-        return Flag;
+        return flag;
 
     }
 }

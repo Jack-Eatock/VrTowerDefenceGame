@@ -7,16 +7,10 @@ public class InputScripto : MonoBehaviour
 {
     public delegate void RightTriggerClick();
     public delegate void LeftTriggerClick();
-    public delegate void DPRightClick();
-    public delegate void DPLeftClick();
-    public delegate void LeftMenuClick();
 
 
-    public static event RightTriggerClick  OnRightTriggerClick;
-    public static event LeftTriggerClick   OnLeftTriggerClick;
-    public static event DPLeftClick        OnLeftDPClick;
-    public static event DPRightClick       OnRightDPClick;
-    public static event LeftMenuClick      OnLeftMenuClick;
+    public static event RightTriggerClick OnRightTriggerClick;
+    public static event LeftTriggerClick OnLeftTriggerClick;
 
 
     [Header("SteamVR References")]
@@ -36,13 +30,16 @@ public class InputScripto : MonoBehaviour
 
     // References
 
-    private BuildingScript BuildingScripto;
+    private BuildingScript _buildingScripto;
+
+    public static bool RightTriggerDown = false;
+    public static bool LeftTriggerDown = false;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        BuildingScripto = gameObject.GetComponent<BuildingScript>();
+        _buildingScripto = gameObject.GetComponent<BuildingScript>();
 
         GrabR.AddOnStateDownListener(TriggerDownRight, RightHand);
         GrabR.AddOnStateUpListener(TriggerUpRight, RightHand);
@@ -67,74 +64,67 @@ public class InputScripto : MonoBehaviour
 
     public void TriggerDownRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
+      
        OnRightTriggerClick();
+        
+       
+
     }
 
 
     public void TriggerUpRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
-    {      
+    {
+        
     }
-
     public void TriggerDownLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
         OnLeftTriggerClick();
     }
-
     public void TriggerUpLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
     }
 
     public void OnDPLeftClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        OnLeftDPClick();
-
-      /*  if (!BuildingScripto.TowerBeingPlaced)
+        if (!_buildingScripto.TowerBeingPlaced)
         {
-            if (BuildingScripto.BuildMenuActive)
+            if (_buildingScripto.BuildMenuActive)
             {
-                BuildingScripto.SwitchDisplayedTower(false);
+                _buildingScripto.SwitchDisplayedTower(false);
             }
         }
-        */
 
     }
     public void OnDPRightClick(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        OnRightDPClick();
-
-        /*
-        if (!BuildingScripto.TowerBeingPlaced)
+        if (!_buildingScripto.TowerBeingPlaced)
         {
-            if (BuildingScripto.BuildMenuActive)
+            if (_buildingScripto.BuildMenuActive)
             {
-                BuildingScripto.SwitchDisplayedTower(true);
+                _buildingScripto.SwitchDisplayedTower(true);
             }
         }
-        */
+
     }
     public void MenuDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        OnLeftMenuClick();
-
-        /*
         if (!BuildingScript.MenuControllsDisabled)
         {
-            if (BuildingScripto.BuildMenuActive)
+            if (_buildingScripto.BuildMenuActive)
             {
 
-                BuildingScripto.ActivateMenu(false, 0);
+                _buildingScripto.ActivateMenu(false, 0);
             }
             else
             {
-                if (BuildingScripto.GeneralMenuActive)
+                if (_buildingScripto.GeneralMenuActive)
                 {
-                    BuildingScripto.ActivateMenu(false, 1);
+                    _buildingScripto.ActivateMenu(false, 1);
                 }
 
-                BuildingScripto.ActivateMenu(true, 0);
+                _buildingScripto.ActivateMenu(true, 0);
             }
         }
-        */
     }
 
     // Inputs for The Movement Script \\

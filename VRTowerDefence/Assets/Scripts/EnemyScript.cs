@@ -3,32 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// cleared \\
+
 public class EnemyScript : MonoBehaviour
 {
     private GameObject DeathEffect;
 
-    public  float Health;
-    private float StartHealth;
-    private float Speed;
-    private int   Points;
-    private int   Mass;
-    private GameModeScript GameModeScripto;
+    public float Health;
+    private float _startHealth;
+    private float _speed;
+    private int _points;
+    private int _mass;
 
     public List<Vector2> PathPoints = new List<Vector2>();
     public List<Vector3> LocalPathPoints = new List<Vector3>();
     public List<GameObject> TowersTargetingUnit = new List<GameObject>();
 
-    private CharacterController Player;
     // Healthbar UI Stuff
 
-    private GameObject HealthBarGO;
-    private Image HealthBar;
+    private GameObject _healthBarGO;
+    private Image _healthBar;
 
+    private int _checkPoint = 0;
+    private bool _loop = true;
 
-    private int CheckPoint = 0;
-    private Transform Hit;
-
-    private bool Loop = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,29 +35,28 @@ public class EnemyScript : MonoBehaviour
             LocalPathPoints.Add(GridGenerator.GridStatus[(int)PathPoints[x].x, (int)PathPoints[x].y].Position);
         }
 
-        HealthBarGO = gameObject.transform.GetChild(0).gameObject;
-        HealthBar = HealthBarGO.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
+        _healthBarGO = gameObject.transform.GetChild(0).gameObject;
+        _healthBar = _healthBarGO.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
 
 
     }
 
-    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_ , GameModeScript _GameModeScripto)
+    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_)
     {
         DeathEffect = DeathEffect_;
         Health = _Health;
-        Speed = _Speed;
-        Points = _Points;
-        Mass = Mass_;
-        StartHealth = _Health;
-        GameModeScripto = _GameModeScripto;
+        _speed = _Speed;
+        _points = _Points;
+        _mass = Mass_;
+        _startHealth = _Health;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Loop)
+        if (_loop)
         {
-            HealthBarGO.transform.LookAt(Camera.main.transform.position);
+            _healthBarGO.transform.LookAt(Camera.main.transform.position);
 
             if (Health <= 0)
             {
@@ -75,30 +72,28 @@ public class EnemyScript : MonoBehaviour
                 }
 
                
-                GameModeScript.Points += Points;
+                GameScript.Points += _points;
                 EnemySpawner.EnemiesFinished++;
-                GameObject DeathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
-                DeathEffectGO.transform.SetParent(GameObject.Find("World").transform);
-                DeathEffectGO.transform.localScale = new Vector3(MovementScript.SF, MovementScript.SF, MovementScript.SF);
+
+                GameObject deathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
+                deathEffectGO.transform.SetParent(GameObject.Find("World").transform);
+                deathEffectGO.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
                 
-
-
-
                 Destroy(gameObject);
           
 
             }
 
-            if (CheckPoint < PathPoints.Count - 1)
+            if (_checkPoint < PathPoints.Count - 1)
             {
-                if (Vector3.Distance(transform.localPosition, LocalPathPoints[CheckPoint + 1]) > 0.001f)
+                if (Vector3.Distance(transform.localPosition, LocalPathPoints[_checkPoint + 1]) > 0.001f)
                 {
-                    transform.localPosition = Vector3.MoveTowards(transform.localPosition, LocalPathPoints[CheckPoint + 1], Speed * Time.deltaTime);
+                    transform.localPosition = Vector3.MoveTowards(transform.localPosition, LocalPathPoints[_checkPoint + 1], _speed * Time.deltaTime);
                 }
 
                 else
                 {
-                    CheckPoint++;
+                    _checkPoint++;
                 }
 
             }
@@ -106,28 +101,27 @@ public class EnemyScript : MonoBehaviour
             {
                 Debug.Log("Enemy made it to the Finish");
                 EnemySpawner.EnemiesFinished++;
-                Loop = false;
-                GameModeScripto.PointPool += Mass;
+                _loop = false;
+                GameScript.PointPool += _mass;
                 Destroy(gameObject);
             }
         }
     }
 
-    public void OnHit(TowerSO FiringTowerProperties, Transform Hit_)
+    public void OnHit(TowerSO firingTowerProperties)
     {
         StartCoroutine(UtilitiesScript.ObjectBlinkColour(gameObject, Color.red, 0.1f));
-        Hit = Hit_;
 
         
-        Health -= FiringTowerProperties.ProjectileDamagePerEnemyHit;
+        Health -= firingTowerProperties.ProjectileDamagePerEnemyHit;
 
-        if(HealthBar != null)
+        if(_healthBar != null)
         {
-            HealthBar.fillAmount = Health / StartHealth;
+            _healthBar.fillAmount = Health / _startHealth;
         }
      
 
-        switch (FiringTowerProperties.ProjectileType)
+        switch (firingTowerProperties.ProjectileType)
         {
             case TowerSO.ProjectileTypes.Default:
                 
