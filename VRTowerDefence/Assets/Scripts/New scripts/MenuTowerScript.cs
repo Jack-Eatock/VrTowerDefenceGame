@@ -13,6 +13,7 @@ public class MenuTowerScript : MonoBehaviour
 
     private MenuManager _menuManager;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,13 +29,37 @@ public class MenuTowerScript : MonoBehaviour
             _menuManager.SetUpDisplayableObject(_minitureTowers[SObject]);
         }
 
+        _currentlyDisplayedTower = _minitureTowers[0];
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (_menuManager._isMenuInTowerPlacementMode) // If currently in the tower menu load towers and text etc.
+        {
+            UpdateTowerMenu();   // Should be optimised.
+        }
+    }
+
+
+    public void UpdateTowerMenu(bool overide = false)
+    {
+        if (overide)
+        {
+            string towerName = Towers[_currentlySelectedTowerPositionInArray].Name;
+
+            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[_currentlySelectedTowerPositionInArray]);
+            _menuManager.SetHeaderText("Tower: " + towerName);
+
+        }
+
+        if (!_currentlyDisplayedTower.activeSelf)
+        {
+            string towerName = Towers[_currentlySelectedTowerPositionInArray].Name;
+            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[_currentlySelectedTowerPositionInArray]); // Switches current displayed object to the correct tower and sets it active along with correcting its position and rotation.
+            _menuManager.SetHeaderText("Tower: " + towerName);
+        }
     }
 
     public void OnDPLeftClick()
@@ -49,6 +74,11 @@ public class MenuTowerScript : MonoBehaviour
 
     public void UpdateCurrentlySelectedPos(bool isLeft)
     {
+        if (!_menuManager._isMenuInTowerPlacementMode)
+        {
+            return;   // User is not selecting a tower, so they should not be able to switch between.
+        }
+
         if (isLeft)
         {
             if (_currentlySelectedTowerPositionInArray > 0)
@@ -72,7 +102,7 @@ public class MenuTowerScript : MonoBehaviour
             }
         }
 
-        _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[_currentlySelectedTowerPositionInArray]);
+        UpdateTowerMenu(true);
     }
 
 

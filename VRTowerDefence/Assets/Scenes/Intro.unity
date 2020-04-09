@@ -176,63 +176,46 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 933452084, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: _interactableDisplayer
+      propertyPath: _menuDisplayPoint
       value: 
-      objectReference: {fileID: 933452081}
-    - target: {fileID: 933452084, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: _menu
+      objectReference: {fileID: 933452084}
+    - target: {fileID: 7380862346050360190, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: Towers.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7380862346050360190, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: Towers.Array.data[0]
       value: 
-      objectReference: {fileID: 933452082}
-    - target: {fileID: 933452084, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: _menuCanvas
+      objectReference: {fileID: 11400000, guid: 4285661fb0ba195499af532c3c4a3a38,
+        type: 2}
+    - target: {fileID: 7380862346050360190, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: Towers.Array.data[1]
       value: 
-      objectReference: {fileID: 1869537572}
-    - target: {fileID: 933452084, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: _headerText
+      objectReference: {fileID: 11400000, guid: 8860f5bdcc4a342439e0b4431b328f3b,
+        type: 2}
+    - target: {fileID: 7380862346050360190, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: Towers.Array.data[2]
       value: 
-      objectReference: {fileID: 933452098}
-    - target: {fileID: 933452084, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
-      propertyPath: _subHeaderText
+      objectReference: {fileID: 11400000, guid: 5b4b3b4a9ebd4e640ae7b276bd2f7a8d,
+        type: 2}
+    - target: {fileID: 7380862346050360190, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: Towers.Array.data[3]
       value: 
-      objectReference: {fileID: 933452080}
+      objectReference: {fileID: 11400000, guid: 812d3784d71acdc47b9aaa4c544f88d8,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
---- !u!114 &933452080 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 818679601, guid: dc06161b6d97feb419f45f03b62e14b9,
+--- !u!4 &933452084 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 271813729, guid: dc06161b6d97feb419f45f03b62e14b9,
     type: 3}
   m_PrefabInstance: {fileID: 933452073}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &933452081 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 271813728, guid: dc06161b6d97feb419f45f03b62e14b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 933452073}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &933452082 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 44991148, guid: dc06161b6d97feb419f45f03b62e14b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 933452073}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &933452098 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 933452073}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1062289462
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,9 +359,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!223 &1869537572 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 1555588564, guid: dc06161b6d97feb419f45f03b62e14b9,
-    type: 3}
-  m_PrefabInstance: {fileID: 933452073}
-  m_PrefabAsset: {fileID: 0}

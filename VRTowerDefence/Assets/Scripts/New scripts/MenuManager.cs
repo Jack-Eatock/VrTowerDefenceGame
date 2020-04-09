@@ -12,13 +12,17 @@ public  class MenuManager : MonoBehaviour
     [SerializeField]  private Text        _headerText;
     [SerializeField]  private Text        _subHeaderText;
 
-    private GameObject _currentlyDisplayedObject;
-    private bool _inBuildingMode;
+    private GameObject _currentlyDisplayedObject = null;
+
+    public bool _isMenuInTowerPlacementMode = false;
+    private bool _userPromptRequired = false;
+    private bool _isMenuActive = false;
+
 
     void Start()
     {
         InputScripto.OnLeftMenuPress += LeftMenuButtonPressed;
-
+        
     }
 
     // Update is called once per frame
@@ -26,30 +30,62 @@ public  class MenuManager : MonoBehaviour
     {  
     }
 
-    public void SetMenuActive(bool setActive)
+    public void LoadUserPromptIntoMenu()
+    {
+
+    }
+
+    public void SetMenuActive (bool setActive)
     {
         if (setActive)
         {
-            GridGenerator.GridSwitch(true);
             _menu.SetActive(true);
+            _isMenuActive = true;
+            GridGenerator.GridSwitch(false);
         }
         else
         {
-            GridGenerator.GridSwitch(false);
             _menu.SetActive(false);
+            _isMenuActive = false;
+            GridGenerator.GridSwitch(true);
         }
            
     }
 
     public void LeftMenuButtonPressed()
     {
-        if (_menu.activeSelf)
+        if (_userPromptRequired)  // If the user needs to activate something.. such as start wave. Switch between Tower menu and the User Prompt.
         {
-            SetMenuActive(false);
+            if (!_isMenuActive)  // Ensures that the menu is actually open.
+            {
+                SetMenuActive(true);
+            }
+
+            if (_isMenuInTowerPlacementMode)  // If towers are in the menu, then it should load the User prompt menu settings.
+            {
+                LoadUserPromptIntoMenu();
+                _isMenuInTowerPlacementMode = false;
+            }
+
+            else
+            {
+                _isMenuInTowerPlacementMode = true;
+            }
         }
+
         else
         {
-            SetMenuActive(true);
+            if (_isMenuActive)
+            {
+                SetMenuActive(false);
+                _isMenuInTowerPlacementMode = false;
+            }
+
+            else
+            {
+                SetMenuActive(true);
+                _isMenuInTowerPlacementMode = true;
+            }
         }
     }
 
@@ -63,31 +99,16 @@ public  class MenuManager : MonoBehaviour
         _subHeaderText.text = newText;
     }
 
-    public void SetHeaderActive(bool setActive)
-    {
-        if (setActive)
-            _headerText.gameObject.SetActive(true); 
-
-        else
-            _headerText.gameObject.SetActive(false);
-        
-    }
-
-    public void SetSubHeaderActive(bool setActive)
-    {
-        if (setActive)
-            _subHeaderText.gameObject.SetActive(true);
-
-        else
-            _subHeaderText.gameObject.SetActive(false);
-    }
-
     public void SwitchOutMenuCurrentlyDisplayedObject(GameObject objectToSwitchIn)
     {
-        if (_currentlyDisplayedObject.activeSelf)
+        if (_currentlyDisplayedObject != null)
         {
-            _currentlyDisplayedObject.SetActive(false);
+            if (_currentlyDisplayedObject.activeSelf)
+            {
+                _currentlyDisplayedObject.SetActive(false);
+            }
         }
+     
 
         _currentlyDisplayedObject = objectToSwitchIn;
 

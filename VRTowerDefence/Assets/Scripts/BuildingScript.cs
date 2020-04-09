@@ -220,60 +220,6 @@ public class BuildingScript : GameScript
     }
 
 
-
-
-    public void ActivateMenu(bool Activate, int MenuType)
-    {
-        if (Activate)
-        {
-            if (MenuType == 0) // Building Menu Set Active
-            {
-                HandMenuGO.SetActive(true);
-                BuildingMenuGo.SetActive(true);
-                GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
-                BuildMenuActive = true;
-                GridSwitch();
-            }
-
-            else if (MenuType == 1) // Start Wave Menu. Active.
-            {
-                if (BuildMenuActive)
-                {
-                    ActivateMenu(false, 0);
-                }
-                HandMenuGO.SetActive(true);
-                GeneralMenuGO.SetActive(true);
-                GeneralMenuActive = true;
-
-            }
-
-        }
-        else
-        {
-            if (MenuType == 0) // Building Menu Set Not active.
-            {
-                if (TowerBeingPlaced)
-                {
-                    SetTowerBeingPlacedTrueFalse(false);
-                }
-                HandMenuGO.SetActive(false);
-                BuildingMenuGo.SetActive(false);
-                GenerateRemoveMiniTowerFromMenu(0, false);
-                BuildMenuActive = false;
-                GridSwitch();
-            }
-
-            else if (MenuType == 1) // Start Wave Menu. Not Active.
-            {
-                HandMenuGO.SetActive(false);
-                GeneralMenuGO.SetActive(false);
-                GeneralMenuActive = false;
-            }
-
-        }
-
-    }
-
     public void UpdateBuildMenuText()
     {
         NameText.text = Towers[CurrentlyDisplayedTowerPos].Name;

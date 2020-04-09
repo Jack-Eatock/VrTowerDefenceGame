@@ -221,6 +221,7 @@ GameObject:
   - component: {fileID: 617815457}
   - component: {fileID: 617815460}
   - component: {fileID: 933452084}
+  - component: {fileID: 7380862346050360190}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -324,6 +325,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99230b3011fe6ec4bbf6cf7120ed120b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _menu: {fileID: 44991148}
+  _menuDisplayPoint: {fileID: 0}
+  _menuCanvas: {fileID: 1555588564}
+  _headerText: {fileID: 38611345}
+  _subHeaderText: {fileID: 818679601}
+  _isMenuInTowerPlacementMode: 0
+--- !u!114 &7380862346050360190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b3dcf05307ddf24197b661efb70e44d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Towers: []
 --- !u!1 &109154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,7 +1659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &44991149
 Transform:
   m_ObjectHideFlags: 0
