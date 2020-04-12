@@ -5,16 +5,15 @@ using UnityEngine.UI;
 
 public  class MenuManager : MonoBehaviour
 {
+    public Transform MenuDisplayPoint;
+    public bool IsMenuTowerPlacementMode = false;
+    public GameObject CurrentlyDisplayedObject = null;
 
-    [SerializeField]  private GameObject  _menu;
-    [SerializeField]  private Transform   _menuDisplayPoint;
-    [SerializeField]  private Canvas      _menuCanvas;
-    [SerializeField]  private Text        _headerText;
-    [SerializeField]  private Text        _subHeaderText;
+    [SerializeField]  private GameObject  _menu = null;
+    [SerializeField]  private Canvas      _menuCanvas = null;
+    [SerializeField]  private Text        _headerText = null;
+    [SerializeField]  private Text        _subHeaderText = null;
 
-    private GameObject _currentlyDisplayedObject = null;
-
-    public bool _isMenuInTowerPlacementMode = false;
     private bool _userPromptRequired = false;
     private bool _isMenuActive = false;
 
@@ -47,6 +46,7 @@ public  class MenuManager : MonoBehaviour
         {
             _menu.SetActive(false);
             _isMenuActive = false;
+            GetComponent<PlacingTowersScript>().ResetPlacing();
             GridGenerator.GridSwitch(true);
         }
            
@@ -54,6 +54,11 @@ public  class MenuManager : MonoBehaviour
 
     public void LeftMenuButtonPressed()
     {
+        if (LevelManager.CurrentLevel != LevelManager.Levels.Survival)
+        {
+            return;
+        }
+
         if (_userPromptRequired)  // If the user needs to activate something.. such as start wave. Switch between Tower menu and the User Prompt.
         {
             if (!_isMenuActive)  // Ensures that the menu is actually open.
@@ -61,15 +66,15 @@ public  class MenuManager : MonoBehaviour
                 SetMenuActive(true);
             }
 
-            if (_isMenuInTowerPlacementMode)  // If towers are in the menu, then it should load the User prompt menu settings.
+            if (IsMenuTowerPlacementMode)  // If towers are in the menu, then it should load the User prompt menu settings.
             {
                 LoadUserPromptIntoMenu();
-                _isMenuInTowerPlacementMode = false;
+                IsMenuTowerPlacementMode = false;
             }
 
             else
             {
-                _isMenuInTowerPlacementMode = true;
+                IsMenuTowerPlacementMode = true;
             }
         }
 
@@ -78,13 +83,13 @@ public  class MenuManager : MonoBehaviour
             if (_isMenuActive)
             {
                 SetMenuActive(false);
-                _isMenuInTowerPlacementMode = false;
+                IsMenuTowerPlacementMode = false;
             }
 
             else
             {
                 SetMenuActive(true);
-                _isMenuInTowerPlacementMode = true;
+                IsMenuTowerPlacementMode = true;
             }
         }
     }
@@ -101,16 +106,16 @@ public  class MenuManager : MonoBehaviour
 
     public void SwitchOutMenuCurrentlyDisplayedObject(GameObject objectToSwitchIn)
     {
-        if (_currentlyDisplayedObject != null)
+        if (CurrentlyDisplayedObject != null)
         {
-            if (_currentlyDisplayedObject.activeSelf)
+            if (CurrentlyDisplayedObject.activeSelf)
             {
-                _currentlyDisplayedObject.SetActive(false);
+                CurrentlyDisplayedObject.SetActive(false);
             }
         }
      
 
-        _currentlyDisplayedObject = objectToSwitchIn;
+        CurrentlyDisplayedObject = objectToSwitchIn;
 
         SetCurrentlyDisplayedObjectActive(true);
         
@@ -120,26 +125,25 @@ public  class MenuManager : MonoBehaviour
     {
         if (setActive)
         {
-            _currentlyDisplayedObject.transform.position = _menuDisplayPoint.position;
-            _currentlyDisplayedObject.transform.rotation = _menuDisplayPoint.rotation;
-            _currentlyDisplayedObject.transform.SetParent(_menuDisplayPoint);
-            _currentlyDisplayedObject.SetActive(true);
+            CurrentlyDisplayedObject.transform.position = MenuDisplayPoint.position;
+            CurrentlyDisplayedObject.transform.rotation = MenuDisplayPoint.rotation;
+            CurrentlyDisplayedObject.transform.SetParent(MenuDisplayPoint);
+            CurrentlyDisplayedObject.SetActive(true);
         }
         else
         {
-            _currentlyDisplayedObject.SetActive(false);
+            CurrentlyDisplayedObject.SetActive(false);
         }
        
     }
 
     public void SetUpDisplayableObject(GameObject newObject)
     {
-        newObject.transform.position = _menuDisplayPoint.position;
-        newObject.transform.rotation = _menuDisplayPoint.rotation;
-        newObject.transform.SetParent(_menuDisplayPoint);
+        newObject.transform.position = MenuDisplayPoint.position;
+        newObject.transform.rotation = MenuDisplayPoint.rotation;
+        newObject.transform.SetParent(MenuDisplayPoint);
         newObject.SetActive(false);
     }
-
 
 
 }

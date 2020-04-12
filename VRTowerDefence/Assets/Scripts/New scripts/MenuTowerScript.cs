@@ -6,9 +6,10 @@ public class MenuTowerScript : MonoBehaviour
 {
 
     public TowerSO[] Towers;
+    public bool DisableTowerSwitch = false;
 
-    private int              _currentlySelectedTowerPositionInArray = 0;
-    private GameObject       _currentlyDisplayedTower = null;
+    public int              CurrentlySelectedTowerPositionInArray = 0;
+    public  GameObject      CurrentlyDisplayedTower = null;
     private GameObject[]     _minitureTowers;
 
     private MenuManager _menuManager;
@@ -29,16 +30,20 @@ public class MenuTowerScript : MonoBehaviour
             _menuManager.SetUpDisplayableObject(_minitureTowers[SObject]);
         }
 
-        _currentlyDisplayedTower = _minitureTowers[0];
+        CurrentlyDisplayedTower = _minitureTowers[0];
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_menuManager._isMenuInTowerPlacementMode) // If currently in the tower menu load towers and text etc.
+        if (_menuManager.IsMenuTowerPlacementMode) // If currently in the tower menu load towers and text etc.
         {
-            UpdateTowerMenu();   // Should be optimised.
+            if (!PlacingTowersScript.IsPlacing) // Checks that the user is not currently placing a tower. Otherwise it would take the tower from their hand and throw it back in the menu.
+            {
+                UpdateTowerMenu();   // Should be optimised.
+            }
+           
         }
     }
 
@@ -47,17 +52,17 @@ public class MenuTowerScript : MonoBehaviour
     {
         if (overide)
         {
-            string towerName = Towers[_currentlySelectedTowerPositionInArray].Name;
+            string towerName = Towers[CurrentlySelectedTowerPositionInArray].Name;
 
-            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[_currentlySelectedTowerPositionInArray]);
+            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[CurrentlySelectedTowerPositionInArray]);
             _menuManager.SetHeaderText("Tower: " + towerName);
 
         }
 
-        if (!_currentlyDisplayedTower.activeSelf)
+        if (!CurrentlyDisplayedTower.activeSelf)
         {
-            string towerName = Towers[_currentlySelectedTowerPositionInArray].Name;
-            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[_currentlySelectedTowerPositionInArray]); // Switches current displayed object to the correct tower and sets it active along with correcting its position and rotation.
+            string towerName = Towers[CurrentlySelectedTowerPositionInArray].Name;
+            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[CurrentlySelectedTowerPositionInArray]); // Switches current displayed object to the correct tower and sets it active along with correcting its position and rotation.
             _menuManager.SetHeaderText("Tower: " + towerName);
         }
     }
@@ -74,36 +79,43 @@ public class MenuTowerScript : MonoBehaviour
 
     public void UpdateCurrentlySelectedPos(bool isLeft)
     {
-        if (!_menuManager._isMenuInTowerPlacementMode)
+        if (DisableTowerSwitch)
+        {
+            return;
+        }
+
+        if (!_menuManager.IsMenuTowerPlacementMode)
         {
             return;   // User is not selecting a tower, so they should not be able to switch between.
         }
 
         if (isLeft)
         {
-            if (_currentlySelectedTowerPositionInArray > 0)
+            if (CurrentlySelectedTowerPositionInArray > 0)
             {
-                _currentlySelectedTowerPositionInArray -= 1;
+                CurrentlySelectedTowerPositionInArray -= 1;
             }
             else
             {
-                _currentlySelectedTowerPositionInArray = Towers.Length - 1;
+                CurrentlySelectedTowerPositionInArray = Towers.Length - 1;
             }      
         }
         else
         {
-            if (_currentlySelectedTowerPositionInArray < Towers.Length - 1)
+            if (CurrentlySelectedTowerPositionInArray < Towers.Length - 1)
             {
-                _currentlySelectedTowerPositionInArray += 1;
+                CurrentlySelectedTowerPositionInArray += 1;
             }
             else
             {
-                _currentlySelectedTowerPositionInArray = 0;
+                CurrentlySelectedTowerPositionInArray = 0;
             }
         }
 
+        CurrentlyDisplayedTower = _minitureTowers[CurrentlySelectedTowerPositionInArray];
         UpdateTowerMenu(true);
     }
 
+  
 
 }

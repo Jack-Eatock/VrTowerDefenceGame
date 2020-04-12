@@ -179,6 +179,54 @@ PrefabInstance:
       propertyPath: _menuDisplayPoint
       value: 
       objectReference: {fileID: 933452084}
+    - target: {fileID: 933452084, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: MenuDisplayPoint
+      value: 
+      objectReference: {fileID: 933452084}
+    - target: {fileID: 44991148, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_RichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38611345, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7380862346050360190, guid: dc06161b6d97feb419f45f03b62e14b9,
         type: 3}
       propertyPath: Towers.Array.size
@@ -208,6 +256,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 812d3784d71acdc47b9aaa4c544f88d8,
         type: 2}
+    - target: {fileID: 404972176959501822, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: RightHandAttachmentPoint
+      value: 
+      objectReference: {fileID: 1909088490}
+    - target: {fileID: 404972176959501822, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: _rightHandAttachmentPoint
+      value: 
+      objectReference: {fileID: 1909088490}
+    - target: {fileID: 404972176959501822, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 3}
+      propertyPath: _placedTowerStoragePrefab
+      value: 
+      objectReference: {fileID: 6927704227497013752, guid: f691e0ad9036f4349b998261eb4178bb,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
 --- !u!4 &933452084 stripped
@@ -359,3 +423,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1909088490 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 112895607, guid: dc06161b6d97feb419f45f03b62e14b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 933452073}
+  m_PrefabAsset: {fileID: 0}

@@ -8,10 +8,12 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
 
+
     public enum Levels { Lobby, Survival, Campaign, COOP };
     public static Levels CurrentLevel = Levels.Lobby;
 
     public Levels SetLevel;
+
 
     public void Start()
     {
@@ -52,8 +54,6 @@ public class LevelManager : MonoBehaviour
 
             case Levels.Survival:
                 Debug.Log("Loading Survival");
-
-                
                 SceneManager.LoadScene("Survival");
                 break;
 

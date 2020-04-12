@@ -237,28 +237,6 @@ public class BuildingScript : GameScript
         }
     }
 
-
-    public void SetCurrentTowerPos(int Active = 0)
-    {
-        // Sets tower in the Menu. 
-        if (Active == 0)
-        {
-            CurrentlyDisplayedTower.transform.SetParent(TowerMenuPos.transform);
-            CurrentlyDisplayedTower.transform.position = TowerMenuPos.transform.position;
-            CurrentlyDisplayedTower.transform.rotation = TowerMenuPos.transform.rotation;
-        }
-
-        //Sets tower as child of Hand.
-        else if (Active == 1)
-        {
-            CurrentlyDisplayedTower.gameObject.transform.position = RightHandGO.transform.position;
-            CurrentlyDisplayedTower.gameObject.transform.rotation = MinitureTowers[CurrentlyDisplayedTowerPos].transform.rotation;
-            CurrentlyDisplayedTower.gameObject.transform.SetParent(RightHandGO.transform);
-        }
-
-    }
-
- 
     }
 
 
@@ -324,66 +302,6 @@ public class BuildingScript : GameScript
             SetCurrentTowerPos(0);
             GenerateRemoveMiniTowerFromMenu(0, false);
         }
-    }
-
-
-    public void SwitchDisplayedTower(bool Right)
-    {
-        CurrentlyDisplayedTower.SetActive(false);
-        if (Right)
-        {
-
-            if (CurrentlyDisplayedTowerPos + 1 > MinitureTowers.Length - 1)
-            {
-                CurrentlyDisplayedTowerPos = 0;
-            }
-            else
-            {
-                CurrentlyDisplayedTowerPos += 1;
-            }
-        }
-        else
-        {
-            if (CurrentlyDisplayedTowerPos - 1 < 0)
-            {
-                CurrentlyDisplayedTowerPos = MinitureTowers.Length - 1;
-            }
-            else
-            {
-                CurrentlyDisplayedTowerPos -= 1;
-            }
-        }
-        GenerateRemoveMiniTowerFromMenu(CurrentlyDisplayedTowerPos, true);
-
-    }
-
-    public void GenerateRemoveMiniTowerFromMenu(int x, bool Generate)
-    {
-        if (CurrentlyDisplayedTower != null)
-        {
-            CurrentlyDisplayedTower.SetActive(false);
-            CurrentlyDisplayedTower = null;
-        }
-
-        if (Generate)
-        {
-            MinitureTowers[x].gameObject.SetActive(true);
-            CurrentlyDisplayedTower = MinitureTowers[x].gameObject;
-
-            UpdateBuildMenuText();
-
-
-        }
-    }
-
-   
-
-    // If the ground is made larger use this function to scale the grid along with it. If not the gird will look strange.
-    public void UpdateGroundScale()
-    {
-        float TempGroundScaleX = Ground.transform.localScale.x;
-        float TempGroundScaleZ = Ground.transform.localScale.z;
-        GrassGridMat.mainTextureScale = new Vector2(TempGroundScaleX, TempGroundScaleZ);
     }
 
     public void RightTriggerClick()
