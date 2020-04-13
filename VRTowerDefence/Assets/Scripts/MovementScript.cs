@@ -39,9 +39,18 @@ public class MovementScript : MonoBehaviour
     [SerializeField] private GameObject     _rightHandGO = null;
     [SerializeField] private float          _minVelocity = 0.5f;
 
-    private void Start()
+    private void OnLevelWasLoaded(int level)
     {
-         //GameWorld.transform.localPosition = new Vector3(0,PlayerHeight,0);
+        if (level != 0) // Not Intro
+        {
+            GameWorld = GameObject.Find("Scene");
+
+            if (level == 1) // Lobby
+            {
+               MovementControllsDisabled = false;
+            }
+        }
+     
     }
 
     // Update is called once per frame

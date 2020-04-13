@@ -47,7 +47,6 @@ public class PlacingTowersScript : MonoBehaviour
 
     }
 
-
     // Update is called once per frame
     void Update()
     {
@@ -108,9 +107,35 @@ public class PlacingTowersScript : MonoBehaviour
 
     public void RightTriggerClick()
     {
+        if (!_menuManager.IsMenuActive)
+        {
+            return;
+        }
+
         if (_menuManager.IsMenuTowerPlacementMode) // Currently in tower placement mode.
         {
-            if (_menuManager.MenuDisplayPoint.gameObject.GetComponent<OnCollisionScript>().IsColliding)  // If right hand is colliding with the menu.
+
+
+            if (_onRightHandCollWithGround.IsColliding) // If the Miniture Tower (Right Hand AttatchmentPoint) is colliding with the Ground.
+            {
+                if (IsPlacing)
+                {
+                    if (_canPlaceTowerAtCurrentPos)
+                    {
+                        // Place the Tower.
+                        PlaceTower();
+                    }
+                    else
+                    {
+                        Debug.Log("Can Not Place");
+                        StartCoroutine(UtilitiesScript.ObjectBlinkColour(_newTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
+                    }
+
+
+                }
+            }
+
+            else if (_menuManager.MenuDisplayPoint.gameObject.GetComponent<OnCollisionScript>().IsColliding)  // If right hand is colliding with the menu.
             {
                 if (IsPlacing)
                 {
@@ -127,26 +152,19 @@ public class PlacingTowersScript : MonoBehaviour
                 }
             }
 
-            else if (_onRightHandCollWithGround.IsColliding) // If the Miniture Tower (Right Hand AttatchmentPoint) is colliding with the Ground.
+           
+
+
+        }
+
+        else // If in the user Prompt Menu and they right click.
+        {
+            if (_menuManager.MenuDisplayPoint.gameObject.GetComponent<OnCollisionScript>().IsColliding)  // If The user clicks on the user prompt Button.
             {
-                if (IsPlacing)
-                {
-                    if (_canPlaceTowerAtCurrentPos)
-                    {
-                        // Place the Tower.
-                        PlaceTower();
-                    }
-                    else
-                    {
-                        Debug.Log("Can Not Place");
-                        StartCoroutine(UtilitiesScript.ObjectBlinkColour(_newTower, Color.red, 0.15f)); // Flash red , User cant place the tower.
-                    }
-                    
-                    
-                }
+                _menuManager.UserPromptActivated();
             }
         }
-       
+
     }
 
     public void MoveMinitureTowerToUsersHand()
@@ -199,13 +217,6 @@ public class PlacingTowersScript : MonoBehaviour
     public void PlaceTower()
     {
         Debug.Log("Placing Tower!");
-
-        SphereCollider SphereCol = _newTower.AddComponent<SphereCollider>();
-        SphereCol.center = new Vector3(0, 0.5f, 0);
-        SphereCol.isTrigger = true;
-
-        OnCollisionScript TempColScript = _newTower.AddComponent<OnCollisionScript>();
-        TempColScript.CollisionType = 3;
 
         TowerScript TempTowerScript = _newTower.AddComponent<TowerScript>();
         TempTowerScript.TowerProperties = _menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray];

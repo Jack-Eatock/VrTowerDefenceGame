@@ -77,10 +77,9 @@ public class EnemySpawner : MonoBehaviour
         PathPoints.Reverse(); // Now going the correct direction
 
         //Debug.Log("IamHere?");
+        StartWave();
 
     }
-
-
 
     public void StartWave()
     {

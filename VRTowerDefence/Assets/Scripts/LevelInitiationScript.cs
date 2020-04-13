@@ -21,7 +21,6 @@ public class LevelInitiationScript : MonoBehaviour
     {
         GameObject Gamemanager = GameObject.Find("GAMEMANAGER");
         MovementScript MovementScripto = GameObject.Find("Player").GetComponent<MovementScript>();
-        BuildingScript BuildingScripto = Gamemanager.GetComponent<BuildingScript>();
 
        
         MovementScripto.GameWorld = _gameWorld;
@@ -48,7 +47,7 @@ public class LevelInitiationScript : MonoBehaviour
         }
 
        
-        MovementScript.MovementControllsDisabled = false;
+        //MovementScript.MovementControllsDisabled = false;
         
        
     }

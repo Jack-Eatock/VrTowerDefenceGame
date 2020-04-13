@@ -18,8 +18,17 @@ public class TowerScript : GameScript
 
     private void Start()
     {
-        EnemiesInRange = gameObject.GetComponent<OnCollisionScript>().ObjectsWithinCollider;
-        gameObject.GetComponent<SphereCollider>().radius = TowerProperties.Range;
+
+        SphereCollider SphereCol = gameObject.AddComponent<SphereCollider>();
+        SphereCol.center = new Vector3(0, 0.5f, 0);
+        SphereCol.isTrigger = true;
+        SphereCol.radius = TowerProperties.Range;
+
+
+        OnCollisionScript TempColScript = gameObject.AddComponent<OnCollisionScript>();
+        TempColScript.CollisionType = 3;
+
+        EnemiesInRange = gameObject.GetComponent<OnCollisionScript>().ObjectsWithinCollider;     
         _bulletStorage = GameObject.Find("BulletStorage").transform;
     }
 

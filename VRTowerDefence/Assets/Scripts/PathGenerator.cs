@@ -145,10 +145,9 @@ public class PathGenerator : MonoBehaviour
 
                 Debug.Log("Finished.");
                 PathGenerationComplete = true;
-                MovementScript.MovementControllsDisabled = false;
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
                 EnemySpawner EnemySpawnero = GameObject.Find("GAMEMANAGER").GetComponent<EnemySpawner>();
-                EnemySpawnero.InitiateEnemySpawner();
+
 
 
 
