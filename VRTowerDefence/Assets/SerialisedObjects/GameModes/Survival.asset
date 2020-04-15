@@ -9,13 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b3d7c712de7c8c428397d6e18b1c091, type: 3}
-  m_Name: Tank
+  m_Script: {fileID: 11500000, guid: f0ad06df0440e8644ab00f9b90afe80c, type: 3}
+  m_Name: Survival
   m_EditorClassIdentifier: 
-  UnitGO: {fileID: 6964569119548220669, guid: 5b17ff3e71ea0864e81da991ba697ecf, type: 3}
-  Name: Tank
-  Speed: 0.1
-  Health: 200
-  Points: 8
-  Mass: 5
-  Description: Strong but Slow
+  GameModeName: Survival Settings
+  RoundEnemySpawnRatio: 9
+  SpawnRate: 0.5
+  MaxPointPool: 10
+  StartPoints: 30

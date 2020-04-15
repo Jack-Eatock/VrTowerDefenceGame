@@ -15,7 +15,7 @@ MonoBehaviour:
   UnitGO: {fileID: 4817247949809862020, guid: 2e5b8ed562e63dc49a6cffb7c2e0c2f5, type: 3}
   Name: Charger
   Speed: 0.45
-  Health: 5
+  Health: 150
   Points: 4
   Mass: 2
   Description: Medium Tank

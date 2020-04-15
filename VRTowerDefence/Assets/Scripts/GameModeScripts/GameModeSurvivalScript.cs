@@ -12,6 +12,7 @@ public class GameModeSurvivalScript : MonoBehaviour
     [SerializeField] private GameObject _grid = null;
     [SerializeField] private GameObject _unitStorage = null;
 
+    private EnemySpawner _enemySpawner;
     private MenuManager _menuManager;
     private GameObject _gameManager;
     private GameObject _player;
@@ -23,6 +24,7 @@ public class GameModeSurvivalScript : MonoBehaviour
 
         _gameManager = GameObject.Find("GAMEMANAGER");
         _player = GameObject.Find("Player");
+        _enemySpawner = _gameManager.GetComponent<EnemySpawner>();
 
 
         _player.GetComponent<MovementScript>().UpdateSF();
@@ -37,11 +39,16 @@ public class GameModeSurvivalScript : MonoBehaviour
         _menuManager.SetUserPrompt("Start Wave?", "", MethodToCall );
     }
 
+    private void Update()
+    {
+
+    }
+
 
     public void OnStartWave()
     {
         Debug.Log("StartWave");
-        _gameManager.GetComponent<EnemySpawner>().InitiateEnemySpawner();
+        _enemySpawner.InitiateEnemySpawner();
     }
 
 }

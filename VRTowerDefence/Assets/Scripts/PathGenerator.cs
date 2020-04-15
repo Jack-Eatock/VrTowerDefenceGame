@@ -75,7 +75,7 @@ public class PathGenerator : MonoBehaviour
             else
             {
 
-                Debug.Log("Finished Generating. Now Loading path....");
+                Debug.Log("Finished Generating Path. Now Loading Physical path....");
                 _lastDirection = 1;
                 _loop = false;
 
@@ -143,7 +143,7 @@ public class PathGenerator : MonoBehaviour
 
                 }
 
-                Debug.Log("Finished.");
+                Debug.Log("Finished Loading Path.");
                 PathGenerationComplete = true;
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
                 EnemySpawner EnemySpawnero = GameObject.Find("GAMEMANAGER").GetComponent<EnemySpawner>();
@@ -162,7 +162,7 @@ public class PathGenerator : MonoBehaviour
     {
 
         _scaleFactor = MovementScript.ScaleFactor;
-        Debug.Log("Generating Path...." + _scaleFactor);
+        Debug.Log("Generating Virtual Path.... With Scale Factor:" + _scaleFactor);
         PathTile NewTile = new PathTile
         {
             Direction = 1,

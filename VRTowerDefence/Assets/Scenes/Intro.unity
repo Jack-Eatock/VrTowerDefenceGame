@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c6aa1c98e7a37740b9479a135fafd06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FirstTime: 1
+  _survivalSettings: {fileID: 11400000, guid: 2241f21286dec3440aef21501b300714, type: 2}
 --- !u!114 &1062289467
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ MonoBehaviour:
   FireRate: 2
   Range: 1.2
   ProjectileSpeed: 3
-  ProjectileDamagePerEnemyHit: 1.25
+  ProjectileDamagePerEnemyHit: 40
   Cost: 30
   TowerGO: {fileID: 1277772364328422624, guid: 6e33bde7b4c377f48adbf741716f295c, type: 3}
   MinitureVersion4Menu: {fileID: 5585109631505509869, guid: 045e9daa77f24aa4c952319ab57a3720,

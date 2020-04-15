@@ -15,7 +15,7 @@ MonoBehaviour:
   UnitGO: {fileID: 7971265847669980459, guid: 35da4be5d6735b04da06846d0b7696a3, type: 3}
   Name: Swarm
   Speed: 0.7
-  Health: 1
+  Health: 20
   Points: 1
   Mass: 1
   Description: Weak but Split up into little ones
