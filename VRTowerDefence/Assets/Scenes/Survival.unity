@@ -96,8 +96,9 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -216,6 +217,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -376,8 +378,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 0.89
   m_Range: 10
@@ -424,7 +427,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.1954e-41, y: 1.05e-43, z: 3e-45, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 2.2964e-41, z: 0, w: -5.0625}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -559,11 +562,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1868694159}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: cd1ca00e4486de942b3a23e6bd810187,
-        type: 3}
-      propertyPath: m_Name
-      value: Island
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: cd1ca00e4486de942b3a23e6bd810187,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -634,11 +632,31 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3.6327188
       objectReference: {fileID: 0}
+    - target: {fileID: -4040093896508266011, guid: cd1ca00e4486de942b3a23e6bd810187,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d8b0c07b712e24d47b90b31c86717cd9, type: 2}
     - target: {fileID: -2235224902596103363, guid: cd1ca00e4486de942b3a23e6bd810187,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d2981e57d7016354885ad5a697694654, type: 2}
+    - target: {fileID: -1212445537685685361, guid: cd1ca00e4486de942b3a23e6bd810187,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d8b0c07b712e24d47b90b31c86717cd9, type: 2}
+    - target: {fileID: -927199367670048503, guid: cd1ca00e4486de942b3a23e6bd810187,
+        type: 3}
+      propertyPath: m_Name
+      value: Island
+      objectReference: {fileID: 0}
+    - target: {fileID: 4413373754490219933, guid: cd1ca00e4486de942b3a23e6bd810187,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 820d8068a81444646b4bb9d9e1725dc7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd1ca00e4486de942b3a23e6bd810187, type: 3}
 --- !u!4 &1722931326 stripped
@@ -710,16 +728,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 118596659}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: d0568be92d1010b4fbf5a0aae0589e68,
-        type: 3}
-      propertyPath: m_Name
-      value: Mod_Character
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: d0568be92d1010b4fbf5a0aae0589e68,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: d0568be92d1010b4fbf5a0aae0589e68,
         type: 3}
       propertyPath: m_Controller
@@ -778,6 +786,16 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d0568be92d1010b4fbf5a0aae0589e68,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d0568be92d1010b4fbf5a0aae0589e68,
+        type: 3}
+      propertyPath: m_Name
+      value: Mod_Character
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d0568be92d1010b4fbf5a0aae0589e68,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
