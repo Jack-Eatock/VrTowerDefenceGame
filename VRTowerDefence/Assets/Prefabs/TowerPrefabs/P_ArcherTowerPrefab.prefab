@@ -54,10 +54,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3846018093981099296, guid: 3b615d8ce92dff64aa8533a70abc9485, type: 3}
+  - {fileID: 2100000, guid: d8b0c07b712e24d47b90b31c86717cd9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,7 +90,7 @@ GameObject:
   - component: {fileID: 6673144897574622181}
   - component: {fileID: 6746056160324989910}
   m_Layer: 0
-  m_Name: ArcherTowerPrefab
+  m_Name: P_ArcherTowerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,10 +183,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: 3b615d8ce92dff64aa8533a70abc9485, type: 3}
+  - {fileID: 2100000, guid: 99e5ad468bc080d46871f49298057311, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -260,10 +262,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: 3b615d8ce92dff64aa8533a70abc9485, type: 3}
+  - {fileID: 2100000, guid: d8b0c07b712e24d47b90b31c86717cd9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -432,10 +435,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6922793697723135513, guid: 3b615d8ce92dff64aa8533a70abc9485, type: 3}
+  - {fileID: 2100000, guid: 99e5ad468bc080d46871f49298057311, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
