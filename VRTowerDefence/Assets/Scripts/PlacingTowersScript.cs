@@ -22,9 +22,9 @@ public class PlacingTowersScript : MonoBehaviour
 
     private int _gridWidth;
     private int _gridHeight;
-    private float _posX;
-    private float _posZ;
-    private float _posY;
+    private float _towerPosX;
+    private float _towerPosZ;
+    private float _towerPosY;
     private float _halfedGridSpacing;
     private Vector3 _currentPosition;
     private int _currentPositionPosX;
@@ -56,6 +56,8 @@ public class PlacingTowersScript : MonoBehaviour
 
             if (_onRightHandCollWithGround.IsColliding) // If Mini Tower (Right hand Attachment point) is colliding with ground.
             {
+
+                Debug.Log("IsPlacing + Colliding with Groud");
 
                 _gridHeight = GridGenerator.GridStatus.GetLength(1);
                 _gridWidth = GridGenerator.GridStatus.GetLength(0);
@@ -171,6 +173,7 @@ public class PlacingTowersScript : MonoBehaviour
 
     public void MoveMinitureTowerToUsersHand()
     {
+        Debug.Log("Moving tower from menu to hand.");
         GameObject currentTower = _menuTowerScript.CurrentlyDisplayedTower;
         currentTower.transform.position = _rightHandAttachmentPoint.transform.position;
         currentTower.transform.SetParent(_rightHandAttachmentPoint.transform);
@@ -178,36 +181,45 @@ public class PlacingTowersScript : MonoBehaviour
 
     public void LockMinitureTowerToGrid()
     {
+        Debug.Log("Locking Tower to Grid.");
 
-        _posX =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.x;
-        _posZ =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.z;
-        _posY = GameObject.Find("World").transform.position.y;
-        
-        _halfedGridSpacing = GridGenerator.GridSpacing / 2f;
+        _towerPosX =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.x;
+        _towerPosZ =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.z;
+        _towerPosY = GameObject.Find("World").transform.position.y;
+
+        GridGenerator.UpdateGridSpacing(_gridHeight);
+        _halfedGridSpacing =  ( GridGenerator.LocalGridSpacing / 2f ) * GameObject.Find("World").transform.localScale.x; // Gridspacing is local. Multiply by  world scale to make it Global Gridspacing.
 
         //Debug.Log("Grid spacing for tower" + _halfedGridSpacing);
 
+        bool towerWasAbleToLockToGrid = false;
 
-        for (int x = 0; x < _gridWidth; x++)
+        for (int actualGridPointX = 0; actualGridPointX < _gridWidth; actualGridPointX++)
         {
-            for (int y = 0; y < _gridHeight; y++)
+            for (int actualGridPointY = 0; actualGridPointY < _gridHeight; actualGridPointY++)
             {
-                Vector3 Point = GridGenerator.GridStatus[x, y].Tile.transform.position;
-                if (Point.x < _posX + _halfedGridSpacing && Point.x > _posX - _halfedGridSpacing)
-                {
-                    if (Point.z < _posZ + _halfedGridSpacing && Point.z > _posZ - _halfedGridSpacing)
-                    {
-                        _currentPosition = new Vector3(Point.x, _posY, Point.z);
+                Vector3 posOfTile = GridGenerator.GridStatus[actualGridPointX, actualGridPointY].Tile.transform.position;
+                //Debug.Log("Tile pos: " + posOfTile + " Tower Current Pos: " + new Vector3(_towerPosX, _towerPosY, _towerPosZ) + "Halved Grid Spacing:" + _halfedGridSpacing + " Scale Factor" + MovementScript.ScaleFactor);
 
-                        if (GridGenerator.GridStatus[x, y].Available)
+                if (posOfTile.x < _towerPosX + _halfedGridSpacing && posOfTile.x > _towerPosX - _halfedGridSpacing)
+                {
+                    if (posOfTile.z < _towerPosZ + _halfedGridSpacing && posOfTile.z > _towerPosZ - _halfedGridSpacing)
+                    {
+                        towerWasAbleToLockToGrid = true;
+                        _currentPosition = new Vector3(posOfTile.x, _towerPosY, posOfTile.z);
+
+                        Debug.Log("Position Updated");
+
+                        if (GridGenerator.GridStatus[actualGridPointX, actualGridPointY].Available)
                         {
+                            Debug.Log("Tower can be placed at ths grid Point" + _currentPosition);
                             _canPlaceTowerAtCurrentPos = true;
-                            _currentPositionPosX = x;
-                            _currentPositionPosY = y;
+                            _currentPositionPosX = actualGridPointX;
+                            _currentPositionPosY = actualGridPointY;
                         }
                         else if (_canPlaceTowerAtCurrentPos)
                         {
-                            Debug.Log("NotPlaceable");
+                            Debug.Log("Current Grid Point is not placeable. " + _currentPosition);
                             _canPlaceTowerAtCurrentPos = false;
                         }
 
@@ -215,6 +227,12 @@ public class PlacingTowersScript : MonoBehaviour
                     }
                 }
             }
+        }
+
+        if (towerWasAbleToLockToGrid == false)
+        {
+            Debug.Log("Tower Was unable to lock to the Grid. Tower was at position:" + new Vector3 (_towerPosX, _towerPosY, _towerPosZ ));
+
         }
     }
 
@@ -226,14 +244,16 @@ public class PlacingTowersScript : MonoBehaviour
         TempTowerScript.TowerProperties = _menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray];
 
         Vector3 TilePosition = GridGenerator.GridStatus[_currentPositionPosX, _currentPositionPosY].Tile.transform.position;
-        _newTower.transform.position = new Vector3(TilePosition.x, GameObject.Find("World").transform.position.y, TilePosition.z);
+   
 
         if (_placedTowersStorage == null)
         {
+            Debug.Log("There is no placed tower storage. Generating one...");
             _placedTowersStorage = GameObject.Instantiate(_placedTowerStoragePrefab, GameObject.Find("World").transform);
         }
 
         _newTower.transform.SetParent(_placedTowersStorage.transform);
+        _newTower.transform.position = new Vector3(TilePosition.x, GameObject.Find("World").transform.position.y, TilePosition.z);
         UtilitiesScript.CircleRadius(new Vector2(_currentPositionPosX, _currentPositionPosY), 2);
 
         ResetPlacing();

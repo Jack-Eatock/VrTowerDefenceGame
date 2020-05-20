@@ -17,7 +17,7 @@ public class GridGenerator : MonoBehaviour
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
     public static bool GridCanBeUpdated = false;
     public static GridPoint[,] GridStatus;
-    public static float GridSpacing = 0;
+    public static float LocalGridSpacing = 0;
 
     // Generating Grid Placement
     [SerializeField]  private int _gridWidth = 0;
@@ -42,9 +42,9 @@ public class GridGenerator : MonoBehaviour
     public void InitiateGridGeneration()
     {
         _scaleFactor = MovementScript.ScaleFactor;
-        GridSpacing = ((GameObject.Find("Ground").transform.localScale.x * MovementScript.ScaleFactor) / _gridHeight); // Finds the length of the ground then divides by the grid Height.
+       UpdateGridSpacing(_gridHeight);
 
-        Debug.Log("GridSpacing : " + GridSpacing);
+        Debug.Log("GridSpacing : " + LocalGridSpacing);
         
         GridStatus = new GridPoint[_gridWidth, _gridHeight];
 
@@ -55,7 +55,7 @@ public class GridGenerator : MonoBehaviour
                 GridStatus[x, y] = new GridPoint();
             }
         }
-        GenerateGrid(GridSpacing);
+        GenerateGrid(LocalGridSpacing);
         GenerateTiles();
     }
 
@@ -63,7 +63,12 @@ public class GridGenerator : MonoBehaviour
 
     public void Update()
     {
-       GridSpacing = ((GameObject.Find("Ground").transform.localScale.x * MovementScript.ScaleFactor) / _gridHeight);
+        UpdateGridSpacing(_gridHeight);
+    }
+
+    public static void UpdateGridSpacing(int gridHeight)
+    {
+        LocalGridSpacing = ((GameObject.Find("Ground").transform.localScale.x * MovementScript.ScaleFactor) / gridHeight);
     }
 
     public static void OnLoadInUseTiles(bool loadInUseTiles)
