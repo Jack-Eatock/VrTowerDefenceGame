@@ -10,7 +10,9 @@ public class InputScripto : MonoBehaviour
     public delegate void DPLeftClick();
     public delegate void DPRightClick();
     public delegate void LeftMenuPress();
+    public delegate void MainMenuPress();
 
+    public static event MainMenuPress       OnMainMenuPressed;
     public static event RightTriggerClick   OnRightTriggerClick;
     public static event LeftTriggerClick    OnLeftTriggerClick;
     public static event DPLeftClick         OnDPLeftClick;
@@ -27,6 +29,7 @@ public class InputScripto : MonoBehaviour
     public SteamVR_Action_Boolean DPWest;
     public SteamVR_Action_Boolean GripL;
     public SteamVR_Action_Boolean GripR;
+    public SteamVR_Action_Boolean MainMenu;
 
     public SteamVR_Input_Sources LeftHand; // Left Controller - Set in Engine.
     public SteamVR_Input_Sources RightHand; // Right Controller - Set in Engine.
@@ -34,16 +37,12 @@ public class InputScripto : MonoBehaviour
 
     // References
 
-    private BuildingScript _buildingScripto;
-
     public static bool RightTriggerDown = false;
     public static bool LeftTriggerDown = false;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        _buildingScripto = gameObject.GetComponent<BuildingScript>();
 
         GrabR.AddOnStateDownListener(TriggerDownRight, RightHand);
         GrabR.AddOnStateUpListener(TriggerUpRight, RightHand);
@@ -62,9 +61,24 @@ public class InputScripto : MonoBehaviour
 
         GripR.AddOnStateDownListener(GripDownR, RightHand);
         GripR.AddOnStateUpListener(GripUpR, RightHand);
+
+        MainMenu.AddOnStateDownListener(MainMenuDown, RightHand);
+        MainMenu.AddOnStateUpListener(MainMenuUp, RightHand);
+    }
+    public void MainMenuDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
+    {
+
+        OnMainMenuPressed();
+
     }
 
-    // Inputs for the Building Script \\
+
+    public void MainMenuUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
+    {
+
+    }
+
+
 
     public void TriggerDownRight(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {

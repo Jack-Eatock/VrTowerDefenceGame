@@ -17,7 +17,7 @@ public class GridGenerator : MonoBehaviour
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
     public static bool GridCanBeUpdated = false;
     public static GridPoint[,] GridStatus;
-    public static float GridSpacing = 0.25f;
+    public static float GridSpacing = 0;
 
     // Generating Grid Placement
     [SerializeField]  private int _gridWidth = 0;
@@ -36,13 +36,18 @@ public class GridGenerator : MonoBehaviour
 
     public void Start()
     {
-      
+       
     }
 
     public void InitiateGridGeneration()
     {
         _scaleFactor = MovementScript.ScaleFactor;
+        GridSpacing = ((GameObject.Find("Ground").transform.localScale.x * MovementScript.ScaleFactor) / _gridHeight); // Finds the length of the ground then divides by the grid Height.
+
+        Debug.Log("GridSpacing : " + GridSpacing);
+        
         GridStatus = new GridPoint[_gridWidth, _gridHeight];
+
         for (int x = 0; x < _gridWidth; x++)
         {
             for (int y = 0; y < _gridHeight; y++)
@@ -139,7 +144,7 @@ public class GridGenerator : MonoBehaviour
         {
             for (int y = 0; y < _gridHeight; y++)
             {
-                GridStatus[x, y].Position = new Vector3(transform.position.x + (x * gridSpacing), transform.localPosition.y, transform.position.z + (y * gridSpacing));
+                GridStatus[x, y].Position = new Vector3(transform.localPosition.x + (x * gridSpacing), transform.localPosition.y, transform.localPosition.z + (y * gridSpacing));
             }
         }
 
@@ -165,7 +170,7 @@ public class GridGenerator : MonoBehaviour
     }
 
 
-    /* public void OnDrawGizmos()
+    /*public void OnDrawGizmos()
      {
          Gizmos.color = Color.yellow;
 

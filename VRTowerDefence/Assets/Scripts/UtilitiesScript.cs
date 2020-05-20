@@ -133,7 +133,7 @@ public static class UtilitiesScript
 
         foreach (Vector2 Cord in Cords)
         {
-            if (Cord.x < 40 && Cord.x >= 0 && Cord.y < 40 && Cord.y >= 0)
+            if (Cord.x < 26 && Cord.x >= 0 && Cord.y < 26 && Cord.y >= 0)
             {
                 GridGenerator.SetGridPointAvailable(false, Cord);
             }

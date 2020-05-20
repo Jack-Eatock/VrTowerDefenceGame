@@ -41,7 +41,7 @@ namespace Valve.VR
         
         private static SteamVR_Action_Boolean p_grabPullLocomotion_GrabL;
         
-        private static SteamVR_Action_Boolean p_grabPullLocomotion_Menu;
+        private static SteamVR_Action_Boolean p_grabPullLocomotion_BuildMenu;
         
         private static SteamVR_Action_Boolean p_grabPullLocomotion_GripR;
         
@@ -50,6 +50,8 @@ namespace Valve.VR
         private static SteamVR_Action_Boolean p_grabPullLocomotion_East;
         
         private static SteamVR_Action_Boolean p_grabPullLocomotion_West;
+        
+        private static SteamVR_Action_Boolean p_grabPullLocomotion_MainMenu;
         
         public static SteamVR_Action_Boolean default_InteractUI
         {
@@ -147,11 +149,11 @@ namespace Valve.VR
             }
         }
         
-        public static SteamVR_Action_Boolean grabPullLocomotion_Menu
+        public static SteamVR_Action_Boolean grabPullLocomotion_BuildMenu
         {
             get
             {
-                return SteamVR_Actions.p_grabPullLocomotion_Menu.GetCopy<SteamVR_Action_Boolean>();
+                return SteamVR_Actions.p_grabPullLocomotion_BuildMenu.GetCopy<SteamVR_Action_Boolean>();
             }
         }
         
@@ -187,6 +189,14 @@ namespace Valve.VR
             }
         }
         
+        public static SteamVR_Action_Boolean grabPullLocomotion_MainMenu
+        {
+            get
+            {
+                return SteamVR_Actions.p_grabPullLocomotion_MainMenu.GetCopy<SteamVR_Action_Boolean>();
+            }
+        }
+        
         private static void InitializeActionArrays()
         {
             Valve.VR.SteamVR_Input.actions = new Valve.VR.SteamVR_Action[] {
@@ -202,11 +212,12 @@ namespace Valve.VR
                     SteamVR_Actions.grabPullLocomotion_GrabR,
                     SteamVR_Actions.grabPullLocomotion_Pull,
                     SteamVR_Actions.grabPullLocomotion_GrabL,
-                    SteamVR_Actions.grabPullLocomotion_Menu,
+                    SteamVR_Actions.grabPullLocomotion_BuildMenu,
                     SteamVR_Actions.grabPullLocomotion_GripR,
                     SteamVR_Actions.grabPullLocomotion_GripL,
                     SteamVR_Actions.grabPullLocomotion_East,
-                    SteamVR_Actions.grabPullLocomotion_West};
+                    SteamVR_Actions.grabPullLocomotion_West,
+                    SteamVR_Actions.grabPullLocomotion_MainMenu};
             Valve.VR.SteamVR_Input.actionsIn = new Valve.VR.ISteamVR_Action_In[] {
                     SteamVR_Actions.default_InteractUI,
                     SteamVR_Actions.default_Teleport,
@@ -219,11 +230,12 @@ namespace Valve.VR
                     SteamVR_Actions.grabPullLocomotion_GrabR,
                     SteamVR_Actions.grabPullLocomotion_Pull,
                     SteamVR_Actions.grabPullLocomotion_GrabL,
-                    SteamVR_Actions.grabPullLocomotion_Menu,
+                    SteamVR_Actions.grabPullLocomotion_BuildMenu,
                     SteamVR_Actions.grabPullLocomotion_GripR,
                     SteamVR_Actions.grabPullLocomotion_GripL,
                     SteamVR_Actions.grabPullLocomotion_East,
-                    SteamVR_Actions.grabPullLocomotion_West};
+                    SteamVR_Actions.grabPullLocomotion_West,
+                    SteamVR_Actions.grabPullLocomotion_MainMenu};
             Valve.VR.SteamVR_Input.actionsOut = new Valve.VR.ISteamVR_Action_Out[] {
                     SteamVR_Actions.default_Haptic};
             Valve.VR.SteamVR_Input.actionsVibration = new Valve.VR.SteamVR_Action_Vibration[] {
@@ -237,11 +249,12 @@ namespace Valve.VR
                     SteamVR_Actions.default_HeadsetOnHead,
                     SteamVR_Actions.grabPullLocomotion_GrabR,
                     SteamVR_Actions.grabPullLocomotion_GrabL,
-                    SteamVR_Actions.grabPullLocomotion_Menu,
+                    SteamVR_Actions.grabPullLocomotion_BuildMenu,
                     SteamVR_Actions.grabPullLocomotion_GripR,
                     SteamVR_Actions.grabPullLocomotion_GripL,
                     SteamVR_Actions.grabPullLocomotion_East,
-                    SteamVR_Actions.grabPullLocomotion_West};
+                    SteamVR_Actions.grabPullLocomotion_West,
+                    SteamVR_Actions.grabPullLocomotion_MainMenu};
             Valve.VR.SteamVR_Input.actionsSingle = new Valve.VR.SteamVR_Action_Single[] {
                     SteamVR_Actions.default_Squeeze,
                     SteamVR_Actions.grabPullLocomotion_Pull};
@@ -259,11 +272,12 @@ namespace Valve.VR
                     SteamVR_Actions.grabPullLocomotion_GrabR,
                     SteamVR_Actions.grabPullLocomotion_Pull,
                     SteamVR_Actions.grabPullLocomotion_GrabL,
-                    SteamVR_Actions.grabPullLocomotion_Menu,
+                    SteamVR_Actions.grabPullLocomotion_BuildMenu,
                     SteamVR_Actions.grabPullLocomotion_GripR,
                     SteamVR_Actions.grabPullLocomotion_GripL,
                     SteamVR_Actions.grabPullLocomotion_East,
-                    SteamVR_Actions.grabPullLocomotion_West};
+                    SteamVR_Actions.grabPullLocomotion_West,
+                    SteamVR_Actions.grabPullLocomotion_MainMenu};
         }
         
         private static void PreInitActions()
@@ -280,11 +294,12 @@ namespace Valve.VR
             SteamVR_Actions.p_grabPullLocomotion_GrabR = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/GrabR")));
             SteamVR_Actions.p_grabPullLocomotion_Pull = ((SteamVR_Action_Single)(SteamVR_Action.Create<SteamVR_Action_Single>("/actions/GrabPullLocomotion/in/Pull")));
             SteamVR_Actions.p_grabPullLocomotion_GrabL = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/GrabL")));
-            SteamVR_Actions.p_grabPullLocomotion_Menu = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/Menu")));
+            SteamVR_Actions.p_grabPullLocomotion_BuildMenu = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/BuildMenu")));
             SteamVR_Actions.p_grabPullLocomotion_GripR = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/GripR")));
             SteamVR_Actions.p_grabPullLocomotion_GripL = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/GripL")));
             SteamVR_Actions.p_grabPullLocomotion_East = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/East")));
             SteamVR_Actions.p_grabPullLocomotion_West = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/West")));
+            SteamVR_Actions.p_grabPullLocomotion_MainMenu = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/GrabPullLocomotion/in/MainMenu")));
         }
     }
 }

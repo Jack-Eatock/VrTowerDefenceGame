@@ -41,11 +41,11 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Boolean Menu
+        public virtual SteamVR_Action_Boolean BuildMenu
         {
             get
             {
-                return SteamVR_Actions.grabPullLocomotion_Menu;
+                return SteamVR_Actions.grabPullLocomotion_BuildMenu;
             }
         }
         
@@ -78,6 +78,14 @@ namespace Valve.VR
             get
             {
                 return SteamVR_Actions.grabPullLocomotion_West;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean MainMenu
+        {
+            get
+            {
+                return SteamVR_Actions.grabPullLocomotion_MainMenu;
             }
         }
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: ArcherTower
   FireRate: 1
-  Range: 0.8
+  Range: 3
   ProjectileSpeed: 3.5
   ProjectileDamagePerEnemyHit: 25
   Cost: 10

@@ -68,7 +68,7 @@ public class PathGenerator : MonoBehaviour
                 _counter = 0;
             }
 
-            else if (_currentCord.y != 39)
+            else if (_currentCord.y != 25)
             {
                 Worm();
             }

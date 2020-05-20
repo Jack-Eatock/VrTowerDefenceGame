@@ -29,15 +29,6 @@ public class LevelInitiationScript : MonoBehaviour
 
         if (_level == Levels.Survival)
         {
-            Gamemanager.GetComponent<EnemySpawner>().UnitStorage = _enemeyStorage;
-
-            //BuildingScripto.Ground = _ground;
-            //BuildingScripto.InitatiateBuildingScript();
-
-            _grid.GetComponent<GridGenerator>().InitiateGridGeneration();
-            _gameWorld.GetComponent<PathGenerator>().InitiatePathGeneration();
-
-            //Gamemanager.GetComponent<GameScript>().InitiateWave();
 
         }
 

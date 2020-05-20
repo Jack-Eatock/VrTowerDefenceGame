@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: MageTower
   FireRate: 2
-  Range: 1.2
+  Range: 6
   ProjectileSpeed: 3
   ProjectileDamagePerEnemyHit: 40
   Cost: 30

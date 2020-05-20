@@ -25,7 +25,7 @@ public class PlacingTowersScript : MonoBehaviour
     private float _posX;
     private float _posZ;
     private float _posY;
-    private float _gridSpacing;
+    private float _halfedGridSpacing;
     private Vector3 _currentPosition;
     private int _currentPositionPosX;
     private int _currentPositionPosY;
@@ -59,6 +59,8 @@ public class PlacingTowersScript : MonoBehaviour
 
                 _gridHeight = GridGenerator.GridStatus.GetLength(1);
                 _gridWidth = GridGenerator.GridStatus.GetLength(0);
+
+
 
                 LockMinitureTowerToGrid();
 
@@ -181,7 +183,9 @@ public class PlacingTowersScript : MonoBehaviour
         _posZ =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.z;
         _posY = GameObject.Find("World").transform.position.y;
         
-        _gridSpacing = GridGenerator.GridSpacing / 2f;
+        _halfedGridSpacing = GridGenerator.GridSpacing / 2f;
+
+        //Debug.Log("Grid spacing for tower" + _halfedGridSpacing);
 
 
         for (int x = 0; x < _gridWidth; x++)
@@ -189,9 +193,9 @@ public class PlacingTowersScript : MonoBehaviour
             for (int y = 0; y < _gridHeight; y++)
             {
                 Vector3 Point = GridGenerator.GridStatus[x, y].Tile.transform.position;
-                if (Point.x < _posX + _gridSpacing && Point.x > _posX - _gridSpacing)
+                if (Point.x < _posX + _halfedGridSpacing && Point.x > _posX - _halfedGridSpacing)
                 {
-                    if (Point.z < _posZ + _gridSpacing && Point.z > _posZ - _gridSpacing)
+                    if (Point.z < _posZ + _halfedGridSpacing && Point.z > _posZ - _halfedGridSpacing)
                     {
                         _currentPosition = new Vector3(Point.x, _posY, Point.z);
 
