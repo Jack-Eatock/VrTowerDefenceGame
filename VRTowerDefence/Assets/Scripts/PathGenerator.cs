@@ -36,10 +36,12 @@ public class PathGenerator : MonoBehaviour
     private float _scaleFactor;
     private bool  _running = false;
 
+    [SerializeField] private int _pathEndNum = 0;
 
     private void Start()
     {
-    
+        _pathEndNum = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight - 1;
+        Debug.Log(_pathEndNum);
     }
 
     // Update is called once per frame
@@ -68,7 +70,7 @@ public class PathGenerator : MonoBehaviour
                 _counter = 0;
             }
 
-            else if (_currentCord.y != 25)
+            else if (_currentCord.y != _pathEndNum)
             {
                 Worm();
             }
@@ -161,7 +163,7 @@ public class PathGenerator : MonoBehaviour
     public void InitiatePathGeneration()
     {
 
-        _scaleFactor = MovementScript.ScaleFactor;
+        _scaleFactor = MovementScript.ScaleFactor / transform.localScale.x;
         Debug.Log("Generating Virtual Path.... With Scale Factor:" + _scaleFactor);
         PathTile NewTile = new PathTile
         {

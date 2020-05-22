@@ -57,7 +57,7 @@ public class PlacingTowersScript : MonoBehaviour
             if (_onRightHandCollWithGround.IsColliding) // If Mini Tower (Right hand Attachment point) is colliding with ground.
             {
 
-                Debug.Log("IsPlacing + Colliding with Groud");
+                //Debug.Log("IsPlacing + Colliding with Groud");
 
                 _gridHeight = GridGenerator.GridStatus.GetLength(1);
                 _gridWidth = GridGenerator.GridStatus.GetLength(0);
@@ -181,7 +181,7 @@ public class PlacingTowersScript : MonoBehaviour
 
     public void LockMinitureTowerToGrid()
     {
-        Debug.Log("Locking Tower to Grid.");
+        //Debug.Log("Locking Tower to Grid.");
 
         _towerPosX =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.x;
         _towerPosZ =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.z;
@@ -208,18 +208,18 @@ public class PlacingTowersScript : MonoBehaviour
                         towerWasAbleToLockToGrid = true;
                         _currentPosition = new Vector3(posOfTile.x, _towerPosY, posOfTile.z);
 
-                        Debug.Log("Position Updated");
+                        //Debug.Log("Position Updated");
 
                         if (GridGenerator.GridStatus[actualGridPointX, actualGridPointY].Available)
                         {
-                            Debug.Log("Tower can be placed at ths grid Point" + _currentPosition);
+                            //Debug.Log("Tower can be placed at ths grid Point" + _currentPosition);
                             _canPlaceTowerAtCurrentPos = true;
                             _currentPositionPosX = actualGridPointX;
                             _currentPositionPosY = actualGridPointY;
                         }
                         else if (_canPlaceTowerAtCurrentPos)
                         {
-                            Debug.Log("Current Grid Point is not placeable. " + _currentPosition);
+                            //Debug.Log("Current Grid Point is not placeable. " + _currentPosition);
                             _canPlaceTowerAtCurrentPos = false;
                         }
 
@@ -231,7 +231,7 @@ public class PlacingTowersScript : MonoBehaviour
 
         if (towerWasAbleToLockToGrid == false)
         {
-            Debug.Log("Tower Was unable to lock to the Grid. Tower was at position:" + new Vector3 (_towerPosX, _towerPosY, _towerPosZ ));
+            //Debug.Log("Tower Was unable to lock to the Grid. Tower was at position:" + new Vector3 (_towerPosX, _towerPosY, _towerPosZ ));
 
         }
     }

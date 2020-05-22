@@ -19,9 +19,12 @@ public class GridGenerator : MonoBehaviour
     public static GridPoint[,] GridStatus;
     public static float LocalGridSpacing = 0;
 
+   
+
+
     // Generating Grid Placement
-    [SerializeField]  private int _gridWidth = 0;
-    [SerializeField]  private int _gridHeight = 0;
+    public int _gridWidth = 0;
+    public int _gridHeight = 0;
     [SerializeField]  private GameObject _tileInUseGO = null;
     [SerializeField]  private Transform _inUseTilesStorage = null;
 
@@ -36,13 +39,12 @@ public class GridGenerator : MonoBehaviour
 
     public void Start()
     {
-       
     }
 
     public void InitiateGridGeneration()
     {
         _scaleFactor = MovementScript.ScaleFactor;
-       UpdateGridSpacing(_gridHeight);
+        UpdateGridSpacing(_gridHeight);
 
         Debug.Log("GridSpacing : " + LocalGridSpacing);
         
@@ -64,6 +66,8 @@ public class GridGenerator : MonoBehaviour
     public void Update()
     {
         UpdateGridSpacing(_gridHeight);
+
+
     }
 
     public static void UpdateGridSpacing(int gridHeight)
@@ -160,17 +164,19 @@ public class GridGenerator : MonoBehaviour
     // Function called to switch the ground material from having a grid or not. 
     public static void GridSwitch(bool activateGrid)
     {
+
+
         if (activateGrid)
         {
-            Material _grassMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassMat;
+            Material _grassGridMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassGridMat;
+            _grassGridMat.SetInt("Boolean_35F01A6F", 0);
             GridGenerator.OnLoadInUseTiles(false);
-            GameObject.Find("Ground").GetComponent<Renderer>().material = _grassMat;
         }
         else
         {
             Material _grassGridMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassGridMat;
+            _grassGridMat.SetInt("Boolean_35F01A6F", 1);
             GridGenerator.OnLoadInUseTiles(true);
-            GameObject.Find("Ground").GetComponent<Renderer>().material = _grassGridMat;
         }
     }
 

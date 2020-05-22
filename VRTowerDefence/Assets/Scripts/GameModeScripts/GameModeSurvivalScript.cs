@@ -32,6 +32,7 @@ public class GameModeSurvivalScript : MonoBehaviour
 
         _grid.GetComponent<GridGenerator>().InitiateGridGeneration();
         _gameWorld.GetComponent<PathGenerator>().InitiatePathGeneration();
+        _gameWorld.GetComponent<EnvironmentGenerator>().InitiateEnvironmentGeneration();
 
         MovementScript.MovementControllsDisabled = false;
 
