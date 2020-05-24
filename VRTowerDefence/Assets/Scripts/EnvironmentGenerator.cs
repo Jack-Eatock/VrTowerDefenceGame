@@ -16,11 +16,15 @@ public class EnvironmentGenerator : MonoBehaviour
     private GameObject _newGrass = null;
     private GameObject _grass = null;
 
+    [SerializeField] private Material _grassMat;
+
     [SerializeField] private int _entitiesToSpawn = 35;
 
     // Start is called before the first frame update
     void Start()
     {
+
+
         _environmentTilePresets = Resources.LoadAll<GameObject>("EnvironmentTilePresets");
         Debug.Log("Successfully Loaded:" + _environmentTilePresets.Length + " Environment Preset tiles");
 
@@ -29,8 +33,10 @@ public class EnvironmentGenerator : MonoBehaviour
 
         _gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridWidth;
         _gridHeight = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight;
+        
 
-       _grass = _environmentGrassTilePrests[0].gameObject;
+
+        //_grass = _environmentGrassTilePrests[0].gameObject;
 
         _running = true;
     }
@@ -45,6 +51,9 @@ public class EnvironmentGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _grassMat.SetFloat("Vector1_95D66403", MovementScript.ScaleFactor);
+
+
         if (_running && PathGenerator.PathGenerationComplete)
         {
 
@@ -54,10 +63,10 @@ public class EnvironmentGenerator : MonoBehaviour
        
                 if (_point.Available)
                 {
-                    _newGrass = GameObject.Instantiate(_grass);
-                    _newGrass.transform.SetParent(GameObject.Find("World").transform);
-                    _newGrass.transform.localScale = new Vector3(_scaleFactor, _scaleFactor * transform.localScale.x, _scaleFactor);
-                    _newGrass.transform.localPosition =_point.Position;
+                   // _newGrass = GameObject.Instantiate(_grass);
+                   // _newGrass.transform.SetParent(GameObject.Find("World").transform);
+                   // _newGrass.transform.localScale = new Vector3(_scaleFactor, _scaleFactor * transform.localScale.x, _scaleFactor);
+                   // _newGrass.transform.localPosition =_point.Position;
                 }
             }
             
@@ -74,7 +83,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
             foreach (Vector2 tile in _tilesToFill)
             {
-                Debug.Log("Tile:" + ap + tile);
+                //Debug.Log("Tile:" + ap + tile);
                 ap++;
             }
             
@@ -104,20 +113,29 @@ public class EnvironmentGenerator : MonoBehaviour
 
     private Vector2 GenerateRandomPoint()
     {
-        int x = Random.Range(0, _gridWidth);
-        int y = Random.Range(0, _gridHeight);
+        int x = 0;
+        int y = 0;
 
-        if (GridGenerator.GridStatus[x, y].Available)
+        bool flag = true;
+
+        while (flag)
         {
-            Debug.Log("Spawning Entity");
-            return new Vector2(x,y);
-        }
-        else
-        {
-            Debug.Log("Unable to spawn entity here.");
-            GenerateRandomPoint();
+            x = Random.Range(0, _gridWidth);
+            y = Random.Range(0, _gridHeight);
+
+            if (GridGenerator.GridStatus[x, y].Available)
+            {
+                Debug.Log("Spawning Entity");
+                flag = false;
+            }
+
+            else
+            {
+                Debug.Log("Unable to spawn entity here.");
+            }
+
         }
 
-        return Vector2.zero;
+        return new Vector2 (x,y);
     }
 }

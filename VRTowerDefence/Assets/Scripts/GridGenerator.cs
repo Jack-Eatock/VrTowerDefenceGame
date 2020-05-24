@@ -93,7 +93,7 @@ public class GridGenerator : MonoBehaviour
         }
     }
 
-    public static void SetGridPointAvailable(bool setPointAvailable, Vector2 pointToSet)
+    public static void SetGridPointAvailable(bool setPointAvailable, Vector2 pointToSet, bool display = true)
     {
         if (setPointAvailable)
         {
@@ -126,10 +126,27 @@ public class GridGenerator : MonoBehaviour
             }
 
             GridStatus[(int)pointToSet.x, (int)pointToSet.y].Available = false;
-            GridGenerator.OnLoadInUseTiles(true);
+           
+
             //GridStatus[(int)Point.x, (int)Point.y].Tile.SetActive(true);
         }
     }
+
+    public static void UpdateTilesLoaded(bool Display)
+    {
+
+        if (Display)
+        {
+            GridGenerator.OnLoadInUseTiles(true);
+        }
+
+        else
+        {
+            GridGenerator.OnLoadInUseTiles(false);
+        }
+
+    }
+
 
     public void GenerateTiles()
     {
@@ -157,7 +174,7 @@ public class GridGenerator : MonoBehaviour
             }
         }
 
-        OnLoadInUseTiles(true);
+        //OnLoadInUseTiles(false);
     }
 
 
@@ -170,13 +187,13 @@ public class GridGenerator : MonoBehaviour
         {
             Material _grassGridMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassGridMat;
             _grassGridMat.SetInt("Boolean_35F01A6F", 0);
-            GridGenerator.OnLoadInUseTiles(false);
+            UpdateTilesLoaded(false);
         }
         else
         {
             Material _grassGridMat = GameObject.Find("Grid").GetComponent<GridGenerator>().GrassGridMat;
             _grassGridMat.SetInt("Boolean_35F01A6F", 1);
-            GridGenerator.OnLoadInUseTiles(true);
+            UpdateTilesLoaded(true);
         }
     }
 

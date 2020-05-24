@@ -41,7 +41,7 @@ public class PathGenerator : MonoBehaviour
     private void Start()
     {
         _pathEndNum = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight - 1;
-        Debug.Log(_pathEndNum);
+        //Debug.Log(_pathEndNum);
     }
 
     // Update is called once per frame

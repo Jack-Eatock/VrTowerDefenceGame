@@ -140,6 +140,8 @@ public static class UtilitiesScript
 
         }
 
+        GridGenerator.UpdateTilesLoaded(true);
+
 
 
 
