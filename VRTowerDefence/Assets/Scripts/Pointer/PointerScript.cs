@@ -43,7 +43,7 @@ public class PointerScript : MonoBehaviour
         Vector3 endpos = transform.position + (transform.forward * targetlength);
 
         // Or based on Hit.
-        if (hit.collider != null)
+        if (hit.collider != null && targetlength == DefaultLength)
         {
             endpos = hit.point;
         }

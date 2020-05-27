@@ -73,7 +73,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
             for (int b = 0; b < _entitiesToSpawn; b++)
             {
-                Debug.Log(b);
+                //Debug.Log(b);
                 Vector2 point = GenerateRandomPoint();
                 _tilesToFill.Add(point);
 

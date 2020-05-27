@@ -19,6 +19,13 @@ public class PathGenerator : MonoBehaviour
 
     [SerializeField] private Vector2 _startingCords = Vector2.zero;
 
+    [SerializeField] private int _pathSpawnChanceUp    = 1;
+    [SerializeField] private int _pathSpawnChanceLeft  = 1;   // Keep them in this order!
+    [SerializeField] private int _pathSpawnChanceRight = 1;
+    [SerializeField] private int _pathSpawnChanceDown  = 1 ;
+
+    [SerializeField] private int[] _pathSpawnChanceArray;
+
     private Vector2 _currentCord = Vector2.zero;
     private int     _lastDirection = 1;
     private int     _maxIterations = 400;
@@ -31,7 +38,7 @@ public class PathGenerator : MonoBehaviour
     public GameObject StraightPathGo;
     public GameObject CornerPieceGo;
 
-    
+    private GridGenerator _gridGenerator;
 
     private float _scaleFactor;
     private bool  _running = false;
@@ -40,7 +47,18 @@ public class PathGenerator : MonoBehaviour
 
     private void Start()
     {
+        _pathSpawnChanceArray = new int[4];
+        _pathSpawnChanceArray[0] = _pathSpawnChanceUp;   // This order is important!
+        _pathSpawnChanceArray[1] = _pathSpawnChanceLeft;
+        _pathSpawnChanceArray[2] = _pathSpawnChanceRight;
+        _pathSpawnChanceArray[3] = _pathSpawnChanceDown;
+
+
+
         _pathEndNum = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight - 1;
+        _gridGenerator = GameObject.Find("Grid").GetComponent<GridGenerator>();
+
+        Debug.Log("GridGen width" + _gridGenerator._gridWidth);
         //Debug.Log(_pathEndNum);
     }
 
@@ -224,8 +242,39 @@ public class PathGenerator : MonoBehaviour
 
     public void Worm()
     {
-        int Direction = Random.Range(0, 100);
 
+        int Direction = UtilitiesScript.RandomiseByWeight(_pathSpawnChanceArray);  //Random.Range(0, 100);
+
+
+        switch (Direction)
+        {
+            case 0:    // Direction = Up
+                _lastDirection = 1;
+                AttemptToMove(new Vector2(0, 1));
+                return;
+
+            case 1:    // Direction = Left
+                _lastDirection = 2;
+                AttemptToMove(new Vector2(-1, 0));
+                return;
+
+            case 2:    // Direction = Right
+                _lastDirection = 3;
+                AttemptToMove(new Vector2(1, 0));
+
+                return;
+
+            case 3:    // Direction = Down
+                _lastDirection = 4;
+                AttemptToMove(new Vector2(0, -1));
+                return;
+
+        }
+
+        /*
+         * Old Method of randomising Path Generation.
+         * New method has much easier controll
+         * 
         if (Direction < 20) // Left 35 percent Chance.
         {
             _lastDirection = 2;
@@ -252,6 +301,8 @@ public class PathGenerator : MonoBehaviour
             AttemptToMove(new Vector2(0, -1));
 
         }
+
+        */
     }
 
     public void AttemptToMove(Vector2 offset)
@@ -319,7 +370,7 @@ public class PathGenerator : MonoBehaviour
                 flag = true;
             }
         }
-        if (newCord.x >= 40 || newCord.x < 0 || newCord.y < 0)
+        if (newCord.x >= _gridGenerator._gridWidth || newCord.x < 0 || newCord.y < 0)
         {
             flag = true;
         }
