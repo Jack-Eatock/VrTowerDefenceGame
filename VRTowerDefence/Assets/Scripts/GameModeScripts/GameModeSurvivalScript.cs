@@ -20,6 +20,9 @@ public class GameModeSurvivalScript : MonoBehaviour
     // Start is called before the first frame updates
     void Start()
     {
+
+        MovementScript.MovementControllsDisabled = false;
+
         MethodToCall = OnStartWave;
 
         _gameManager = GameObject.Find("GAMEMANAGER");
@@ -42,7 +45,7 @@ public class GameModeSurvivalScript : MonoBehaviour
 
     private void Update()
     {
-
+        
     }
 
 

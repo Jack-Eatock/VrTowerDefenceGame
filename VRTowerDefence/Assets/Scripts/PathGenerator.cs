@@ -114,12 +114,9 @@ public class PathGenerator : MonoBehaviour
                         {
                         
                             newTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
-                            
-                          
 
-                            newTile.transform.SetParent(PathStorage.transform);
-                            newTile.transform.localScale = new Vector3(_scaleFactor, _scaleFactor, _scaleFactor);
-                            newTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
+                            UtilitiesScript.AttachObjectToWorld(newTile, GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position);
+                            
                             break;
                         }
 
@@ -152,9 +149,9 @@ public class PathGenerator : MonoBehaviour
 
                         if (newTile)
                         {
-                            newTile.transform.SetParent(PathStorage.transform);
-                            newTile.transform.localScale = new Vector3(_scaleFactor, _scaleFactor, _scaleFactor);
-                            newTile.transform.localPosition = GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position;
+                            UtilitiesScript.AttachObjectToWorld(newTile, GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position);
+
+                          
                         }
 
                         _lastDirection = PathTiles[Tick].Direction;
@@ -181,8 +178,9 @@ public class PathGenerator : MonoBehaviour
     public void InitiatePathGeneration()
     {
 
-        _scaleFactor = MovementScript.ScaleFactor / transform.localScale.x;
+        _scaleFactor = MovementScript.ScaleFactor; // / transform.localScale.x;
         Debug.Log("Generating Virtual Path.... With Scale Factor:" + _scaleFactor);
+
         PathTile NewTile = new PathTile
         {
             Direction = 1,

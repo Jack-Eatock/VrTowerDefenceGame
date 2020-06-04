@@ -69,9 +69,10 @@ public class PlacingTowersScript : MonoBehaviour
                 if (_newTower == null) // If it has not been generated yet. 
                 {
                     Debug.Log("NewTower Being Generated.");
+
                     _newTower = GameObject.Instantiate(_menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray].TowerGO);
                     _newTower.transform.position = _currentPosition;
-                    _newTower.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
+                    _newTower.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor); // Uses Global Scale because it is not child of the world yet.
                     _menuTowerScript.CurrentlyDisplayedTower.SetActive(false);
 
                 }
@@ -252,8 +253,13 @@ public class PlacingTowersScript : MonoBehaviour
             _placedTowersStorage = GameObject.Instantiate(_placedTowerStoragePrefab, GameObject.Find("World").transform);
         }
 
+
+
         _newTower.transform.SetParent(_placedTowersStorage.transform);
         _newTower.transform.position = new Vector3(TilePosition.x, GameObject.Find("World").transform.position.y, TilePosition.z);
+
+
+
         UtilitiesScript.CircleRadius(new Vector2(_currentPositionPosX, _currentPositionPosY), 2);
 
         ResetPlacing();

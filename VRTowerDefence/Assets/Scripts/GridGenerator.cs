@@ -14,6 +14,8 @@ public class GridPoint
 public class GridGenerator : MonoBehaviour
 {
 
+
+    public static float InitialScaleFactor = 1;
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
     public static bool GridCanBeUpdated = false;
     public static GridPoint[,] GridStatus;
@@ -25,10 +27,9 @@ public class GridGenerator : MonoBehaviour
     // Generating Grid Placement
     public int _gridWidth = 0;
     public int _gridHeight = 0;
-    [SerializeField]  private GameObject _tileInUseGO = null;
-    [SerializeField]  private Transform _inUseTilesStorage = null;
 
-    private float _scaleFactor;
+    [SerializeField]  private GameObject _tileInUseGO = null;
+
 
 
     [Header("Grid Switch Variables")] // Switching grid ON/OFF Visual only \\
@@ -41,9 +42,9 @@ public class GridGenerator : MonoBehaviour
     {
     }
 
+
     public void InitiateGridGeneration()
     {
-        _scaleFactor = MovementScript.ScaleFactor;
         UpdateGridSpacing(_gridHeight);
 
         Debug.Log("GridSpacing : " + LocalGridSpacing);
@@ -57,6 +58,7 @@ public class GridGenerator : MonoBehaviour
                 GridStatus[x, y] = new GridPoint();
             }
         }
+
         GenerateGrid(LocalGridSpacing);
         GenerateTiles();
     }
@@ -95,6 +97,8 @@ public class GridGenerator : MonoBehaviour
 
     public static void SetGridPointAvailable(bool setPointAvailable, Vector2 pointToSet, bool display = true)
     {
+        //Debug.Log("PointToSet" + pointToSet);
+
         if (setPointAvailable)
         {
             int counter = 0;
@@ -155,9 +159,11 @@ public class GridGenerator : MonoBehaviour
             for (int y = 0; y < _gridHeight; y++)
             {
                 GameObject newTile = GameObject.Instantiate(_tileInUseGO);
-                newTile.transform.SetParent(_inUseTilesStorage);
-                newTile.transform.localScale = new Vector3(_scaleFactor, _scaleFactor, _scaleFactor);
-                newTile.transform.localPosition = GridStatus[x,y].Position;
+
+
+                UtilitiesScript.AttachObjectToWorld(newTile, GridStatus[x, y].Position);
+
+
                 newTile.SetActive(false);
                 GridStatus[x, y].Tile = newTile;
             }

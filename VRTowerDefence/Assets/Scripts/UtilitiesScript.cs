@@ -114,6 +114,8 @@ public static class UtilitiesScript
 
     public static void CircleRadius(Vector2 StartingCords, int Radius)
     {
+        float gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridWidth;
+
         List<Vector2> Cords = new List<Vector2>();
         int Offset = 0;
         for (int Counter = 1; Counter <= (Radius + 1); Counter++)
@@ -131,9 +133,10 @@ public static class UtilitiesScript
             }
         }
 
+
         foreach (Vector2 Cord in Cords)
         {
-            if (Cord.x < 26 && Cord.x >= 0 && Cord.y < 26 && Cord.y >= 0)
+            if (Cord.x < gridWidth && Cord.x >= 0 && Cord.y < gridWidth  && Cord.y >= 0)
             {
                 GridGenerator.SetGridPointAvailable(false, Cord);
             }
@@ -142,8 +145,20 @@ public static class UtilitiesScript
 
         GridGenerator.UpdateTilesLoaded(true);
 
+    }
 
+    public static void AttachObjectToWorld(GameObject entityToSpawn, Vector3 posToSpawn, bool dontUseInitialScale = false)
+    {
+        GameObject world = GameObject.Find("World");
+        float scaleFactor = 1f;
 
+        if (dontUseInitialScale)
+        {
+            scaleFactor = MovementScript.ScaleFactor;
+        }
 
+        entityToSpawn.transform.SetParent(world.transform);
+        entityToSpawn.transform.localScale = new Vector3 (scaleFactor,scaleFactor,scaleFactor);
+        entityToSpawn.transform.localPosition = posToSpawn;
     }
 }
