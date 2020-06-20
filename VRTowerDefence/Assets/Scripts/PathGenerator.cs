@@ -58,7 +58,7 @@ public class PathGenerator : MonoBehaviour
         _pathEndNum = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight - 1;
         _gridGenerator = GameObject.Find("Grid").GetComponent<GridGenerator>();
 
-        Debug.Log("GridGen width" + _gridGenerator._gridWidth);
+       // Debug.Log("GridGen width" + _gridGenerator._gridWidth);
         //Debug.Log(_pathEndNum);
     }
 
@@ -116,7 +116,9 @@ public class PathGenerator : MonoBehaviour
                             newTile = GameObject.Instantiate(StraightPathGo); // Defualt is Up
 
                             UtilitiesScript.AttachObjectToWorld(newTile, GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position);
-                            
+                            newTile.transform.SetParent(PathStorage.transform);
+
+
                             break;
                         }
 
@@ -150,7 +152,7 @@ public class PathGenerator : MonoBehaviour
                         if (newTile)
                         {
                             UtilitiesScript.AttachObjectToWorld(newTile, GridGenerator.GridStatus[(int)PathTiles[Tick - 1].Cords.x, (int)PathTiles[Tick - 1].Cords.y].Position);
-
+                            newTile.transform.SetParent(PathStorage.transform);
                           
                         }
 

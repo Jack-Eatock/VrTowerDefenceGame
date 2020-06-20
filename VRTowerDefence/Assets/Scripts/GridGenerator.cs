@@ -29,6 +29,7 @@ public class GridGenerator : MonoBehaviour
     public int _gridHeight = 0;
 
     [SerializeField]  private GameObject _tileInUseGO = null;
+    [SerializeField] private GameObject _tileStorage = null;
 
 
 
@@ -47,7 +48,7 @@ public class GridGenerator : MonoBehaviour
     {
         UpdateGridSpacing(_gridHeight);
 
-        Debug.Log("GridSpacing : " + LocalGridSpacing);
+        //Debug.Log("GridSpacing : " + LocalGridSpacing);
         
         GridStatus = new GridPoint[_gridWidth, _gridHeight];
 
@@ -162,6 +163,7 @@ public class GridGenerator : MonoBehaviour
 
 
                 UtilitiesScript.AttachObjectToWorld(newTile, GridStatus[x, y].Position);
+                newTile.transform.SetParent(_tileStorage.transform);
 
 
                 newTile.SetActive(false);

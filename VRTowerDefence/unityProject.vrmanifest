@@ -2,13 +2,13 @@
   "source": "Unity",
   "applications": [
     {
-      "app_key": "application.generated.unity.tabletoptownvr.exe",
+      "app_key": "application.generated.unity.vrtowerdefencegame.exe",
       "launch_type": "url",
       "url": "steam://launch/",
-      "action_manifest_path": "D:\\Unity - TowerDefence\\VrTowerDefenceGameCurrent\\VRTowerDefence\\actions.json",
+      "action_manifest_path": "E:\\UnityRelated\\Projects\\Github\\VrTowerDefenceGame\\VRTowerDefence\\actions.json",
       "strings": {
         "en_us": {
-          "name": "TableTopTownVR [Testing]"
+          "name": "VrTowerDefenceGame [Testing]"
         }
       }
     }
