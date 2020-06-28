@@ -91,7 +91,18 @@ namespace Valve.VR
         /// <param name="inputSource">The device you would like to get data from. Any if the action is not device specific.</param>
         public bool GetState(SteamVR_Input_Sources inputSource)
         {
-            return sourceMap[inputSource].state;
+            if (sourceMap == null)
+            {
+                Debug.LogWarning("Controller has lost connection");
+                return false;
+            }
+
+            else
+            {
+                return sourceMap[inputSource].state;
+            }
+
+          
         }
 
         /// <summary>[For the previous update] Returns true if the value of the action has been set to true (from false).</summary>

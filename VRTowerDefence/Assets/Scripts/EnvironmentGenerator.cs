@@ -10,26 +10,29 @@ public class EnvironmentGenerator : MonoBehaviour
 
     [Header("Chance (by Weight) entity spawns.")]
 
-    [SerializeField] private int _chance_Grass_Tile;
     [SerializeField] private int _chance_1x1_Tile;
     [SerializeField] private int _chance_2x2_Tile;
     [SerializeField] private int _chance_3x3_Tile;
 
     [SerializeField] private int[] EnvTilesByWeight = new int[4];
 
+    [Header("What percent of left over tiles should have folliage?")]
+
+    [SerializeField, Range(0, 1)] private float _percentFolliageToSpawn = 0.5f;
+
+
     enum Direction { UpRight, UpLeft, DownRight, DownLeft };
     private Direction[] _directionsArray = new Direction[] { Direction.UpRight, Direction.UpLeft, Direction.DownLeft, Direction.DownRight };
 
     // Tiles to load ready. \\
 
-    private GameObject[] _env_DefaultGrass_Tiles;
+    private GameObject[] env_Foliage_Tiles;
     private GameObject[] _env_1x1_Tiles;
     private GameObject[] _env_2x2_Tiles;
     private GameObject[] _env_3x3_Tiles;
 
     // Required Variables \\
-    
-    private int _numOfEnv_DefaultGrass_Tiles = 0;
+
     private int _numOfEnv_1x1_Tiles = 0;
     private int _numOfEnv_2x2_Tiles = 0;
     private int _numOfEnv_3x3_Tiles = 0;
@@ -38,14 +41,14 @@ public class EnvironmentGenerator : MonoBehaviour
     private int _gridHeight = 0;
     private int _gridWidth = 0;
     private bool _running = false;
-    
-    [Header ("Variables needed to be asigned")]
+
+    [Header("Variables needed to be asigned")]
 
     [SerializeField] private Material _grassMat; // Keeps the grass animation to the correct scale.
 
-    [Header ("Environement Tile Storage")]
+    [Header("Environement Tile Storage")]
 
-    [SerializeField] private Transform _grass_Tile_Storage;
+    [SerializeField] private Transform _folliage_tile_Storage;
     [SerializeField] private Transform _1x1_Tile_Storage;
     [SerializeField] private Transform _2x2_Tile_Storage;
     [SerializeField] private Transform _3x3_Tile_Storage;
@@ -61,7 +64,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
     private void OnValidate()
     {
-        EnvTilesByWeight = new int[] { _chance_Grass_Tile, _chance_1x1_Tile, _chance_2x2_Tile, _chance_3x3_Tile };
+        EnvTilesByWeight = new int[] { _chance_1x1_Tile, _chance_2x2_Tile, _chance_3x3_Tile };
     }
 
 
@@ -74,8 +77,8 @@ public class EnvironmentGenerator : MonoBehaviour
 
         Debug.Log("Loading Environement Tiles.");
 
-        _env_DefaultGrass_Tiles = Resources.LoadAll<GameObject>("Env_DefaultGrass_Tiles");
-        Debug.Log("Successfully Loaded: (" + _env_DefaultGrass_Tiles.Length + ") Env_DefaultGrass_Tiles presets");
+        env_Foliage_Tiles = Resources.LoadAll<GameObject>("Env_Folliage_Tiles");
+        Debug.Log("Successfully Loaded: (" + env_Foliage_Tiles.Length + ") Env_Folliage_Tiles presets");
 
 
         _env_1x1_Tiles = Resources.LoadAll<GameObject>("Env_1x1_Tiles");
@@ -113,20 +116,35 @@ public class EnvironmentGenerator : MonoBehaviour
 
         if (_running && PathGenerator.PathGenerationComplete)
         {
+            //Log("Check 1");
+
             // Calculate the chances.
             CalculateNumberOfEachTile();
+
+            //Debug.Log("Check 2");
 
             // Place all the 3x3 tiles if there are any.
             AttemptToPlace3x3Tiles();
 
+            //Debug.Log("Check 3");
+
             // Place all the 2x2 tiles if there are any.
             AttemptToPlace2x2Tiles();
+
+            //Debug.Log("Check 4");
 
             // Place all the 1x1 tiles if there are any.
             AttemptToPlace1x1Tiles();
 
-            // Place all the Grass tiles if there are any.
-            AttemptToPlaceGrassTiles();
+            //Debug.Log("Check 5");
+
+            // Fill in gaps with Folliage.
+            AttemptToPlaceFolliage();
+
+            //Debug.Log("Check 6");
+
+            _running = false;
+
 
 
             /*
@@ -169,7 +187,7 @@ public class EnvironmentGenerator : MonoBehaviour
             
 
             */
-            _running = false;
+
         }
 
     }
@@ -187,19 +205,15 @@ public class EnvironmentGenerator : MonoBehaviour
 
             switch (randIndex)
             {
-                case 0: // Default Grass Tile.
-                    _numOfEnv_DefaultGrass_Tiles++;
-                    break;
-
-                case 1: // 1x1 Tile.
+                case 0: // 1x1 Tile.
                     _numOfEnv_1x1_Tiles++;
                     break;
 
-                case 2: // 2x2 Tile.
+                case 1: // 2x2 Tile.
                     _numOfEnv_2x2_Tiles++;
                     break;
 
-                case 3: // 3x3 Tile.
+                case 2: // 3x3 Tile.
                     _numOfEnv_3x3_Tiles++;
                     break;
 
@@ -207,7 +221,6 @@ public class EnvironmentGenerator : MonoBehaviour
 
         }
 
-        Debug.Log("Spawning GrassTiles: (" + _numOfEnv_DefaultGrass_Tiles + ")");
         Debug.Log("Spawning 1x1 Tiles: (" + _numOfEnv_1x1_Tiles + ")");
         Debug.Log("Spawning 2x2 Tiles: (" + _numOfEnv_2x2_Tiles + ")");
         Debug.Log("Spawning 3x3 Tiles: (" + _numOfEnv_3x3_Tiles + ")");
@@ -230,9 +243,59 @@ public class EnvironmentGenerator : MonoBehaviour
         AttemptToPlaceSingleTile(_numOfEnv_1x1_Tiles, _env_1x1_Tiles, false);
     }
 
-    private void AttemptToPlaceGrassTiles()
+    private void AttemptToPlaceFolliage()
     {
-        AttemptToPlaceSingleTile(_numOfEnv_DefaultGrass_Tiles, _env_DefaultGrass_Tiles, true);
+        // Calculate how many tiles are still available.
+
+        List<GridPoint> tilesThatAreAvailable = new List<GridPoint>();
+        List<GridPoint> tileThatWeAreGoingToSet = new List<GridPoint>();
+
+        foreach (GridPoint tile in GridGenerator.GridStatus)
+        {
+            if (tile.Available)
+            {
+                tilesThatAreAvailable.Add(tile);
+            }
+        }
+
+        Debug.Log("Tiles that are available : " + tilesThatAreAvailable.Count);
+
+        // Calculate how many of those tiles we actually want to fill.
+
+        int numOfTilesToFill = Mathf.CeilToInt(tilesThatAreAvailable.Count * _percentFolliageToSpawn);
+
+        // Randomly choose points out of the available points.
+
+        for (int tileIndex = 0; tileIndex < numOfTilesToFill; tileIndex++)
+        {
+            // Choose a random tile to set.
+
+            int randomTile = Random.Range(0, tilesThatAreAvailable.Count - 1);
+
+            // Add that random tile to be used later.
+
+            tileThatWeAreGoingToSet.Add(tilesThatAreAvailable[randomTile]);
+            tilesThatAreAvailable.RemoveAt(randomTile);  // Remove the tile we added from the available list. So it is not added again.
+
+        }
+
+        Debug.Log("Tiles to be Created: " + tileThatWeAreGoingToSet.Count);
+
+        // Now we know what tiles to chuck folliage on, create the folliage.
+
+        GameObject newFolliage;
+
+        foreach (GridPoint tile in tileThatWeAreGoingToSet)
+        {
+            newFolliage = GameObject.Instantiate(env_Foliage_Tiles[Random.Range(0, env_Foliage_Tiles.Length)]);
+            UtilitiesScript.AttachObjectToWorld(newFolliage, tile.Position);
+
+            newFolliage.transform.rotation *= (Quaternion.Euler(0, Random.Range(0, 4) * 90, 0));
+            newFolliage.transform.SetParent(_folliage_tile_Storage);
+        }
+
+
+        // AttemptToPlaceSingleTile(_numOfEnv_DefaultGrass_Tiles, _env_DefaultGrass_Tiles, true);
     }
 
     private void AttemptToPlaceSingleTile(int numOfTiles, GameObject[] envTiles, bool isGrass)
@@ -240,14 +303,19 @@ public class EnvironmentGenerator : MonoBehaviour
         Vector2 randomPoint;
         bool posPlaceable = false;
 
-        int placementAttempt = 0;
+        int placementAttempt;
         int maxPlacementAttempts = 3;
-        bool attemptToPlace = true;
+        bool attemptToPlace;
 
-        while (attemptToPlace) // allows it to attempt to place 3 times before giving up
+        for (int entity = 0; entity < numOfTiles; entity++)
         {
-            for (int entity = 0; entity < numOfTiles; entity++)
+
+            placementAttempt = 0;
+            attemptToPlace = true;
+
+            while (attemptToPlace) // allows it to attempt to place 3 times before giving up
             {
+
                 randomPoint = GenerateRandomPoint();
 
                 if (GridGenerator.GridStatus[(int)randomPoint.x, (int)randomPoint.y].Available)
@@ -272,7 +340,7 @@ public class EnvironmentGenerator : MonoBehaviour
                     // Set the points not available.
                     if (isGrass)
                     {
-                        entityToPlace.transform.SetParent(_grass_Tile_Storage);
+                        entityToPlace.transform.SetParent(_folliage_tile_Storage);
                     }
 
                     else
@@ -292,16 +360,25 @@ public class EnvironmentGenerator : MonoBehaviour
                     if (placementAttempt >= maxPlacementAttempts)
                     {
                         attemptToPlace = false;
-                        Debug.Log("Failed to place");
+                        Debug.LogWarning("Failed to place too many times!!");
+                    }
+
+                    else
+                    {
+                        Debug.Log("Tile Failed to Place");
                     }
 
                     // Add something to deal with if it cant be placed. (rare occasion.)
+
+
                 }
-
-
 
             }
         }
+
+
+
+
     }
 
     private void AttemptToPlaceAMultiTile(int numOfTiles, GameObject[] envTiles, int multiTileWidth)
@@ -309,14 +386,20 @@ public class EnvironmentGenerator : MonoBehaviour
         Vector2 randomPoint;
         bool posPlaceable;
 
-        int placementAttempt = 0;
+        int placementAttempt;
         int maxPlacementAttempts = 3;
-        bool attemptToPlace = true;
+        bool attemptToPlace;
 
-        while (attemptToPlace) // allows it to attempt to place 3 times before giving up
+        for (int entity = 0; entity < numOfTiles; entity++)
         {
-            for (int entity = 0; entity < numOfTiles; entity++)
+
+            //Reset the attempt to place loop.
+            placementAttempt = 0;
+            attemptToPlace = true;
+
+            while (attemptToPlace) // allows it to attempt to place 3 times before giving up
             {
+
                 randomPoint = GenerateRandomPoint();
                 posPlaceable = CheckMultiTilePointsAvailable(randomPoint, multiTileWidth);
 
@@ -338,7 +421,7 @@ public class EnvironmentGenerator : MonoBehaviour
                     UtilitiesScript.AttachObjectToWorld(entityToPlace, posToPlace);
 
                     entityToPlace.transform.rotation *= (Quaternion.Euler(0, Random.Range(0, 4) * 90, 0));
-                    
+
                     if (multiTileWidth == 2)
                     {
                         entityToPlace.transform.SetParent(_2x2_Tile_Storage);
@@ -366,19 +449,25 @@ public class EnvironmentGenerator : MonoBehaviour
                     if (placementAttempt >= maxPlacementAttempts)
                     {
                         attemptToPlace = false;
-                        Debug.Log("Failed to place");
+                        Debug.LogWarning("Failed to place too many times!!");
+                    }
+
+                    else
+                    {
+                        Debug.Log("Tile Failed to Place");
                     }
 
                     // Add something to deal with if it cant be placed. (rare occasion.)
+
+
                 }
 
-
-
             }
-        }
-        
 
-       
+        }
+
+
+
     }
 
     private bool CheckMultiTilePointsAvailable(Vector2 startingCords, int widthOfMultiTile)
@@ -401,17 +490,17 @@ public class EnvironmentGenerator : MonoBehaviour
                     {
                         for (int y = (int)startingCords.y; y < startingCords.y + widthOfMultiTile; y++)  // loops through every
                         {
-                           // Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
+                            // Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
 
-                            if (x > (_gridWidth - 1) || y >=(_gridHeight - 1) || x < 0 || y < 0)
+                            if (x > (_gridWidth - 1) || y >= (_gridHeight - 1) || x < 0 || y < 0)
                             {
-                              //  Debug.Log("Out Of Bounds!");
+                                //  Debug.Log("Out Of Bounds!");
                                 isPlacable = false;
                             }
 
                             else if (!GridGenerator.GridStatus[x, y].Available)
                             {
-                               // Debug.Log("Not available");
+                                // Debug.Log("Not available");
                                 isPlacable = false;
                             }
 
@@ -433,7 +522,7 @@ public class EnvironmentGenerator : MonoBehaviour
                     {
                         for (int y = (int)startingCords.y; y < startingCords.y + widthOfMultiTile; y++)  // loops through every
                         {
-                          //  Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
+                            //  Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
 
                             if (x > (_gridWidth - 1) || y >= (_gridHeight - 1) || x < 0 || y < 0)
                             {
@@ -443,7 +532,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
                             else if (!GridGenerator.GridStatus[x, y].Available)
                             {
-                               // Debug.Log("Not available");
+                                // Debug.Log("Not available");
                                 isPlacable = false;
                             }
 
@@ -467,16 +556,16 @@ public class EnvironmentGenerator : MonoBehaviour
                     {
                         for (int y = (int)startingCords.y; y > startingCords.y - widthOfMultiTile; y--)  // loops through every
                         {
-                           // Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
+                            // Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
                             if (x > (_gridWidth - 1) || y >= (_gridHeight - 1) || x < 0 || y < 0)
                             {
-                             //   Debug.Log("Out Of Bounds!");
+                                //   Debug.Log("Out Of Bounds!");
                                 isPlacable = false;
                             }
 
                             else if (!GridGenerator.GridStatus[x, y].Available)
                             {
-                               // Debug.Log("Not available");
+                                // Debug.Log("Not available");
                                 isPlacable = false;
                             }
 
@@ -501,13 +590,13 @@ public class EnvironmentGenerator : MonoBehaviour
                             //Debug.Log(x + " " + y + " " + _gridWidth + " " + _gridHeight);
                             if (x > (_gridWidth - 1) || y >= (_gridHeight - 1) || x < 0 || y < 0)
                             {
-                               // Debug.Log("Out Of Bounds!");
+                                // Debug.Log("Out Of Bounds!");
                                 isPlacable = false;
                             }
 
                             else if (!GridGenerator.GridStatus[x, y].Available)
                             {
-                               // Debug.Log("Not available");
+                                // Debug.Log("Not available");
                                 isPlacable = false;
                             }
 
@@ -662,7 +751,7 @@ public class EnvironmentGenerator : MonoBehaviour
         return valueToReturn;
     }
     */
-   
+
 
 
 
