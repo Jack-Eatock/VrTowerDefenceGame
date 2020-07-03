@@ -1,23 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Valve.VR;
 
 // Cleared \\
 
 public class LevelManager : MonoBehaviour
 {
 
-
     public enum Levels { Lobby, Survival, Campaign, COOP };
     public static Levels CurrentLevel = Levels.Lobby;
 
     public Levels SetLevel;
 
+    public GameObject _SceneTransition;
+    public static GameObject SceneTransition;
+
 
     public void Start()
     {
-       SwitchLevel(Levels.Lobby);
+        SceneTransition = _SceneTransition;
+        SwitchLevel(Levels.Lobby);
+       
     }
 
     public void Update()
@@ -45,20 +48,37 @@ public class LevelManager : MonoBehaviour
 
             case Levels.Lobby:
                 Debug.Log("Loading Lobby");
-                SceneManager.LoadScene("Lobby");
+                BeginSceneTransition("Lobby", false);
+
+                //SceneManager.LoadScene("Lobby");
                 break;
 
-            case Levels.COOP:
+               
+            case Levels.COOP: 
                 Debug.Log("Loading COOP");
                 break;
 
             case Levels.Survival:
-                Debug.Log("Loading Survival");
-                SceneManager.LoadScene("Survival");
+                //Debug.Log("Loading Survival");
+                BeginSceneTransition("Survival", true);
+
+                //SceneManager.LoadScene("Survival");
+
                 break;
 
         }
 
         
+    }
+
+
+    public static void BeginSceneTransition(string sceneName, bool usepauseFunc)
+    {
+        GameObject sceneTransition = GameObject.Instantiate(SceneTransition);
+        SteamVR_LoadLevel loadLevel = sceneTransition.GetComponent<SteamVR_LoadLevel>();
+
+        loadLevel.usePauseFunc = usepauseFunc;
+        loadLevel.levelName = sceneName;
+        loadLevel.enabled = true;
     }
 }

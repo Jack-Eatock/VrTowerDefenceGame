@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8ca47ed2ac6f841887ed17f94f15f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meshCombinerScript: {fileID: 2121822915}
   _gameWorld: {fileID: 1868694158}
   _grid: {fileID: 734318213}
   _unitStorage: {fileID: 844320762}
@@ -959,7 +960,7 @@ MonoBehaviour:
   _chance_2x2_Tile: 8
   _chance_3x3_Tile: 2
   EnvTilesByWeight: 3c0000000800000002000000
-  _percentFolliageToSpawn: 0.2
+  _percentFolliageToSpawn: 0.4
   _grassMat: {fileID: 2100000, guid: 91e38a4957f7cea4a892b5ab637dd0fb, type: 2}
   _folliage_tile_Storage: {fileID: 1899638943}
   _1x1_Tile_Storage: {fileID: 471124089}

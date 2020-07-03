@@ -105,6 +105,34 @@ public class EnvironmentGenerator : MonoBehaviour
     {
         _scaleFactor = MovementScript.ScaleFactor / transform.localScale.x;
         Debug.Log("Generating Environment.... With Scale Factor:" + _scaleFactor);
+
+        // Calculate the chances.
+        CalculateNumberOfEachTile();
+
+        //Debug.Log("Check 2");
+
+        // Place all the 3x3 tiles if there are any.
+        AttemptToPlace3x3Tiles();
+
+        //Debug.Log("Check 3");
+
+        // Place all the 2x2 tiles if there are any.
+        AttemptToPlace2x2Tiles();
+
+        //Debug.Log("Check 4");
+
+        // Place all the 1x1 tiles if there are any.
+        AttemptToPlace1x1Tiles();
+
+        //Debug.Log("Check 5");
+
+        // Fill in gaps with Folliage.
+        AttemptToPlaceFolliage();
+
+        //Debug.Log("Check 6");
+
+        GameModeSurvivalScript.GenerationTicker = 3;
+
     }
 
 
@@ -112,84 +140,6 @@ public class EnvironmentGenerator : MonoBehaviour
     void Update()
     {
         _grassMat.SetFloat("Vector1_95D66403", MovementScript.ScaleFactor);
-
-
-        if (_running && PathGenerator.PathGenerationComplete)
-        {
-            //Log("Check 1");
-
-            // Calculate the chances.
-            CalculateNumberOfEachTile();
-
-            //Debug.Log("Check 2");
-
-            // Place all the 3x3 tiles if there are any.
-            AttemptToPlace3x3Tiles();
-
-            //Debug.Log("Check 3");
-
-            // Place all the 2x2 tiles if there are any.
-            AttemptToPlace2x2Tiles();
-
-            //Debug.Log("Check 4");
-
-            // Place all the 1x1 tiles if there are any.
-            AttemptToPlace1x1Tiles();
-
-            //Debug.Log("Check 5");
-
-            // Fill in gaps with Folliage.
-            AttemptToPlaceFolliage();
-
-            //Debug.Log("Check 6");
-
-            _running = false;
-
-
-
-            /*
-            
-            foreach (GridPoint _point in GridGenerator.GridStatus)
-            {
-       
-                if (_point.Available)
-                {
-                   // _newGrass = GameObject.Instantiate(_grass);
-                   // _newGrass.transform.SetParent(GameObject.Find("World").transform);
-                   // _newGrass.transform.localScale = new Vector3(_scaleFactor, _scaleFactor * transform.localScale.x, _scaleFactor);
-                   // _newGrass.transform.localPosition =_point.Position;
-                }
-            }
-
-
-            //Change this. tTHJIS Big stupidf heqd fucktard!
-
-            for (int i = 0; i < 16; i++)
-            {
-                SpawnMultiTileEntities();
-            }
-
-           
-
-
-            for (int b = 0; b < _entitiesToSpawn; b++)
-            {
-                Vector2 point =  GenerateRandomPoint();  // Generates a random point on the  Grid (That is a available)
-
-                GameObject _entityToSpawn = _environmentTilePresets[Random.Range(0,_environmentTilePresets.Length)].gameObject;   // Chooses a random tileset entity to spawn.
-                GameObject entityToSpawn = GameObject.Instantiate(_entityToSpawn);                                                // Spawns the Object. Ready to be attached to the Grid.
-                Vector3 posToSpawn = GridGenerator.GridStatus[(int)point.x, (int)point.y].Position;                               // Finds 3d position to spawn object. Based on the pos of the grid.
-
-                GridGenerator.SetGridPointAvailable(false, point);                  // prevents the point on the grid having more entities spawned there.
-                UtilitiesScript.AttachObjectToWorld(entityToSpawn, posToSpawn);     // Kinda obvious bro.
-            }
-
-            
-
-            */
-
-        }
-
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewGameModeSettings", menuName = "GameModeSettings")]
 public class GameModeSettingSO :  ScriptableObject
 {
-
+    public int      WorldStartScale = 1;
     public string   GameModeName;
     public  float   RoundEnemySpawnRatio = 3f;
     public  float   SpawnRate = 0.5f;  // Time between Spawning

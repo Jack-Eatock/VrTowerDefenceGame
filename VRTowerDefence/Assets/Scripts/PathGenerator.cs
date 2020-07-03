@@ -15,7 +15,6 @@ public class PathTile
 public class PathGenerator : MonoBehaviour
 {
     public static List<PathTile> PathTiles = new List<PathTile>();
-    public static bool PathGenerationComplete = false;
 
     [SerializeField] private Vector2 _startingCords = Vector2.zero;
 
@@ -162,10 +161,12 @@ public class PathGenerator : MonoBehaviour
 
                 }
 
-                Debug.Log("Finished Loading Path.");
-                PathGenerationComplete = true;
+               // Debug.Log("Finished Loading Path.");
+
+
+                GameModeSurvivalScript.GenerationTicker = 2;
+
                 //BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
-                EnemySpawner EnemySpawnero = GameObject.Find("GAMEMANAGER").GetComponent<EnemySpawner>();
 
 
 

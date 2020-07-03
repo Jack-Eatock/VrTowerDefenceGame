@@ -14,6 +14,7 @@ public class GameScript : MonoBehaviour
 
     // Dependant Variables \\
 
+    public static int StartWorldScale = 1;
     public static string GameSettingsName = "";
     public static int StartPoints = 0;
     public static int MaxPointPool = 10;
@@ -22,6 +23,8 @@ public class GameScript : MonoBehaviour
 
     [SerializeField] private GameModeSettingSO _survivalSettings = null;
 
+    
+
     private bool FirstTime = true;
 
     // Start is called before the first frame update
@@ -29,7 +32,10 @@ public class GameScript : MonoBehaviour
     {
         if (FirstTime)
         {
-            DontDestroyOnLoad(gameObject);   
+            DontDestroyOnLoad(gameObject);
+
+            //QualitySettings.vSyncCount = 0;
+            //Application.targetFrameRate = 300;
             FirstTime = false;
         }
 
@@ -70,7 +76,7 @@ public class GameScript : MonoBehaviour
 
     private void LoadSetVariableForLevel(GameModeSettingSO gameMode)
     {
-
+        StartWorldScale = gameMode.WorldStartScale;
         GameSettingsName = gameMode.GameModeName;
         StartPoints = gameMode.StartPoints;
         MaxPointPool = gameMode.MaxPointPool;

@@ -62,6 +62,8 @@ public class GridGenerator : MonoBehaviour
 
         GenerateGrid(LocalGridSpacing);
         GenerateTiles();
+
+        GameModeSurvivalScript.GenerationTicker = 1;
     }
 
 

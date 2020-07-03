@@ -6,7 +6,6 @@
 
 using UnityEngine;
 using System.Collections;
-using Valve.VR;
 using System.IO;
 
 namespace Valve.VR
@@ -23,6 +22,8 @@ namespace Valve.VR
         {
             get { return (_active != null) ? _active.renderTexture : null; }
         }
+
+        public static bool PauseFuncFlag = false;
 
         // Name of level to load.
         public string levelName;
@@ -75,6 +76,8 @@ namespace Valve.VR
         // Most scenes should hopefully not require this.
         public float postLoadSettleTime = 0.0f;
 
+        public bool usePauseFunc = false;
+
         // Time to fade loading screen in and out (also used for progress bar).
         public float loadingScreenFadeInTime = 1.0f;
         public float loadingScreenFadeOutTime = 0.25f;
@@ -104,12 +107,15 @@ namespace Valve.VR
 
         // Helper function to quickly and simply load a level from script.
         public static void Begin(string levelName,
-            bool showGrid = false, float fadeOutTime = 0.5f,
+            float fadeOutTime = 0.5f, Texture loadingScreen = null, bool usepauseFunc = false, 
             float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f)
         {
             var loader = new GameObject("loader").AddComponent<SteamVR_LoadLevel>();
+
+            loader.usePauseFunc = usepauseFunc;
+            loader.loadAsync = true;
+            loader.loadingScreen = loadingScreen;
             loader.levelName = levelName;
-            loader.showGrid = showGrid;
             loader.fadeOutTime = fadeOutTime;
             loader.backgroundColor = new Color(r, g, b, a);
             loader.Trigger();
@@ -325,6 +331,7 @@ namespace Valve.VR
             while (alpha < 1.0f)
                 yield return null;
 
+
             // Keep us from getting destroyed when loading the new level, otherwise this coroutine will get stopped prematurely.
             transform.parent = null;
             DontDestroyOnLoad(gameObject);
@@ -386,6 +393,20 @@ namespace Valve.VR
 
             // Optionally wait a short period of time after loading everything back in, but before we start rendering again
             // in order to give everything a change to settle down to avoid any hitching at the start of the new level.
+
+            if (usePauseFunc)
+            {
+                yield return new WaitUntil(() => PauseFuncFlag == true);
+                
+            }
+
+            if (PauseFuncFlag)
+            {
+                PauseFuncFlag = false;
+            }
+
+
+
             yield return new WaitForSeconds(postLoadSettleTime);
 
             SteamVR_Render.pauseRendering = false;

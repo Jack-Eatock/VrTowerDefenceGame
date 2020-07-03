@@ -206,6 +206,8 @@ public class MeshCombinerScript : MonoBehaviour
                     finalCombiners.Clear();
 
                     Debug.Log("Fnished Generating Mesh");
+
+                    GameModeSurvivalScript.GenerationTicker = 4;
                 }
 
             }
@@ -227,6 +229,8 @@ public class MeshCombinerScript : MonoBehaviour
                 finalCombiners.Clear();
 
                 Debug.Log("Fnished Generating Mesh");
+
+                GameModeSurvivalScript.GenerationTicker = 4;
             }
 
             else // Keep Looping.
