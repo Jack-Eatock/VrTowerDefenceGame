@@ -5,6 +5,14 @@ using UnityEngine;
 public class PlacingTowersScript : MonoBehaviour
 {
 
+    // Tower range Variables
+
+    [SerializeField] private GameObject _towerRangePrefab;
+    private GameObject _towerRangeDisplayer;
+
+    // others
+
+
     [SerializeField] private GameObject _rightHandAttachmentPoint = null;
     [SerializeField] private GameObject _placedTowerStoragePrefab = null;
 
@@ -65,6 +73,7 @@ public class PlacingTowersScript : MonoBehaviour
 
 
                 LockMinitureTowerToGrid();
+                DisplayTowerRange(true);
 
                 if (_newTower == null) // If it has not been generated yet. 
                 {
@@ -90,13 +99,19 @@ public class PlacingTowersScript : MonoBehaviour
                 } 
             }
 
-            else if (_newTower != null)
+            else 
             {
-                if (_newTower.activeSelf)
+                DisplayTowerRange(false);
+
+                if (_newTower != null)
                 {
-                    _newTower.SetActive(false);
-                    _menuTowerScript.CurrentlyDisplayedTower.SetActive(true);
+                    if (_newTower.activeSelf)
+                    {
+                        _newTower.SetActive(false);
+                        _menuTowerScript.CurrentlyDisplayedTower.SetActive(true);
+                    }
                 }
+              
             }
         }
     }
@@ -109,6 +124,44 @@ public class PlacingTowersScript : MonoBehaviour
         IsPlacing = false;
         _newTower = null;
     }
+
+    public void DisplayTowerRange(bool Activate)
+    {
+        // Check if you want to turn the range on or off.
+
+        if (Activate)
+        {
+            // Check if the range is already been instantiated.
+            
+            if (_towerRangeDisplayer == null)
+            {
+                // Instantiate the range displayer.
+                _towerRangeDisplayer = GameObject.Instantiate(_towerRangePrefab);
+                
+            }
+
+            _towerRangeDisplayer.SetActive(true);
+
+            float range = _menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray].Range * MovementScript.ScaleFactor;
+
+            _towerRangeDisplayer.transform.position = _currentPosition;
+            _towerRangeDisplayer.transform.localScale = new Vector3(range, _towerRangePrefab.transform.localScale.y * MovementScript.ScaleFactor , range);
+
+            // If it has reset pos and scale.
+
+            // if not Create it and set pos and scale.
+        }
+        else
+        {
+            // destroy / hide the range displayer
+            if (_towerRangeDisplayer != null)
+            {
+                _towerRangeDisplayer.SetActive(false);
+            }
+
+        }
+    }
+
 
     public void RightTriggerClick()
     {
@@ -239,6 +292,9 @@ public class PlacingTowersScript : MonoBehaviour
 
     public void PlaceTower()
     {
+
+        DisplayTowerRange(false); // Stop displaying the range
+
         Debug.Log("Placing Tower!");
 
         TowerScript TempTowerScript = _newTower.AddComponent<TowerScript>();

@@ -7,6 +7,16 @@ using Valve.VR;
 public class LevelManager : MonoBehaviour
 {
 
+    public bool useTransitions = false;
+    public static bool UseTransitions;
+
+    public void OnValidate()
+    {
+        UseTransitions = useTransitions;
+    }
+
+
+
     public enum Levels { Lobby, Survival, Campaign, COOP };
     public static Levels CurrentLevel = Levels.Lobby;
 
@@ -47,8 +57,18 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case Levels.Lobby:
+
+                if (UseTransitions)
+                {
+                    BeginSceneTransition("Lobby", false);
+                }
+                else
+                {
+                    SceneManager.LoadScene("Lobby");
+                }
+
                 Debug.Log("Loading Lobby");
-                BeginSceneTransition("Lobby", false);
+                
 
                 //SceneManager.LoadScene("Lobby");
                 break;
@@ -59,10 +79,19 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case Levels.Survival:
-                //Debug.Log("Loading Survival");
-                BeginSceneTransition("Survival", true);
 
-                //SceneManager.LoadScene("Survival");
+                if (UseTransitions)
+                {
+                    BeginSceneTransition("Survival", true);
+                }
+                else
+                {
+                    SceneManager.LoadScene("Survival");
+                }
+                //Debug.Log("Loading Survival");
+               
+
+                //
 
                 break;
 

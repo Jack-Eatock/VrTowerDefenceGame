@@ -16,6 +16,9 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private GameObject _baseMenu;
     [SerializeField] private GameObject _settingsMenu;
     [SerializeField] private GameObject _heightCalibrationMenu;
+    [SerializeField] private GameObject _audioSettingsMenu;
+    [SerializeField] private GameObject _preferencesMenu;
+    [SerializeField] private GameObject _videoSettingsMenu;
 
     // Tweakable \\
 
@@ -23,7 +26,9 @@ public class MainMenuScript : MonoBehaviour
 
     // Variables \\
 
-    enum Menus {BaseMenu, SettingsMenu, HeightCalibration};
+
+    public enum Menus {BaseMenu, SettingsMenu, HeightCalibration, PreferencesMenu, AudioSettingsMenu, VideoSettingsMenu};
+
     private Menus _menuState;
     private GameObject _lastMenuObj;
     private GameObject _menuToActivate;
@@ -121,6 +126,18 @@ public class MainMenuScript : MonoBehaviour
                 objToReturn = _settingsMenu;
                 break;
 
+            case Menus.PreferencesMenu:
+                objToReturn = _preferencesMenu;
+                break;
+
+            case Menus.AudioSettingsMenu:
+                objToReturn = _audioSettingsMenu;
+                break;
+
+            case Menus.VideoSettingsMenu:
+                objToReturn = _videoSettingsMenu;
+                break;
+
         }
 
         return objToReturn;
@@ -140,12 +157,40 @@ public class MainMenuScript : MonoBehaviour
         }
 
     }
+ 
 
+    // Menu Utility Buttons
 
-   
-    ////  All of the menu buttons are below  \\\\
-  
+    public void MenuUtilities_LoadMenu(int menu)
+    {
+        switch (menu)
+        {
+            case 0:
+                SetMenuActive(Menus.BaseMenu);
+                break;
 
+            case 1:
+                SetMenuActive(Menus.SettingsMenu);
+                break;
+
+            case 2:
+                SetMenuActive(Menus.HeightCalibration);
+                break;
+
+            case 3:
+                SetMenuActive(Menus.PreferencesMenu);
+                break;
+
+            case 4:
+                SetMenuActive(Menus.AudioSettingsMenu);
+                break;
+
+            case 5:
+                SetMenuActive(Menus.VideoSettingsMenu);
+                break;
+    
+        }
+    }
 
     // Main Menu Buttons \\
 
@@ -167,35 +212,6 @@ public class MainMenuScript : MonoBehaviour
         CloseMenu();
         LevelManager.SwitchLevel(LevelManager.Levels.Lobby);
     }
-
-
-
-    // Settings Menu Buttons \\
-
-    public void Settings_HeightCalBtn()
-    {
-        Debug.Log("HeightCalibration Clicked");
-        SetMenuActive(Menus.HeightCalibration);
-    }
-
-    public void Settings_BackBtn()
-    {
-        SetMenuActive(Menus.BaseMenu);
-    }
-
-
-    // Height Cal Buttons \\
-
-    public void HeightCal_BackBtn()
-    {
-        SetMenuActive(Menus.SettingsMenu);
-    }
-
-
-
-
-
-
 
 
 

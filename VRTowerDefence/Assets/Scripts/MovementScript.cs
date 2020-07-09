@@ -147,7 +147,7 @@ public class MovementScript : MonoBehaviour
         Vector3 finalPosition = pivotAroundPoint + diffFromTargetToPivot * relativeScale;
 
         target.transform.localScale = newScale;
-        target.transform.localPosition = finalPosition;
+        target.transform.localPosition = new Vector3 (finalPosition.x,target.transform.position.y,finalPosition.z);
 
         /*
         if (newScale.x < MaxScale && newScale.x > MinScale)
@@ -162,6 +162,17 @@ public class MovementScript : MonoBehaviour
         }
         */
     }
+
+
+    public void OnUpdatePlayerHeight()
+    {
+        float playerHeightInM = GameScript.PlayerHeight / 100;
+        float worldPlayerOffsetInM = GameScript.WorldOffsetFromPlayerHeight / 100;
+
+        float newHeightInM = playerHeightInM - worldPlayerOffsetInM;
+        GameWorld.transform.position = new Vector3(GameWorld.transform.position.x, newHeightInM, GameWorld.transform.position.z);
+    }
+
 }
 
 

@@ -24,6 +24,9 @@ public class GameModeSurvivalScript : MonoBehaviour
     // Start is called before the first frame updates
     void Start()
     {
+        
+
+
         MethodToCall = OnStartWave;
 
         _gameManager = GameObject.Find("GAMEMANAGER");
@@ -38,6 +41,7 @@ public class GameModeSurvivalScript : MonoBehaviour
         _menuManager = _player.GetComponent<MenuManager>();
         _menuManager.SetUserPrompt("Start Wave?", "", MethodToCall );
     }
+
 
     private void Update()
     {
@@ -71,13 +75,15 @@ public class GameModeSurvivalScript : MonoBehaviour
         _gameWorld.GetComponent<EnvironmentGenerator>().InitiateEnvironmentGeneration();
         yield return new WaitUntil(() => GenerationTicker == 3);
         Debug.Log("Completed Environment Generation!");
-        
-   
+
+        _player.GetComponent<MovementScript>().OnUpdatePlayerHeight();
+
         Debug.Log("Combining Mesh...");
         _meshCombinerScript.MyOwnAdvancedMeshCombinder();
         yield return new WaitUntil(() => GenerationTicker == 4);
         Debug.Log("Completed Combining Meshes!");
- 
+        
+        
 
         Debug.Log("Enabling Controls");
 

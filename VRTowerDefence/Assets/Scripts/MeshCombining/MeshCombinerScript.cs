@@ -287,14 +287,15 @@ public class MeshCombinerScript : MonoBehaviour
 
     private void SetActiveAllChildren(Transform transform, bool value)
     {
+
         foreach (Transform child in transform)
         {
             if (child.transform.tag != "IgnoreFromMeshMerge")
             {
                 child.gameObject.SetActive(value);
-
-                SetActiveAllChildren(child, value);
             }
+
+            SetActiveAllChildren(child, value);
         }
     }
 

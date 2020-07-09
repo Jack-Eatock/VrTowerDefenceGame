@@ -40,7 +40,6 @@ public class EnvironmentGenerator : MonoBehaviour
     private float _scaleFactor = 0;
     private int _gridHeight = 0;
     private int _gridWidth = 0;
-    private bool _running = false;
 
     [Header("Variables needed to be asigned")]
 
@@ -97,8 +96,6 @@ public class EnvironmentGenerator : MonoBehaviour
         _gridHeight = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight;
 
 
-
-        _running = true;
     }
 
     public void InitiateEnvironmentGeneration()

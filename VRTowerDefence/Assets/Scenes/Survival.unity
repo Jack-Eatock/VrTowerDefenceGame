@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118596658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.074, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1868694159}
@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 471124089}
   m_Layer: 0
   m_Name: 1x1_Tile_Storage
-  m_TagString: Untagged
+  m_TagString: IgnoreFromMeshMerge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -738,7 +738,7 @@ GameObject:
   - component: {fileID: 787909073}
   m_Layer: 0
   m_Name: 2x2_Tile_Storage
-  m_TagString: Untagged
+  m_TagString: IgnoreFromMeshMerge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 1222796657}
   m_Layer: 0
   m_Name: 3x3_Tile_Storage
-  m_TagString: Untagged
+  m_TagString: IgnoreFromMeshMerge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -858,7 +858,7 @@ GameObject:
   - component: {fileID: 1739301618}
   m_Layer: 0
   m_Name: EnvironmentEntities
-  m_TagString: Untagged
+  m_TagString: IgnoreFromMeshMerge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -977,7 +977,7 @@ GameObject:
   - component: {fileID: 1899638943}
   m_Layer: 0
   m_Name: Folliage_Tile_Storage
-  m_TagString: Untagged
+  m_TagString: IgnoreFromMeshMerge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

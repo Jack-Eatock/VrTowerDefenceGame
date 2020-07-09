@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
-
     // Independant Variables \\ 
 
+    public static float PlayerHeight = 182f; // Default 6ft But in cm
+    public static float WorldOffsetFromPlayerHeight = 90f; // How far the world should be down from the players head.
+    
     public static int   CurrentRound = 1;
     public static bool  WaveIncoming = false;
     public static int   PointPool = 0;
@@ -32,6 +34,7 @@ public class GameScript : MonoBehaviour
     {
         if (FirstTime)
         {
+
             DontDestroyOnLoad(gameObject);
 
             //QualitySettings.vSyncCount = 0;
@@ -87,6 +90,16 @@ public class GameScript : MonoBehaviour
     
     }
     
+    public static void SetPlayerHeight(float newHeight)
+    {
+        PlayerHeight = newHeight;
+    }
+
+    public static void SetWorldOffsetFromPlayerHead(float newOffset)
+    {
+        WorldOffsetFromPlayerHeight = newOffset;
+    }
+
 
     /*
         public void InitiateWave()
