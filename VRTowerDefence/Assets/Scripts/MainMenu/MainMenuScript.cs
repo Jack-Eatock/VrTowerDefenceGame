@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class MainMenuScript : MonoBehaviour
 {
+
+    public static bool MainMenuDisabled = false;
+
     // Required References \\
 
     [SerializeField] private GameObject _mainMenuCanvas;   // Canvas
@@ -145,6 +148,12 @@ public class MainMenuScript : MonoBehaviour
 
     private void OnMenuButtonPressed()
     {
+        if (MainMenuDisabled)
+        {
+            Debug.Log("Menu Disabled");
+            return;
+        }
+
         Debug.Log("MainMenuButtonPressed, MenuState: " + _menuState);
 
         if (!_mainMenuCanvas.activeSelf)

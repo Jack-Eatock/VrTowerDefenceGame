@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_TowerRange
-  m_Shader: {fileID: -6465566751694194690, guid: ce4f750a0c7892c4da72fe71b69579a2,
+  m_Name: M_IslandGrass
+  m_Shader: {fileID: -6465566751694194690, guid: 7a6acd68caa44254ca07c2f4129167e7,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -44,27 +44,25 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_2202473A_Texture_1:
-        m_Texture: {fileID: 2800000, guid: a4424ad3957896c4ba9739583f8714a6, type: 3}
+    - _SampleTexture2D_7266F8E8_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 36f21e60984e285459f3276f647ee99e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_6974EFA3_Texture_1:
-        m_Texture: {fileID: 2800000, guid: de2562843957a5a47a3456367757566f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_6CF3CA77_Texture_1:
-        m_Texture: {fileID: 0}
+    - _SampleTexture2D_7B9763D9_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 36f21e60984e285459f3276f647ee99e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_B085585C_Out_0:
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_83E70693: 1
-    - Vector1_B970F0CA: 3
-    - Vector1_DE63BE4F: 0.7
-    - Vector1_EC1F4B74: 0.1
+    - Vector1_188BC4A7: 0
+    - Vector1_83965B22: 10
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -87,14 +85,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_347836A7: {r: 0.5608757, g: 0.8679245, b: 0.8342997, a: 1}
-    - Color_37B29C8E: {r: 0, g: 0.6115854, b: 1, a: 1}
-    - Color_50FF5471: {r: 0.5372549, g: 0.6714928, b: 0.772549, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
---- !u!114 &6372309039404007188
+--- !u!114 &6425901325494767093
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -11,7 +11,7 @@ public class MovementScript : MonoBehaviour
 
 
     // General Variables \\
-    public static bool MovementControllsDisabled = false;
+    public static bool MovementControllsDisabled = true;
 
     // Controller Variables \\
     public static bool IsGrippingL = false;

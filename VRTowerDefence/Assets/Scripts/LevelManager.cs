@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
 
 
 
-    public enum Levels { Lobby, Survival, Campaign, COOP };
+    public enum Levels { Intro ,Lobby, Survival, Campaign, COOP };
     public static Levels CurrentLevel = Levels.Lobby;
 
     public Levels SetLevel;
@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
     public void Start()
     {
         SceneTransition = _SceneTransition;
-        SwitchLevel(Levels.Lobby);
+       // SwitchLevel(Levels.Lobby);
        
     }
 
