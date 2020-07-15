@@ -77,7 +77,7 @@ public class GridGenerator : MonoBehaviour
 
     public static void UpdateGridSpacing(int gridHeight)
     {
-        LocalGridSpacing = ((GameObject.Find("Ground").transform.localScale.x * MovementScript.ScaleFactor) / gridHeight);
+        LocalGridSpacing = (((GameObject.Find("Ground").transform.localScale.x * 10) * MovementScript.ScaleFactor) / gridHeight);
     }
 
     public static void OnLoadInUseTiles(bool loadInUseTiles)
