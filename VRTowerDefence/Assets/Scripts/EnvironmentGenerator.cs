@@ -55,6 +55,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
 
 
+
     // Multi Tile Variables \\
 
     private List<Vector2> _pointsMultiTileWillCover = new List<Vector2>();
@@ -70,7 +71,6 @@ public class EnvironmentGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
 
         //EnvironmentMultiTileEntities
 
@@ -136,6 +136,7 @@ public class EnvironmentGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         _grassMat.SetFloat("Vector1_95D66403", MovementScript.ScaleFactor);
     }
 

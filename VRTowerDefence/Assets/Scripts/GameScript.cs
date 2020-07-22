@@ -6,7 +6,7 @@ public class GameScript : MonoBehaviour
 {
     // Independant Variables \\ 
 
-    public static float PlayerHeight = 182f; // Default 6ft But in cm
+    public static float PlayerHeight = 121f; // Default 6ft But in cm // 182 is 6ft , 121 is 4 ft ( sitting down )
     public static float WorldOffsetFromPlayerHeight = 90f; // How far the world should be down from the players head.
     
     public static int   CurrentRound = 1;
