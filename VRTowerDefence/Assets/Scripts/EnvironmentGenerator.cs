@@ -92,8 +92,8 @@ public class EnvironmentGenerator : MonoBehaviour
         Debug.Log("Successfully Loaded: (" + _env_3x3_Tiles.Length + ") Env_3x3_Tiles presets");
 
 
-        _gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridWidth;
-        _gridHeight = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight;
+        _gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>().GridDiamater;
+        _gridHeight = GameObject.Find("Grid").GetComponent<GridGenerator>().GridDiamater;
 
 
     }
@@ -198,6 +198,19 @@ public class EnvironmentGenerator : MonoBehaviour
         List<GridPoint> tilesThatAreAvailable = new List<GridPoint>();
         List<GridPoint> tileThatWeAreGoingToSet = new List<GridPoint>();
 
+        GridPoint point;
+
+        foreach (Vector2 gridPoint in GridGenerator.GridPointsInUse)
+        {
+            point = GridGenerator.GridStatus[(int) gridPoint.x, (int) gridPoint.y];
+
+            if (point.Available && point.Inuse)
+            {
+                tilesThatAreAvailable.Add(point);
+            }
+        }
+
+        /*
         foreach (GridPoint tile in GridGenerator.GridStatus)
         {
             if (tile.Available)
@@ -205,6 +218,7 @@ public class EnvironmentGenerator : MonoBehaviour
                 tilesThatAreAvailable.Add(tile);
             }
         }
+        */
 
         Debug.Log("Tiles that are available : " + tilesThatAreAvailable.Count);
 
@@ -542,7 +556,7 @@ public class EnvironmentGenerator : MonoBehaviour
                                 isPlacable = false;
                             }
 
-                            else if (!GridGenerator.GridStatus[x, y].Available)
+                            else if (!GridGenerator.GridStatus[x, y].Available || !GridGenerator.GridStatus[x, y].Inuse)
                             {
                                 // Debug.Log("Not available");
                                 isPlacable = false;
@@ -590,17 +604,16 @@ public class EnvironmentGenerator : MonoBehaviour
 
     private Vector2 GenerateRandomPoint()
     {
-        int x = 0;
-        int y = 0;
+        Vector2 randPoint = new Vector2 (0,0);
+        List<Vector2> gridPointsInUse = GridGenerator.GridPointsInUse;
 
         bool flag = true;
 
         while (flag)
         {
-            x = Random.Range(0, _gridWidth);
-            y = Random.Range(0, _gridHeight);
+            randPoint = gridPointsInUse[ Random.Range(0, gridPointsInUse.Count -1) ];
 
-            if (GridGenerator.GridStatus[x, y].Available)
+            if (GridGenerator.GridStatus[(int) randPoint.x,(int) randPoint.y].Available && GridGenerator.GridStatus[(int)randPoint.x, (int)randPoint.y].Inuse)
             {
                 //Debug.Log("Spawning Entity");
                 flag = false;
@@ -613,7 +626,7 @@ public class EnvironmentGenerator : MonoBehaviour
 
         }
 
-        return new Vector2(x, y);
+        return randPoint;
     }
 
 

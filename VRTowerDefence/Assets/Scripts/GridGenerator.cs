@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GridPoint
 {
+    public Vector2 GridPos;
+    public bool Inuse = false;
+
     public bool Available = true;
     public Vector3 Position;
     public GameObject Tile;
@@ -14,6 +17,11 @@ public class GridPoint
 public class GridGenerator : MonoBehaviour
 {
 
+    public GameObject Ground;
+    public SphereCollider RadiusDisplayer;
+    // new var's
+    public int GridDiamater;
+    public static List<Vector2> GridPointsInUse = new List<Vector2>();
 
     public static float InitialScaleFactor = 1;
     public static List<Vector2> TilesInUseArray = new List<Vector2>();
@@ -23,10 +31,11 @@ public class GridGenerator : MonoBehaviour
 
    
 
-
+    /*
     // Generating Grid Placement
     public int _gridWidth = 0;
     public int _gridHeight = 0;
+    */
 
     [SerializeField]  private GameObject _tileInUseGO = null;
     [SerializeField] private GameObject _tileStorage = null;
@@ -36,16 +45,23 @@ public class GridGenerator : MonoBehaviour
     [Header("Grid Switch Variables")] // Switching grid ON/OFF Visual only \\
 
      public Material GrassGridMat = null;
-     public Material GrassMat = null;
 
 
     public void Start()
     {
     }
 
+    void OnValidate()
+    {
+        float newScale = (GridDiamater * 2f) / 10f; 
+        Ground.transform.localScale = new Vector3(newScale, 0, newScale);
+        RadiusDisplayer.radius = GridDiamater;
+    }
 
     public void InitiateGridGeneration()
     {
+        /*
+
         UpdateGridSpacing(_gridHeight);
 
         //Debug.Log("GridSpacing : " + LocalGridSpacing);
@@ -60,6 +76,38 @@ public class GridGenerator : MonoBehaviour
             }
         }
 
+        */
+
+      
+        UpdateGridSpacing(GridDiamater);
+
+        GridStatus = new GridPoint[GridDiamater, GridDiamater];
+
+        // Now define those grid points.
+        Vector2 gridCentrePoint = new Vector2(0.5f * GridDiamater, 0.5f * GridDiamater);
+        float circleRadius = (GridDiamater / 2);
+        float distFromCentre;
+
+        for (int x = 0; x < GridDiamater; x++)
+        {
+            for (int y = 0; y < GridDiamater; y++)
+            {
+                GridStatus[x, y] = new GridPoint();
+                GridStatus[x, y].GridPos = new Vector2(x, y);
+
+                distFromCentre = (gridCentrePoint - new Vector2(x, y)).magnitude;
+
+                // If the point is within the circle enable it. Otherwise it is ignored.
+                if (distFromCentre <= circleRadius)
+                {
+                    GridStatus[x, y].Inuse = true;
+                    GridPointsInUse.Add(new Vector2(x, y));
+                }
+                
+
+            }
+        }
+
         GenerateGrid(LocalGridSpacing);
         GenerateTiles();
 
@@ -67,17 +115,15 @@ public class GridGenerator : MonoBehaviour
     }
 
 
-
     public void Update()
     {
-        UpdateGridSpacing(_gridHeight);
-
-
+        UpdateGridSpacing(GridDiamater);
     }
 
     public static void UpdateGridSpacing(int gridHeight)
     {
         LocalGridSpacing = (((GameObject.Find("Ground").transform.localScale.x * 10) * MovementScript.ScaleFactor) / gridHeight);
+        //Debug.Log("Local grid spacing" + LocalGridSpacing);
     }
 
     public static void OnLoadInUseTiles(bool loadInUseTiles)
@@ -101,6 +147,11 @@ public class GridGenerator : MonoBehaviour
     public static void SetGridPointAvailable(bool setPointAvailable, Vector2 pointToSet, bool display = true)
     {
         //Debug.Log("PointToSet" + pointToSet);
+
+        if (!GridStatus[(int) pointToSet.x, (int) pointToSet.y].Inuse)
+        {
+            return;
+        }
 
         if (setPointAvailable)
         {
@@ -157,32 +208,69 @@ public class GridGenerator : MonoBehaviour
 
     public void GenerateTiles()
     {
+        foreach (GridPoint point in GridStatus)
+        {
+            if (!point.Inuse)
+            {
+                continue;
+            }
+
+            GameObject newTile = GameObject.Instantiate(_tileInUseGO);
+
+
+            UtilitiesScript.AttachObjectToWorld(newTile, point.Position);
+            newTile.transform.SetParent(_tileStorage.transform);
+
+
+            newTile.SetActive(false);
+            point.Tile = newTile;
+        }
+
+
+        /*
         for (int x = 0; x < _gridWidth; x++)
         {
             for (int y = 0; y < _gridHeight; y++)
             {
-                GameObject newTile = GameObject.Instantiate(_tileInUseGO);
-
-
-                UtilitiesScript.AttachObjectToWorld(newTile, GridStatus[x, y].Position);
-                newTile.transform.SetParent(_tileStorage.transform);
-
-
-                newTile.SetActive(false);
-                GridStatus[x, y].Tile = newTile;
+               
             }
         }
+        */
+        /*
+        foreach (Vector2 cord in Cords)
+        {
+            
+        }
+        */
     }
 
     public void GenerateGrid(float gridSpacing)
     {   
-        for (int x = 0; x < _gridWidth; x++)
+
+        foreach (GridPoint point in GridStatus)
         {
-            for (int y = 0; y < _gridHeight; y++)
+            if (point.Inuse) // Point is in the circle.
+            {
+                point.Position = new Vector3((transform.localPosition.x - GridDiamater * .5f * gridSpacing) + (point.GridPos.x  * gridSpacing), transform.localPosition.y, (transform.localPosition.z - GridDiamater * .5f * gridSpacing) + (point.GridPos.y * gridSpacing));
+            }
+        }
+
+        /*
+        for (int x = 0; x < _gridDiamater; x++)
+        {
+            for (int y = 0; y < _gridDiamater; y++)
             {
                 GridStatus[x, y].Position = new Vector3(transform.localPosition.x + (x * gridSpacing), transform.localPosition.y, transform.localPosition.z + (y * gridSpacing));
             }
         }
+        
+
+        foreach (Vector2 cord in Cords)
+        {
+            GridStatus[(int) cord.x,(int) cord.y].Position = new Vector3(transform.localPosition.x + (cord.x * gridSpacing), transform.localPosition.y, transform.localPosition.z + (cord.y * gridSpacing));
+        }
+
+        */
 
         //OnLoadInUseTiles(false);
     }

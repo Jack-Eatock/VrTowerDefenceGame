@@ -114,7 +114,7 @@ public static class UtilitiesScript
 
     public static void CircleRadius(Vector2 StartingCords, int Radius)
     {
-        float gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridWidth;
+        float gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>().GridDiamater;
 
         List<Vector2> Cords = new List<Vector2>();
         int Offset = 0;

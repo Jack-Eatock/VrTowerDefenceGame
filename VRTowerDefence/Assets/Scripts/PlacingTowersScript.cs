@@ -38,7 +38,7 @@ public class PlacingTowersScript : MonoBehaviour
     private int _currentPositionPosX;
     private int _currentPositionPosY;
     private GameObject _placedTowersStorage;
-
+    private bool TowerLockedToGridSuccessfully;
 
 
 
@@ -72,31 +72,51 @@ public class PlacingTowersScript : MonoBehaviour
 
 
 
-                LockMinitureTowerToGrid();
-                DisplayTowerRange(true);
+                TowerLockedToGridSuccessfully = LockMinitureTowerToGrid();
 
-                if (_newTower == null) // If it has not been generated yet. 
+                if (TowerLockedToGridSuccessfully)
                 {
-                    Debug.Log("NewTower Being Generated.");
+                    DisplayTowerRange(true);
 
-                    _newTower = GameObject.Instantiate(_menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray].TowerGO);
-                    _newTower.transform.position = _currentPosition;
-                    _newTower.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor); // Uses Global Scale because it is not child of the world yet.
-                    _menuTowerScript.CurrentlyDisplayedTower.SetActive(false);
+                    if (_newTower == null) // If it has not been generated yet. 
+                    {
+                        Debug.Log("NewTower Being Generated.");
 
+                        _newTower = GameObject.Instantiate(_menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray].TowerGO);
+                        _newTower.transform.position = _currentPosition;
+                        _newTower.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor); // Uses Global Scale because it is not child of the world yet.
+                        _menuTowerScript.CurrentlyDisplayedTower.SetActive(false);
+
+                    }
+
+                    else // If the tower is generated make sure its position is updated and that it can stop be hidden and unhidden when the user collides with the ground etc.
+                    {
+                        _newTower.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
+                        _newTower.transform.position = _currentPosition;
+
+                        if (_newTower.activeSelf == false)
+                        {
+                            _newTower.SetActive(true);
+                            _menuTowerScript.CurrentlyDisplayedTower.SetActive(false);
+                        }
+                    }
                 }
 
-                else // If the tower is generated make sure its position is updated and that it can stop be hidden and unhidden when the user collides with the ground etc.
+                else
                 {
-                    _newTower.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
-                    _newTower.transform.position = _currentPosition;
+                    DisplayTowerRange(false);
 
-                    if (_newTower.activeSelf == false)
+                    if (_newTower != null)
                     {
-                        _newTower.SetActive(true);
-                        _menuTowerScript.CurrentlyDisplayedTower.SetActive(false);
+                        if (_newTower.activeSelf)
+                        {
+                            _newTower.SetActive(false);
+                            _menuTowerScript.CurrentlyDisplayedTower.SetActive(true);
+                        }
                     }
-                } 
+                }
+
+              
             }
 
             else 
@@ -233,13 +253,11 @@ public class PlacingTowersScript : MonoBehaviour
         currentTower.transform.SetParent(_rightHandAttachmentPoint.transform);
     }
 
-    public void LockMinitureTowerToGrid()
+    public bool LockMinitureTowerToGrid()
     {
         //Debug.Log("Locking Tower to Grid.");
 
-        _towerPosX =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.x;
-        _towerPosZ =  _menuTowerScript.CurrentlyDisplayedTower.transform.position.z;
-        _towerPosY = GameObject.Find("World").transform.position.y;
+       
 
         GridGenerator.UpdateGridSpacing(_gridHeight);
         _halfedGridSpacing =  ( GridGenerator.LocalGridSpacing / 2f ) * GameObject.Find("World").transform.localScale.x; // Gridspacing is local. Multiply by  world scale to make it Global Gridspacing.
@@ -252,6 +270,17 @@ public class PlacingTowersScript : MonoBehaviour
         {
             for (int actualGridPointY = 0; actualGridPointY < _gridHeight; actualGridPointY++)
             {
+                if (!GridGenerator.GridStatus[actualGridPointX, actualGridPointY].Inuse)
+                {
+                    continue;
+                }
+
+                // So the point at which the tower is hovering has a tile in use. Lock now
+                _towerPosX = _menuTowerScript.CurrentlyDisplayedTower.transform.position.x;
+                _towerPosZ = _menuTowerScript.CurrentlyDisplayedTower.transform.position.z;
+                _towerPosY = GameObject.Find("World").transform.position.y;
+
+
                 Vector3 posOfTile = GridGenerator.GridStatus[actualGridPointX, actualGridPointY].Tile.transform.position;
                 //Debug.Log("Tile pos: " + posOfTile + " Tower Current Pos: " + new Vector3(_towerPosX, _towerPosY, _towerPosZ) + "Halved Grid Spacing:" + _halfedGridSpacing + " Scale Factor" + MovementScript.ScaleFactor);
 
@@ -288,6 +317,8 @@ public class PlacingTowersScript : MonoBehaviour
             //Debug.Log("Tower Was unable to lock to the Grid. Tower was at position:" + new Vector3 (_towerPosX, _towerPosY, _towerPosZ ));
 
         }
+
+        return (towerWasAbleToLockToGrid);
     }
 
     public void PlaceTower()

@@ -16,7 +16,7 @@ public class PathGenerator : MonoBehaviour
 {
     public static List<PathTile> PathTiles = new List<PathTile>();
 
-    [SerializeField] private Vector2 _startingCords = Vector2.zero;
+    [SerializeField] private Vector2 _startingCords = new Vector2 (18,18);
 
     [SerializeField] private int _pathSpawnChanceUp    = 1;
     [SerializeField] private int _pathSpawnChanceLeft  = 1;   // Keep them in this order!
@@ -54,7 +54,7 @@ public class PathGenerator : MonoBehaviour
 
 
 
-        _pathEndNum = GameObject.Find("Grid").GetComponent<GridGenerator>()._gridHeight - 1;
+        _pathEndNum = GameObject.Find("Grid").GetComponent<GridGenerator>().GridDiamater - 1;
         _gridGenerator = GameObject.Find("Grid").GetComponent<GridGenerator>();
 
        // Debug.Log("GridGen width" + _gridGenerator._gridWidth);
@@ -371,7 +371,7 @@ public class PathGenerator : MonoBehaviour
                 flag = true;
             }
         }
-        if (newCord.x >= _gridGenerator._gridWidth || newCord.x < 0 || newCord.y < 0)
+        if (!GridGenerator.GridPointsInUse.Contains(newCord))
         {
             flag = true;
         }
