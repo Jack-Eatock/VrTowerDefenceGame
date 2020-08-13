@@ -98,7 +98,7 @@ public class GridGenerator : MonoBehaviour
                 distFromCentre = (gridCentrePoint - new Vector2(x, y)).magnitude;
 
                 // If the point is within the circle enable it. Otherwise it is ignored.
-                if (distFromCentre <= circleRadius)
+                if (distFromCentre < circleRadius)
                 {
                     GridStatus[x, y].Inuse = true;
                     GridPointsInUse.Add(new Vector2(x, y));

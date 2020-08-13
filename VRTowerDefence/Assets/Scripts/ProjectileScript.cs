@@ -32,7 +32,7 @@ public class ProjectileScript : MonoBehaviour
             Vector3 targetPos = _target.GetChild(0).transform.position;
             Vector3 targetDir = targetPos - transform.position; // Distance between Bullet and target.
 
-            float distanceThisFrame = _firingTowerProperties.ProjectileSpeed * Time.deltaTime;  // Calculates how much the bullet can travel in this frame.
+            float distanceThisFrame = _firingTowerProperties.ProjectileSpeed * Time.deltaTime * MovementScript.ScaleFactor;  // Calculates how much the bullet can travel in this frame.
 
             if (targetDir.magnitude <= distanceThisFrame) // Hit the object
             {

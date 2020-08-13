@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: MageTower
   FireRate: 2
   Range: 6
-  ProjectileSpeed: 3
+  ProjectileSpeed: 7
   ProjectileDamagePerEnemyHit: 40
   Cost: 30
   TowerGO: {fileID: 1277772364328422624, guid: 6e33bde7b4c377f48adbf741716f295c, type: 3}

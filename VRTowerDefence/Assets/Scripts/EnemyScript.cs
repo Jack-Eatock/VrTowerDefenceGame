@@ -9,13 +9,14 @@ public class EnemyScript : MonoBehaviour
 {
     private GameObject DeathEffect;
 
+    public float DeathEffectOffset = 0.4f;
     public float Health;
     private float _startHealth;
     private float _speed;
     private int _points;
     private int _mass;
+    private int _pathwayToFollow;
 
-    public List<Vector2> PathPoints = new List<Vector2>();
     public List<Vector3> LocalPathPoints = new List<Vector3>();
     public List<GameObject> TowersTargetingUnit = new List<GameObject>();
 
@@ -30,9 +31,15 @@ public class EnemyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int x = 0; x <= PathPoints.Count - 1; x++)
+
+        foreach (Vector2 cords in EnemySpawner.PathwaysAvailable[_pathwayToFollow])
         {
-            LocalPathPoints.Add(GridGenerator.GridStatus[(int)PathPoints[x].x, (int)PathPoints[x].y].Position);
+            LocalPathPoints.Add(GridGenerator.GridStatus[ (int) cords.x, (int) cords.y].Position);
+        }
+
+        for (int x = 0; x <= PathGenerator.Paths[_pathwayToFollow].Count - 1; x++)
+        {
+            //LocalPathPoints.Add(GridGenerator.GridStatus[(int)PathPoints[x].x, (int)PathPoints[x].y].Position);
         }
 
         _healthBarGO = gameObject.transform.GetChild(0).gameObject;
@@ -41,8 +48,9 @@ public class EnemyScript : MonoBehaviour
 
     }
 
-    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_)
+    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_, int _PathwayToFollow)
     {
+        _pathwayToFollow = _PathwayToFollow;
         DeathEffect = DeathEffect_;
         Health = _Health;
         _speed = _Speed;
@@ -75,16 +83,23 @@ public class EnemyScript : MonoBehaviour
                 GameScript.Points += _points;
                 EnemySpawner.EnemiesFinished++;
 
-                GameObject deathEffectGO = Instantiate(DeathEffect, transform.position, DeathEffect.transform.rotation);
-                deathEffectGO.transform.SetParent(GameObject.Find("World").transform);
-                deathEffectGO.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
+                GameObject deathEffectGO = Instantiate(DeathEffect);
+                UtilitiesScript.AttachObjectToWorld(deathEffectGO, transform.localPosition + new Vector3 (0, (DeathEffectOffset * MovementScript.ScaleFactor), 0));
+
+                //ParticleSystem DeathEffectSystem = deathEffectGO.GetComponent<ParticleSystem>();
+
                 
+
+               // DeathEffectSystem.startSpeed = DeathEffectSystem.startSpeed * MovementScript.ScaleFactor;
+               // DeathEffectSystem.main.gravityModifier.constant.
+
+
                 Destroy(gameObject);
           
 
             }
 
-            if (_checkPoint < PathPoints.Count - 1)
+            if (_checkPoint < LocalPathPoints.Count - 1)
             {
                 if (Vector3.Distance(transform.localPosition, LocalPathPoints[_checkPoint + 1]) > 0.001f)
                 {

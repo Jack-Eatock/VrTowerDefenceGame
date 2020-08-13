@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 // Cleared \\
@@ -17,9 +18,11 @@ public class EnemySpawner : MonoBehaviour
 
 
     // General Variables \\
-    public static List<Vector2> PathPoints = new List<Vector2>();
-    public static List<Vector3> ActualPathPoints = new List<Vector3>();
-    public static Vector2 StartPoint;
+    private int _currentPathToSpawnOn = 0;
+
+    public static List<List<Vector2>> PathwaysAvailable = new List<List<Vector2>>();
+
+
     public GameObject UnitStorage = null;
 
     // Wave Variables
@@ -44,6 +47,7 @@ public class EnemySpawner : MonoBehaviour
 
             else if (Time.time - _lastRecordedTime > GameScript.SpawRate)
             {
+
                 SpawnEnemy(_unitsInWave[_counter]);
                 _counter++;
                 _lastRecordedTime = Time.time;
@@ -60,6 +64,8 @@ public class EnemySpawner : MonoBehaviour
             _counter = 0;
             GameScript.CurrentRound++;
 
+
+            StartWave(); // Do some logic instead..
         }
 
     }
@@ -68,13 +74,29 @@ public class EnemySpawner : MonoBehaviour
     public void InitiateEnemySpawner()
     {
         Debug.Log("Initiating Spawner.");
-        foreach (PathTile Path in PathGenerator.PathTiles)
+
+        foreach (List<PathTile> pathWay in PathGenerator.Paths)
+        {
+            List<Vector2> newPathway = new List<Vector2>();
+
+            foreach (PathTile tile in pathWay)
+            {
+                newPathway.Add(tile.Cords);
+            }
+
+            newPathway.Reverse(); // Now going the correct direction
+
+            PathwaysAvailable.Add(newPathway);
+        }
+
+        /*
+        foreach (PathTile Path in PathGenerator.CurrentPathTiles)
         {
             PathPoints.Add(Path.Cords);
         }
+        */
 
-        StartPoint = PathPoints[PathPoints.Count - 1]; // Start point of the enemy.
-        PathPoints.Reverse(); // Now going the correct direction
+        
 
         //Debug.Log("IamHere?");
         StartWave();
@@ -129,12 +151,30 @@ public class EnemySpawner : MonoBehaviour
         // Setting the Unit to Scale and possition , linked with the World at the current time.
         newUnit.transform.localScale = new Vector3(MovementScript.ScaleFactor, MovementScript.ScaleFactor, MovementScript.ScaleFactor);
         newUnit.transform.SetParent(UnitStorage.transform);
-        newUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathPoints[0].x, (int)PathPoints[0].y].Position;
+
+
+
+        newUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathwaysAvailable [_currentPathToSpawnOn] [0].x, (int)PathwaysAvailable [_currentPathToSpawnOn] [0].y].Position;
 
         _tempEnemyScript = newUnit.GetComponent<EnemyScript>();
-        _tempEnemyScript.EnemySetUP(unitType.Health, unitType.Speed, unitType.Points,unitType.Mass, DeathEffect);
+        _tempEnemyScript.EnemySetUP(unitType.Health, unitType.Speed, unitType.Points,unitType.Mass, DeathEffect, _currentPathToSpawnOn);
+        
+        if (PathwaysAvailable.Count == 1)
+        {
+            // Do nothing.
+        }
 
-        newUnit.GetComponent<EnemyScript>().PathPoints = PathPoints;
+        else if (_currentPathToSpawnOn + 1 < PathwaysAvailable.Count )
+        {
+            _currentPathToSpawnOn++; // Switch through the pathways.
+        }
+
+        else
+        {
+            _currentPathToSpawnOn = 0;  // Loop back to the start.
+        }
+   
+     
     }
 }
 

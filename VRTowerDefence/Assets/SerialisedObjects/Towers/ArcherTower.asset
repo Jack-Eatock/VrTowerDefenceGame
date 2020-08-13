@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: ArcherTower
   FireRate: 1
   Range: 3
-  ProjectileSpeed: 3.5
+  ProjectileSpeed: 7
   ProjectileDamagePerEnemyHit: 25
   Cost: 10
   TowerGO: {fileID: 3080278145896490955, guid: 4c39df1c64460fe47b60387958c9eb98, type: 3}
