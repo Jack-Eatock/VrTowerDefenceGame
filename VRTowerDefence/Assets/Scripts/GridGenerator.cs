@@ -29,7 +29,7 @@ public class GridGenerator : MonoBehaviour
     public static GridPoint[,] GridStatus;
     public static float LocalGridSpacing = 0;
 
-   
+    public static List<Vector2> GridPointsOnCircumferance = new List<Vector2>();
 
     /*
     // Generating Grid Placement
@@ -102,12 +102,19 @@ public class GridGenerator : MonoBehaviour
                 {
                     GridStatus[x, y].Inuse = true;
                     GridPointsInUse.Add(new Vector2(x, y));
+
+                    if (circleRadius - distFromCentre <= 1)
+                    {
+                        GridPointsOnCircumferance.Add(new Vector2(x, y));
+                    }
                 }
                 
 
             }
+
         }
 
+       
         GenerateGrid(LocalGridSpacing);
         GenerateTiles();
 

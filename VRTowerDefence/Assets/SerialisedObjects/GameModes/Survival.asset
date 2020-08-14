@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ad06df0440e8644ab00f9b90afe80c, type: 3}
   m_Name: Survival
   m_EditorClassIdentifier: 
+  WorldStartScale: 1
   GameModeName: Survival Settings
-  RoundEnemySpawnRatio: 9
+  RoundEnemySpawnRatio: 30
   SpawnRate: 0.5
   MaxPointPool: 10
   StartPoints: 30

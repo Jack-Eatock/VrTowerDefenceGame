@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
     {
         Debug.Log("Initiating Spawner.");
 
-        foreach (List<PathTile> pathWay in PathGenerator.Paths)
+        foreach (List<PathTile> pathWay in PathGenerator.FullPathways)
         {
             List<Vector2> newPathway = new List<Vector2>();
 

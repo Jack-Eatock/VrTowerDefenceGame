@@ -112,7 +112,7 @@ public static class UtilitiesScript
 
 
 
-    public static void CircleRadius(Vector2 StartingCords, int Radius)
+    public static void CircleRadius(Vector2 StartingCords, int Radius, bool Update = true)
     {
         float gridWidth = GameObject.Find("Grid").GetComponent<GridGenerator>().GridDiamater;
 
@@ -143,7 +143,11 @@ public static class UtilitiesScript
 
         }
 
-        GridGenerator.UpdateTilesLoaded(true);
+        if (Update)
+        {
+            GridGenerator.UpdateTilesLoaded(true);
+        }
+      
 
     }
 

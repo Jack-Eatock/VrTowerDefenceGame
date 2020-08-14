@@ -37,7 +37,7 @@ public class EnemyScript : MonoBehaviour
             LocalPathPoints.Add(GridGenerator.GridStatus[ (int) cords.x, (int) cords.y].Position);
         }
 
-        for (int x = 0; x <= PathGenerator.Paths[_pathwayToFollow].Count - 1; x++)
+        for (int x = 0; x <= PathGenerator.FullPathways[_pathwayToFollow].Count - 1; x++)
         {
             //LocalPathPoints.Add(GridGenerator.GridStatus[(int)PathPoints[x].x, (int)PathPoints[x].y].Position);
         }

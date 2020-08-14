@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitGO: {fileID: 2755819478203395732, guid: 73e4df7933ac2cd46aa780e3c011e43a, type: 3}
   Name: Soldier
-  Speed: 0.3
+  Speed: 1
   Health: 100
   Points: 2
   Mass: 1
