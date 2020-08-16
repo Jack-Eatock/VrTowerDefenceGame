@@ -14,6 +14,7 @@ public class MenuTowerScript : MonoBehaviour
 
     private MenuManager _menuManager;
 
+    private int _silver = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,12 @@ public class MenuTowerScript : MonoBehaviour
             {
                 UpdateTowerMenu();   // Should be optimised.
             }
+
+            if (_silver != GameScript.Points)
+            {
+                _menuManager.SetText(MenuManager.TypeOfText.PointsText, "You have: " + GameScript.Points + " Silver Coins.");
+                _silver = GameScript.Points;
+            }
            
         }
     }
@@ -50,20 +57,17 @@ public class MenuTowerScript : MonoBehaviour
 
     public void UpdateTowerMenu(bool overide = false)
     {
-        if (overide)
+        if (!CurrentlyDisplayedTower.activeSelf || overide)
         {
-            string towerName = Towers[CurrentlySelectedTowerPositionInArray].Name;
-
-            _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[CurrentlySelectedTowerPositionInArray]);
-            _menuManager.SetHeaderText("Tower: " + towerName);
-
-        }
-
-        if (!CurrentlyDisplayedTower.activeSelf)
-        {
+            
             string towerName = Towers[CurrentlySelectedTowerPositionInArray].Name;
             _menuManager.SwitchOutMenuCurrentlyDisplayedObject(_minitureTowers[CurrentlySelectedTowerPositionInArray]); // Switches current displayed object to the correct tower and sets it active along with correcting its position and rotation.
-            _menuManager.SetHeaderText("Tower: " + towerName);
+            _menuManager.SetText(MenuManager.TypeOfText.HeaderText, towerName);
+            _menuManager.SetText(MenuManager.TypeOfText.CostText, Towers[CurrentlySelectedTowerPositionInArray].Cost + " Silver Coins");
+            _menuManager.SetText(MenuManager.TypeOfText.Rangetext, Towers[CurrentlySelectedTowerPositionInArray].Range + "m of range");
+            _menuManager.SetText(MenuManager.TypeOfText.DpsText, Towers[CurrentlySelectedTowerPositionInArray].ProjectileDamagePerEnemyHit / Towers[CurrentlySelectedTowerPositionInArray].FireRate + " DPS");
+            _menuManager.SetText(MenuManager.TypeOfText.DescriptionText, Towers[CurrentlySelectedTowerPositionInArray].Description);
+            
         }
     }
 

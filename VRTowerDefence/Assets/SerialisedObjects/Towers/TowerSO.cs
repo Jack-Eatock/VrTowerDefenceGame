@@ -16,6 +16,7 @@ public class TowerSO :  ScriptableObject
         Magic1
     };
 
+    public string Description;
     public string Name;
     public float FireRate;
     public float Range;

@@ -12,15 +12,25 @@ public  class MenuManager : MonoBehaviour
     public bool IsMenuTowerPlacementMode = false;
     public GameObject CurrentlyDisplayedObject = null;
 
+    public enum TypeOfText {HeaderText, DescriptionText, CostText, DpsText, Rangetext, PointsText };
+
     [SerializeField]  private GameObject  _menu = null;
+
     [SerializeField]  private Text        _headerText = null;
-    [SerializeField]  private Text        _subHeaderText = null;
+    [SerializeField]  private Text        _descriptionText = null;
+    [SerializeField]  private Text        _costText = null;
+    [SerializeField]  private Text        _dpsText = null;
+    [SerializeField]  private Text        _rangeText = null;
+    [SerializeField]  private Text        _pointsText = null;
+
+
     [SerializeField]  private GameObject  _menuUserPromptButton = null;
 
     public bool UserPromptRequired = false;
     public bool IsMenuActive = false;
 
     private GameModeSurvivalScript.TestDelegate _userPromptMethodToCall;
+
     private string _userPromptHeaderText;
     private string _userPromptSubHeaderText;
 
@@ -49,8 +59,8 @@ public  class MenuManager : MonoBehaviour
 
     public void LoadUserPromptIntoMenu()
     {
-        SetHeaderText(_userPromptHeaderText);
-        SetSubHeaderText(_userPromptSubHeaderText);
+        SetText(TypeOfText.HeaderText, _userPromptHeaderText);
+        SetText(TypeOfText.DescriptionText, _userPromptSubHeaderText);
         SwitchOutMenuCurrentlyDisplayedObject(_menuUserPromptButton);
     }
 
@@ -134,14 +144,35 @@ public  class MenuManager : MonoBehaviour
         }
     }
 
-    public void SetHeaderText(string newText)
-    {
-        _headerText.text = newText;
-    }
 
-    public void SetSubHeaderText(string newText)
+    public void SetText(TypeOfText textType  ,string newText)
     {
-        _subHeaderText.text = newText;
+        switch (textType)
+        {
+            case TypeOfText.HeaderText:
+                _headerText.text = newText;
+                break;
+
+            case TypeOfText.DescriptionText:
+                _descriptionText.text = newText;
+                break;
+
+            case TypeOfText.DpsText:
+                _dpsText.text = newText;
+                break;
+
+            case TypeOfText.CostText:
+                _costText.text = newText;
+                break;
+
+            case TypeOfText.Rangetext:
+                _rangeText.text = newText;
+                break;
+
+            case TypeOfText.PointsText:
+                _pointsText.text = newText;
+                break;
+        }
     }
 
     public void SwitchOutMenuCurrentlyDisplayedObject(GameObject objectToSwitchIn)

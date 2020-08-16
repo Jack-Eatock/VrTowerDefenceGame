@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
   m_Name: ArcherTower
   m_EditorClassIdentifier: 
+  Description: Cheap and Cheerfull!
   Name: ArcherTower
   FireRate: 1
   Range: 3

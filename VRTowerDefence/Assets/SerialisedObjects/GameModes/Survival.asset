@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WorldStartScale: 1
   GameModeName: Survival Settings
-  RoundEnemySpawnRatio: 30
+  RoundEnemySpawnRatio: 20
   SpawnRate: 0.5
   MaxPointPool: 10
   StartPoints: 30

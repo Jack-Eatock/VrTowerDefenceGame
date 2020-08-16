@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
   m_Name: MageTower
   m_EditorClassIdentifier: 
+  Description: Hard hitting but slow!
   Name: MageTower
   FireRate: 2
   Range: 6
   ProjectileSpeed: 7
-  ProjectileDamagePerEnemyHit: 40
+  ProjectileDamagePerEnemyHit: 60
   Cost: 30
   TowerGO: {fileID: 1277772364328422624, guid: 6e33bde7b4c377f48adbf741716f295c, type: 3}
   MinitureVersion4Menu: {fileID: 5585109631505509869, guid: 045e9daa77f24aa4c952319ab57a3720,

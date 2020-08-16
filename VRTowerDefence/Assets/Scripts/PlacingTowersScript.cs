@@ -198,7 +198,7 @@ public class PlacingTowersScript : MonoBehaviour
             {
                 if (IsPlacing)
                 {
-                    if (_canPlaceTowerAtCurrentPos)
+                    if (_canPlaceTowerAtCurrentPos && _menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray].Cost <= GameScript.Points && _newTower != null && _newTower.activeSelf) 
                     {
                         // Place the Tower.
                         PlaceTower();
@@ -323,6 +323,8 @@ public class PlacingTowersScript : MonoBehaviour
 
     public void PlaceTower()
     {
+        GameScript.Points -= _menuTowerScript.Towers[_menuTowerScript.CurrentlySelectedTowerPositionInArray].Cost;
+
 
         DisplayTowerRange(false); // Stop displaying the range
 

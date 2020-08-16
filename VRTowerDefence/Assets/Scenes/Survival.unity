@@ -4990,7 +4990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingCords: {x: 18, y: 1}
   _pathEndNum: 19
-  _numOfPaths: 5
+  _numOfPaths: 3
   MaxAttemptsBeforeAssumingCrashed: 2
   _pathSpawnChanceUp: 12
   _pathSpawnChanceLeft: 9

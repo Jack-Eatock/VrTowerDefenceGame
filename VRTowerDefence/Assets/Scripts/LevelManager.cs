@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
     public void Start()
     {
         SceneTransition = _SceneTransition;
-       // SwitchLevel(Levels.Lobby);
+        //SwitchLevel(Levels.Lobby);
        
     }
 
