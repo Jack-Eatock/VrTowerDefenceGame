@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //cleared\\
@@ -19,6 +20,7 @@ public class GridGenerator : MonoBehaviour
 
     public GameObject Ground;
     public SphereCollider RadiusDisplayer;
+
     // new var's
     public int GridDiamater;
     public static List<Vector2> GridPointsInUse = new List<Vector2>();
@@ -58,6 +60,17 @@ public class GridGenerator : MonoBehaviour
         RadiusDisplayer.radius = GridDiamater;
     }
 
+    public void ClearSlateLocal()
+    {
+        GridPointsInUse.Clear();
+        InitialScaleFactor = 1;
+        TilesInUseArray.Clear();
+        GridCanBeUpdated = false;
+        GridStatus = null;
+        LocalGridSpacing = 0;
+        GridPointsOnCircumferance.Clear();
+    }
+
     public void InitiateGridGeneration()
     {
         /*
@@ -78,7 +91,8 @@ public class GridGenerator : MonoBehaviour
 
         */
 
-      
+        ClearSlateLocal();
+
         UpdateGridSpacing(GridDiamater);
 
         GridStatus = new GridPoint[GridDiamater, GridDiamater];

@@ -6,15 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewTower", menuName = "Tower")]
 public class TowerSO :  ScriptableObject
 {
-    public enum ProjectileTypes
-    {
-        Default,
-        Explosive,
-        Explosive2,
-        Gas,
-        tar,
-        Magic1
-    };
 
     public string Description;
     public string Name;
@@ -30,7 +21,6 @@ public class TowerSO :  ScriptableObject
     public GameObject MinitureVersion4Menu;
     public GameObject ProjectileGO;
 
-    public ProjectileTypes ProjectileType;
 
 
 

@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject DeathEffect;
 
     // Unit Serialised Objects \\
-    public UnitSO Soldier;
+    public UnitSO Soldier; 
     public UnitSO Tank;
     public UnitSO Swarmer;
     public UnitSO Charger;
@@ -33,6 +33,10 @@ public class EnemySpawner : MonoBehaviour
     public int[] UnitSpawnChance;
     private EnemyScript _tempEnemyScript;
 
+    private void Start()
+    {
+        GameScript.CleanSlate.AddListener(ClearSlateLocal);
+    }
 
     public void Update()
     {
@@ -69,6 +73,17 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
+    public void ClearSlateLocal()
+    {
+        _unitsInWave.Clear();
+        EnemiesFinished = 0;
+        _currentPathToSpawnOn = 0;
+        PathwaysAvailable.Clear();
+        UnitStorage = null;
+        _spawningWaveUnits = false;
+        _lastRecordedTime = 0;
+        _counter = 0;
+}
 
     public void InitiateEnemySpawner()
     {

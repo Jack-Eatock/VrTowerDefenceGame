@@ -11,7 +11,11 @@ public class InputScripto : MonoBehaviour
     public delegate void DPRightClick();
     public delegate void LeftMenuPress();
     public delegate void MainMenuPress();
+    public delegate void SnapTurnLeft();
+    public delegate void SnapTurnRight();
 
+    public static event SnapTurnRight       OnSnapTurnRight;
+    public static event SnapTurnLeft        OnSnapTurnLeft;
     public static event MainMenuPress       OnMainMenuPressed;
     public static event RightTriggerClick   OnRightTriggerClick;
     public static event LeftTriggerClick    OnLeftTriggerClick;
@@ -30,6 +34,10 @@ public class InputScripto : MonoBehaviour
     public SteamVR_Action_Boolean GripL;
     public SteamVR_Action_Boolean GripR;
     public SteamVR_Action_Boolean MainMenu;
+    public SteamVR_Action_Boolean A_SnapTurnRight;
+    public SteamVR_Action_Boolean A_SnapTurnLeft;
+
+
 
     public SteamVR_Input_Sources LeftHand; // Left Controller - Set in Engine.
     public SteamVR_Input_Sources RightHand; // Right Controller - Set in Engine.
@@ -43,6 +51,8 @@ public class InputScripto : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        A_SnapTurnLeft.AddOnStateDownListener(OnSnapTurnLeftPress, RightHand);
+        A_SnapTurnRight.AddOnStateDownListener(OnSnapTurnRightPress, RightHand);
 
         GrabR.AddOnStateDownListener(TriggerDownRight, RightHand);
         GrabR.AddOnStateUpListener(TriggerUpRight, RightHand);
@@ -101,6 +111,30 @@ public class InputScripto : MonoBehaviour
     public void TriggerUpLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
     }
+
+
+
+
+
+    public void OnSnapTurnRightPress(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
+    {
+
+        OnSnapTurnRight();
+
+    }
+
+
+    public void OnSnapTurnLeftPress(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
+    {
+        OnSnapTurnLeft();
+    }
+
+
+
+
+
+
+
 
     public void OnDPLeftPress(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {

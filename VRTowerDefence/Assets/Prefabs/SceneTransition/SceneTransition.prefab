@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a6a70209b6e6345bfe18b02314a54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: survival
+  levelName: 
   internalProcessPath: 
   internalProcessArgs: 
   loadAdditive: 0
   loadAsync: 1
-  loadingScreen: {fileID: 2800000, guid: 237db5f3bf0f85d4f816db62d53a135c, type: 3}
+  loadingScreen: {fileID: 2800000, guid: e9c4f4dd425a6e34ab9380e058c4898b, type: 3}
   progressBarEmpty: {fileID: 0}
   progressBarFull: {fileID: 0}
   loadingScreenWidthInMeters: 6
@@ -65,9 +65,9 @@ MonoBehaviour:
   bottom: {fileID: 0}
   backgroundColor: {r: 0.21787113, g: 0.24787673, b: 0.3018868, a: 1}
   showGrid: 0
-  fadeOutTime: 0.5
-  fadeInTime: 0.5
-  postLoadSettleTime: 2
+  fadeOutTime: 0.25
+  fadeInTime: 0.25
+  postLoadSettleTime: 0
   usePauseFunc: 0
   loadingScreenFadeInTime: 0.1
   loadingScreenFadeOutTime: 0.1

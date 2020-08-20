@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameScript : MonoBehaviour
 {
+    public static UnityEvent CleanSlate;
+
     // Independant Variables \\ 
 
     public static float PlayerHeight = 121f; // Default 6ft But in cm // 182 is 6ft , 121 is 4 ft ( sitting down )
@@ -13,6 +16,10 @@ public class GameScript : MonoBehaviour
     public static bool  WaveIncoming = false;
     public static int   PointPool = 0;
     public static int   Points = 30;
+
+
+    [SerializeField] private  int _PointPool = 0;
+    [SerializeField] private  int _Points = 30;
 
     // Dependant Variables \\
 
@@ -32,9 +39,12 @@ public class GameScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    
+
         if (FirstTime)
         {
-
+            CleanSlate = new UnityEvent();
+            CleanSlate.AddListener(CleanSlateLocal);
             DontDestroyOnLoad(gameObject);
 
             //QualitySettings.vSyncCount = 0;
@@ -42,7 +52,8 @@ public class GameScript : MonoBehaviour
             FirstTime = false;
         }
 
-       // InitiateWave();
+     
+        // InitiateWave();
         // BuildingScript.MenuControllsDisabled = false; // Enables Building once the Path is generated.
     }
 
@@ -56,10 +67,18 @@ public class GameScript : MonoBehaviour
         
     }
 
+    void CleanSlateLocal()
+    {
+        CurrentRound = 1;
+        WaveIncoming = false;
+        PointPool = _PointPool;
+        Points = _Points;
+    }
+
 
     private void OnLevelWasLoaded(int level)
     {
-
+   
 
         if (level == 0)  // Intro
         {
@@ -76,6 +95,7 @@ public class GameScript : MonoBehaviour
             LoadSetVariableForLevel(_survivalSettings);
         }
     }
+
 
     private void LoadSetVariableForLevel(GameModeSettingSO gameMode)
     {
@@ -98,6 +118,18 @@ public class GameScript : MonoBehaviour
     public static void SetWorldOffsetFromPlayerHead(float newOffset)
     {
         WorldOffsetFromPlayerHeight = newOffset;
+    }
+
+    public static void PauseGame(bool pause)
+    {
+        if (pause)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
     }
 
 

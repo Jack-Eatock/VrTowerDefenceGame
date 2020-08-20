@@ -1,7 +1,7 @@
 {
    "action_manifest_version" : 0,
    "alias_info" : {},
-   "app_key" : "application.generated.unity.tabletoptownvr.exe",
+   "app_key" : "application.generated.unity.vrtowerdefencegame.exe",
    "bindings" : {
       "/actions/buggy" : {
          "chords" : [],
@@ -179,6 +179,21 @@
                },
                "mode" : "button",
                "path" : "/user/hand/right/input/application_menu"
+            },
+            {
+               "inputs" : {
+                  "east" : {
+                     "output" : "/actions/grabpulllocomotion/in/snapturnrightinput"
+                  },
+                  "west" : {
+                     "output" : "/actions/grabpulllocomotion/in/snapturnleftinput"
+                  }
+               },
+               "mode" : "dpad",
+               "parameters" : {
+                  "sub_mode" : "click"
+               },
+               "path" : "/user/hand/right/input/trackpad"
             }
          ]
       },
@@ -193,7 +208,7 @@
    "category" : "steamvr_input",
    "controller_type" : "vive_controller",
    "description" : "",
-   "name" : "My TableTopTownVR [Testing] configuration for Vive Controller",
+   "name" : "Saved VrTowerDefenceGame [Testing] configuration for Vive Controller",
    "options" : {},
    "simulated_actions" : []
 }

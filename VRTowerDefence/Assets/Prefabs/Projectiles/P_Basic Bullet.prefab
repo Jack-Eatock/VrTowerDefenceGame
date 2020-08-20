@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8253748932704933866}
   - component: {fileID: 4268468668910360047}
   - component: {fileID: 3660932260766802826}
+  - component: {fileID: -410430520154835603}
   m_Layer: 0
   m_Name: P_Basic Bullet
   m_TagString: Untagged
@@ -93,3 +94,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-410430520154835603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7229949544322044095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06df7914941a3894785e21822db73aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _firingTowerProperties: {fileID: 0}
+  _target: {fileID: 0}
+  _initiated: 0

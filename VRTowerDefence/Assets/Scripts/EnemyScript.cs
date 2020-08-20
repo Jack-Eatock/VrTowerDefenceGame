@@ -136,35 +136,6 @@ public class EnemyScript : MonoBehaviour
         }
      
 
-        switch (firingTowerProperties.ProjectileType)
-        {
-            case TowerSO.ProjectileTypes.Default:
-                
-                break;
-
-            case TowerSO.ProjectileTypes.Explosive:
-
-                break;
-
-            case TowerSO.ProjectileTypes.Explosive2:
-
-                break;
-
-            case TowerSO.ProjectileTypes.Gas:
-
-                break;
-
-        }
     }
 
-
-    public void DisplayhealthBar(bool Activate)
-    {
-
-    }
-
-    public void UpdateHealthBar()
-    {
-
-    }
 } 

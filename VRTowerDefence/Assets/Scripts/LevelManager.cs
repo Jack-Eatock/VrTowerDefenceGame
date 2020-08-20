@@ -1,4 +1,5 @@
-﻿using UnityEngine.SceneManagement;
+﻿//using UnityEngine.SceneManagement;
+using System.Collections;
 using UnityEngine;
 using Valve.VR;
 
@@ -7,20 +8,23 @@ using Valve.VR;
 public class LevelManager : MonoBehaviour
 {
 
-    public bool useTransitions = false;
-    public static bool UseTransitions;
+    public bool useTransitions = true;
+    public static bool UseTransitions = true;
 
+    public static GameObject LoadingScreen;
+    [SerializeField] private GameObject _loadingScreen;
+    
     public void OnValidate()
     {
         UseTransitions = useTransitions;
     }
-
+    
 
 
     public enum Levels { Intro ,Lobby, Survival, Campaign, COOP };
-    public static Levels CurrentLevel = Levels.Lobby;
+    public static Levels CurrentLevel = Levels.Intro;
 
-    public Levels SetLevel;
+    public Levels SetLevel = Levels.Survival;
 
     public GameObject _SceneTransition;
     public static GameObject SceneTransition;
@@ -29,8 +33,8 @@ public class LevelManager : MonoBehaviour
     public void Start()
     {
         SceneTransition = _SceneTransition;
-        //SwitchLevel(Levels.Lobby);
-       
+        LoadingScreen = _loadingScreen;
+
     }
 
     public void Update()
@@ -43,6 +47,10 @@ public class LevelManager : MonoBehaviour
 
     public static void SwitchLevel(Levels NewLevel)
     {
+        Debug.Log("Switching Level");
+
+        GameScript.CleanSlate.Invoke();
+
         MovementScript.MovementControllsDisabled = true;
 
         CurrentLevel = NewLevel;
@@ -64,7 +72,7 @@ public class LevelManager : MonoBehaviour
                 }
                 else
                 {
-                    SceneManager.LoadScene("Lobby");
+                   // SceneManager.LoadScene("Lobby");
                 }
 
                 Debug.Log("Loading Lobby");
@@ -83,10 +91,11 @@ public class LevelManager : MonoBehaviour
                 if (UseTransitions)
                 {
                     BeginSceneTransition("Survival", true);
+          
                 }
                 else
                 {
-                    SceneManager.LoadScene("Survival");
+                   // SceneManager.LoadScene("Survival");
                 }
                 //Debug.Log("Loading Survival");
                
@@ -97,12 +106,24 @@ public class LevelManager : MonoBehaviour
 
         }
 
+       
+
         
     }
 
 
     public static void BeginSceneTransition(string sceneName, bool usepauseFunc)
     {
+        LoadingScreenScripts newScript = LoadingScreen.GetComponent<LoadingScreenScripts>();
+        if (usepauseFunc)
+        {          
+            newScript.StartCoroutine(newScript.LoadingScreenFunc(true));
+        }
+        else
+        {
+            newScript.StartCoroutine(newScript.LoadingScreenFunc(false));
+        }
+
         GameObject sceneTransition = GameObject.Instantiate(SceneTransition);
         SteamVR_LoadLevel loadLevel = sceneTransition.GetComponent<SteamVR_LoadLevel>();
 
@@ -110,4 +131,6 @@ public class LevelManager : MonoBehaviour
         loadLevel.levelName = sceneName;
         loadLevel.enabled = true;
     }
+
+ 
 }

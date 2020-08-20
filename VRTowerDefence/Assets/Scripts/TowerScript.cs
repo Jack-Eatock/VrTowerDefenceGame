@@ -13,7 +13,6 @@ public class TowerScript : GameScript
     private float               _timeSincelastShot = 0;
     private GameObject          _target;
     private GameObject          _projectile;
-    private ProjectileScript    _tempProjectileScript;
     private Transform           _bulletStorage;
 
     private void Start()
@@ -63,8 +62,10 @@ public class TowerScript : GameScript
         //Debug.Log("Firing");
         _projectile = GameObject.Instantiate(TowerProperties.ProjectileGO,_bulletStorage);
         _projectile.transform.position = gameObject.transform.GetChild(0).position;
-        _tempProjectileScript = _projectile.AddComponent<ProjectileScript>();
+
         //Debug.Log("Bullet");
+        ProjectileScript _tempProjectileScript = _projectile.GetComponent<ProjectileScript>();
+        //Debug.Log("We hit Something");
 
         if (_projectile != null)
         {

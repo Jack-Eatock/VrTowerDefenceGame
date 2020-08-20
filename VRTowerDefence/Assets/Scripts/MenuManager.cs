@@ -33,11 +33,12 @@ public  class MenuManager : MonoBehaviour
 
     private string _userPromptHeaderText;
     private string _userPromptSubHeaderText;
+    public bool MenuDisabled = false;
 
     void Start()
     {
-        InputScripto.OnLeftMenuPress += LeftMenuButtonPressed;
-        
+       InputScripto.OnLeftMenuPress += LeftMenuButtonPressed;
+
     }
 
     // Update is called once per frame
@@ -104,6 +105,11 @@ public  class MenuManager : MonoBehaviour
 
     public void LeftMenuButtonPressed()
     {
+        if (MenuDisabled)
+        {
+            return;
+        }
+
         if (LevelManager.CurrentLevel != LevelManager.Levels.Survival)
         {
             return;

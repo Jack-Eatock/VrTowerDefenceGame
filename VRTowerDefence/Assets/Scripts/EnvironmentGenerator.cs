@@ -460,7 +460,7 @@ public class EnvironmentGenerator : MonoBehaviour
                                 isPlacable = false;
                             }
 
-                            else if (!GridGenerator.GridStatus[x, y].Available)
+                            else if (!GridGenerator.GridStatus[x, y].Available || !GridGenerator.GridStatus[x, y].Inuse)
                             {
                                 // Debug.Log("Not available");
                                 isPlacable = false;
@@ -492,7 +492,7 @@ public class EnvironmentGenerator : MonoBehaviour
                                 isPlacable = false;
                             }
 
-                            else if (!GridGenerator.GridStatus[x, y].Available)
+                            else if (!GridGenerator.GridStatus[x, y].Available || !GridGenerator.GridStatus[x, y].Inuse)
                             {
                                 // Debug.Log("Not available");
                                 isPlacable = false;
@@ -525,7 +525,7 @@ public class EnvironmentGenerator : MonoBehaviour
                                 isPlacable = false;
                             }
 
-                            else if (!GridGenerator.GridStatus[x, y].Available)
+                            else if (!GridGenerator.GridStatus[x, y].Available || !GridGenerator.GridStatus[x, y].Inuse)
                             {
                                 // Debug.Log("Not available");
                                 isPlacable = false;

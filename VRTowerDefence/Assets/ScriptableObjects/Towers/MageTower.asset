@@ -24,4 +24,4 @@ MonoBehaviour:
     type: 3}
   ProjectileGO: {fileID: 3155256477964946124, guid: c54fbe40c2d3a9e459018b6634324d47,
     type: 3}
-  ProjectileType: 0
+  ProjectileType: 1

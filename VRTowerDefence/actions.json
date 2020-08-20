@@ -79,6 +79,14 @@
     {
       "name": "/actions/GrabPullLocomotion/in/MainMenu",
       "type": "boolean"
+    },
+    {
+      "name": "/actions/GrabPullLocomotion/in/SnapTurnRightInput",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/GrabPullLocomotion/in/SnapTurnLeftInput",
+      "type": "boolean"
     }
   ],
   "action_sets": [

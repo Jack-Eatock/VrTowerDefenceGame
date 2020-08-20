@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
-  m_Name: ArcherTower
+  m_Name: RocektTower
   m_EditorClassIdentifier: 
-  Description: Cheap and Cheerfull!
-  Name: ArcherTower
-  FireRate: 1
-  Range: 3
-  ProjectileSpeed: 7
-  ProjectileDamagePerEnemyHit: 25
-  Cost: 10
-  TowerGO: {fileID: 3080278145896490955, guid: 4c39df1c64460fe47b60387958c9eb98, type: 3}
+  Description: 
+  Name: RocketTower
+  FireRate: 2
+  Range: 6
+  ProjectileSpeed: 10
+  ProjectileDamagePerEnemyHit: 50
+  Cost: 25
+  TowerGO: {fileID: 3080278145896490955, guid: 3851b0d3d7121e249a205a19886ce621, type: 3}
   MinitureVersion4Menu: {fileID: 9155996398986209919, guid: 0bcc7a4b56a038b4fbc249c214670ae0,
     type: 3}
-  ProjectileGO: {fileID: 7229949544322044095, guid: 0905ac4076480ec4b8b6f6f6a555055c,
+  ProjectileGO: {fileID: 1209035467373243359, guid: 822241867ccbbcb4582d04d77a599427,
     type: 3}
-  ProjectileType: 0

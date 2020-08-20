@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec06a08e76bb55047b859f5eb033caa7, type: 3}
+  m_Name: ArcherTower
+  m_EditorClassIdentifier: 
+  Description: Cheap and Cheerfull!
+  Name: ArcherTower
+  FireRate: 1
+  Range: 3
+  ProjectileSpeed: 7
+  ProjectileDamagePerEnemyHit: 25
+  Cost: 10
+  TowerGO: {fileID: 3080278145896490955, guid: 4c39df1c64460fe47b60387958c9eb98, type: 3}
+  MinitureVersion4Menu: {fileID: 9155996398986209919, guid: 3f33f5e949ca1044c9ffcd132243a75a,
+    type: 3}
+  ProjectileGO: {fileID: 7229949544322044095, guid: 0905ac4076480ec4b8b6f6f6a555055c,
+    type: 3}

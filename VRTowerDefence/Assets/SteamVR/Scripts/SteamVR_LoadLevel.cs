@@ -242,6 +242,8 @@ namespace Valve.VR
             // Optionally rotate loading screen transform around the camera into view.
             // We assume here that the loading screen is already facing toward the origin,
             // and that the progress bar transform (if any) is a child and will follow along.
+
+
             if (loadingScreen != null && loadingScreenDistance > 0.0f)
             {
                 Transform hmd = this.transform;

@@ -88,5 +88,21 @@ namespace Valve.VR
                 return SteamVR_Actions.grabPullLocomotion_MainMenu;
             }
         }
+        
+        public virtual SteamVR_Action_Boolean SnapTurnRightInput
+        {
+            get
+            {
+                return SteamVR_Actions.grabPullLocomotion_SnapTurnRightInput;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean SnapTurnLeftInput
+        {
+            get
+            {
+                return SteamVR_Actions.grabPullLocomotion_SnapTurnLeftInput;
+            }
+        }
     }
 }

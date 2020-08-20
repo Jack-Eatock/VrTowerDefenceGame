@@ -36,6 +36,8 @@ public class MainMenuScript : MonoBehaviour
     private GameObject _lastMenuObj;
     private GameObject _menuToActivate;
 
+    [SerializeField] private MenuManager _menuManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,9 +63,20 @@ public class MainMenuScript : MonoBehaviour
         if (!_mainMenuCanvas.activeSelf)
         {
             Debug.Log("Activating Menu");
+
+            GameScript.PauseGame(true);
+            _menuManager.MenuDisabled = true;
+
+            MovementScript.MovementControllsDisabled = true;
+
             SetPosOfMenu();
             _playerPointer.SetActive(true);
             _mainMenuCanvas.SetActive(true);
+
+            if (_menuManager.IsMenuActive)
+            {
+                _menuManager.SetMenuActive(false);
+            }
 
         }
 
@@ -90,6 +103,9 @@ public class MainMenuScript : MonoBehaviour
     {
         _mainMenuCanvas.SetActive(false);
         _playerPointer.SetActive(false);
+        GameScript.PauseGame(false);
+        MovementScript.MovementControllsDisabled = false;
+        _menuManager.MenuDisabled = false;
     }
 
 

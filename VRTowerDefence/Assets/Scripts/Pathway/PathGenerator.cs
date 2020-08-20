@@ -96,6 +96,7 @@ public class PathGenerator : MonoBehaviour
 
     private void Start()
     {
+        GameScript.CleanSlate.AddListener(CleanSlateLocal);
 
         _pathLoader = transform.GetComponent<PathLoader>();
         _pathSpawnChanceArray = new int[4];
@@ -110,6 +111,17 @@ public class PathGenerator : MonoBehaviour
         _maxWidth = _gridWidth - _widthOffsetFromEdge;
 
     }
+
+    public void CleanSlateLocal()
+    {
+        FullPathways.Clear();              // x axis is the different paths created, y  axis is the points the path uses. 
+        Paths.Clear();
+        CurrentPathTiles.Clear();
+
+        CurrentNumOfAttempts = 0;
+        _currentNumOfTilePlacementsToReachEnd = 0;
+        _failureCount = 0;
+}
 
     // Update is called once per frame
     void Update()
