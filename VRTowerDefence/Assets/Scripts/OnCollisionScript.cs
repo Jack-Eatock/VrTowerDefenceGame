@@ -9,21 +9,33 @@ public class OnCollisionScript : MonoBehaviour
     public int  CollisionType;
     public bool IsColliding = false;
     public List<GameObject> ObjectsWithinCollider = new List<GameObject>();
+    public GameObject _currentObj;
+
+    public int BothLeftRightHandOnly = 1;
 
     private int _counter = 0;
 
+
+    private void Update()
+    {
+        if (IsColliding && CollisionType == 5)
+        {
+            if (_currentObj != null)
+            {
+                if (!_currentObj.activeInHierarchy)
+                {
+                    _currentObj = null;
+                    IsColliding = false;
+                }
+            }
+           
+        }
+    }
+
     public void OnTriggerEnter(Collider other)
     {
-        if (CollisionType == 1)
-        {
-            if (other.gameObject.name == "RightHand") // hand Interacted with Tower menu.
-            {
-                IsColliding = true;
-            }
-
-        }
-
-        else if (CollisionType == 2) // MiniTower COlliding with Ground.
+    
+        if (CollisionType == 2) // MiniTower COlliding with Ground.
         {
             if (other.gameObject.name == "Ground") 
             {
@@ -43,32 +55,28 @@ public class OnCollisionScript : MonoBehaviour
             }
         }
 
-        else if (CollisionType == 4) // General Button press.
+        else if (CollisionType == 5)
         {
-            if (other.gameObject.name == "RightHand" || other.gameObject.name == "LeftHand") // Colliding with a hand.
+            if (other.gameObject.name != "RightHand" && other.gameObject.name != "LeftHand" )
             {
-                _counter++;
-
-                if (_counter != 0)
+                if (other.gameObject.transform.tag == "Interactable")
                 {
+                    
                     IsColliding = true;
-                    gameObject.GetComponent<ButtonScript>().IsCollidingWithHands = true;
+                    _currentObj = other.gameObject;
+                   
                 }
+               
+                   
             }
+
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (CollisionType == 1)
-        {
-            if (other.gameObject.name == "RightHand")
-            {
-                IsColliding = false;
-            }
-        }
 
-        else if (CollisionType == 2) // MiniTower COlliding with Ground.
+        if (CollisionType == 2) // MiniTower COlliding with Ground.
         {
             if (other.gameObject.name == "Ground") 
             {
@@ -99,18 +107,26 @@ public class OnCollisionScript : MonoBehaviour
               
         }
 
-        else if (CollisionType == 4) // General Button press.
+        else if (CollisionType == 5)
         {
-            if (other.gameObject.name == "RightHand" || other.gameObject.name == "LeftHand") // Colliding with a hand.
+            if (other.gameObject.name != "RightHand" && other.gameObject.name != "LeftHand") 
             {
-                _counter--;
-
-                if (_counter == 0)
+                if (other.gameObject.transform.tag == "Interactable")
                 {
-                    IsColliding = false;
-                    gameObject.GetComponent<ButtonScript>().IsCollidingWithHands = false;
+
+                    if (_currentObj == other.gameObject)
+                    {
+
+                        IsColliding = false;
+                        _currentObj = null;
+                    }
+       
+                    
                 }
+              
+                
             }
+
         }
     }
 }

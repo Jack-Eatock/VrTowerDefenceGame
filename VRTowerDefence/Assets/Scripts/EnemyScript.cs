@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 // cleared \\
 
-public class EnemyScript : MonoBehaviour
+public class EnemyScript : MonoBehaviour, IInteractable
 {
     private GameObject DeathEffect;
 
@@ -46,6 +46,14 @@ public class EnemyScript : MonoBehaviour
         _healthBar = _healthBarGO.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>();
 
 
+    }
+
+    public void Interact(bool isLeftHand)
+    {
+        Debug.Log("Inspecting Enemy");
+        StartCoroutine(UtilitiesScript.ObjectBlinkColour(gameObject, Color.yellow, 0.10f));
+
+        InteractionMenuDisplayer.SetUpInteractionMenu(transform.position ,isLeftHand);
     }
 
     public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_, int _PathwayToFollow)

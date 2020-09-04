@@ -8,6 +8,9 @@ TagManager:
   - Button
   - MenuPanel
   - IgnoreFromMeshMerge
+  - Interactable
+  - RightHand
+  - LeftHand
   layers:
   - Default
   - TransparentFX

@@ -37,7 +37,8 @@ public class GameScript : MonoBehaviour
     private bool FirstTime = true;
 
     // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
     
 

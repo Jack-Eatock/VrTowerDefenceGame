@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitGO: {fileID: 6964569119548220669, guid: 5b17ff3e71ea0864e81da991ba697ecf, type: 3}
   Name: Tank
-  Speed: 0.3
+  Speed: 0.85
   Health: 200
   Points: 8
   Mass: 5

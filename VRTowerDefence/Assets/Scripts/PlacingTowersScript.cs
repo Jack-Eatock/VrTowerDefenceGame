@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlacingTowersScript : MonoBehaviour
+public class PlacingTowersScript : MonoBehaviour, IInteractable
 {
 
     // Tower range Variables
@@ -182,6 +182,39 @@ public class PlacingTowersScript : MonoBehaviour
         }
     }
 
+    public void Interact(bool isLeftHand)
+    {
+        if (!_menuManager.IsMenuActive)
+        {
+            return;
+        }
+
+        if (_menuManager.IsMenuTowerPlacementMode) // Currently in tower placement mode.
+        {
+            if (IsPlacing)
+            {
+                // Put tower back in Menu.
+                ResetPlacing();
+            }
+
+            else
+            {
+                // Move Miniture Tower into Users hand.
+                MoveMinitureTowerToUsersHand();
+                _menuTowerScript.DisableTowerSwitch = true;
+                IsPlacing = true;
+            }
+        }
+
+        else // If in the user Prompt Menu and they right click.
+        {
+   
+            _menuManager.UserPromptActivated();
+            
+        }
+
+
+    }
 
     public void RightTriggerClick()
     {
@@ -192,7 +225,6 @@ public class PlacingTowersScript : MonoBehaviour
 
         if (_menuManager.IsMenuTowerPlacementMode) // Currently in tower placement mode.
         {
-
 
             if (_onRightHandCollWithGround.IsColliding) // If the Miniture Tower (Right Hand AttatchmentPoint) is colliding with the Ground.
             {
@@ -213,35 +245,9 @@ public class PlacingTowersScript : MonoBehaviour
                 }
             }
 
-            else if (_menuManager.MenuDisplayPoint.gameObject.GetComponent<OnCollisionScript>().IsColliding)  // If right hand is colliding with the menu.
-            {
-                if (IsPlacing)
-                {
-                    // Put tower back in Menu.
-                    ResetPlacing();
-                }
-
-                else
-                {
-                    // Move Miniture Tower into Users hand.
-                    MoveMinitureTowerToUsersHand();
-                    _menuTowerScript.DisableTowerSwitch = true;
-                    IsPlacing = true;
-                }
-            }
-
-           
-
-
         }
 
-        else // If in the user Prompt Menu and they right click.
-        {
-            if (_menuManager.MenuDisplayPoint.gameObject.GetComponent<OnCollisionScript>().IsColliding)  // If The user clicks on the user prompt Button.
-            {
-                _menuManager.UserPromptActivated();
-            }
-        }
+    
 
     }
 

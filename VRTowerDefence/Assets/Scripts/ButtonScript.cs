@@ -1,38 +1,33 @@
 ﻿
 using UnityEngine;
 
-public class ButtonScript : MonoBehaviour
+public class ButtonScript : MonoBehaviour, IInteractable
 {
     public int ButtonNum = 0;
-    public bool IsCollidingWithHands = false;
 
-
-    public void Start()
+    public void Interact(bool isLeftHand)
     {
-        InputScripto.OnRightTriggerClick += Click;
-        InputScripto.OnLeftTriggerClick += Click;
-    }
+        Debug.Log("Button Inteacted");
 
-    void Click()
-    {
-        if (IsCollidingWithHands)
+
+
+
+
+
+
+
+
+
+        if (ButtonNum == 0)
         {
-      
-            if (ButtonNum == 0)
-            {
-                Debug.Log("ERROR - Give this button a purpose (ButtonNum = 0)" + gameObject.transform.name);
-            }
+            Debug.Log("ERROR - Give this button a purpose (ButtonNum = 0)" + gameObject.transform.name);
+        }
 
-            else if (ButtonNum == 1)
-            {
-                Debug.Log("Clicked Button");
-                InputScripto.OnRightTriggerClick -= Click;
-                InputScripto.OnLeftTriggerClick -= Click;
-                LevelManager.SwitchLevel(LevelManager.Levels.Survival);
-            }
+        else if (ButtonNum == 1)
+        {
+            Debug.Log("Clicked Button");
+            LevelManager.SwitchLevel(LevelManager.Levels.Survival);
         }
     }
-   
-
 
 }

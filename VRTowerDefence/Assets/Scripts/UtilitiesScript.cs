@@ -38,7 +38,7 @@ public static class UtilitiesScript
     }
 
 
-    public static IEnumerator ObjectBlinkColour(GameObject theObject, Color theColour, float theBlinkTime)
+    public static IEnumerator ObjectBlinkColour(GameObject theObject, Color theColour, float theBlinkTime )
     {
         //Debug.Log(ObjectsAffected);
 
@@ -81,7 +81,11 @@ public static class UtilitiesScript
                
             }
 
-            yield return new WaitForSeconds(theBlinkTime); // Waits the desired time. and then we set the colours back to normal.
+         
+              yield return new WaitForSeconds(theBlinkTime); // Waits the desired time. and then we set the colours back to normal.
+            
+
+        
 
             int counter = 0;
             foreach (Renderer rend in objRenderers)

@@ -106,7 +106,11 @@ public class InputScripto : MonoBehaviour
     }
     public void TriggerDownLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
-        OnLeftTriggerClick();
+        if (OnLeftTriggerClick != null)
+        {
+            OnLeftTriggerClick();
+        }
+    
     }
     public void TriggerUpLeft(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
@@ -206,6 +210,7 @@ public class InputScripto : MonoBehaviour
     {
         //Debug.Log("Left Grip Pressed");
         MovementScript.IsGrippingL = true;
+        InteractionMenuDisplayer.OnGrip();
     }
     public void GripUpR(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources sources)
     {
@@ -216,6 +221,7 @@ public class InputScripto : MonoBehaviour
     {
         //Debug.Log("Right Grip Pressed");
         MovementScript.IsGrippingR = true;
+        InteractionMenuDisplayer.OnGrip();
     }
 
 }

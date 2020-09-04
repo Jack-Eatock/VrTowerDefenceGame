@@ -4,7 +4,7 @@ using UnityEngine;
 
 // cleared \\
 
-public class TowerScript : GameScript
+public class TowerScript : GameScript, IInteractable
 {
     public TowerSO TowerProperties;
 
@@ -55,6 +55,14 @@ public class TowerScript : GameScript
                 }
             }
         }
+    }
+
+    public void Interact(bool isLeftHand)
+    {
+        Debug.Log("Inspect Tower");
+
+        StartCoroutine(UtilitiesScript.ObjectBlinkColour(gameObject, Color.yellow, 0.05f));
+        InteractionMenuDisplayer.SetUpInteractionMenu(transform.position ,isLeftHand, false , 4f);
     }
 
     void Fire()

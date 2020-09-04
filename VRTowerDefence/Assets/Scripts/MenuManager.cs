@@ -7,6 +7,7 @@ public  class MenuManager : MonoBehaviour
 {
 
 
+    public InteractionDetection InteractionScript;
 
     public Transform MenuDisplayPoint;
     public bool IsMenuTowerPlacementMode = false;
@@ -89,12 +90,14 @@ public  class MenuManager : MonoBehaviour
     {
         if (setActive)
         {
+            InteractionScript.DisableInteraction(true, true);
             _menu.SetActive(true);
             IsMenuActive = true;
             GridGenerator.GridSwitch(false);
         }
         else
         {
+            InteractionScript.DisableInteraction(true, false);
             _menu.SetActive(false);
             IsMenuActive = false;
             GetComponent<PlacingTowersScript>().ResetPlacing();
