@@ -62,7 +62,7 @@ public class TowerScript : GameScript, IInteractable
         Debug.Log("Inspect Tower");
 
         StartCoroutine(UtilitiesScript.ObjectBlinkColour(gameObject, Color.yellow, 0.05f));
-        InteractionMenuDisplayer.SetUpInteractionMenu(transform.position ,isLeftHand, false , 4f);
+        InteractionMenuDisplayer.SetUpInteractionMenu(transform.position ,isLeftHand, false , .2f);
     }
 
     void Fire()

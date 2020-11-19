@@ -11,6 +11,7 @@ TagManager:
   - Interactable
   - RightHand
   - LeftHand
+  - ControllerRenderModel
   layers:
   - Default
   - TransparentFX

@@ -4723,7 +4723,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &904818854
 GameObject:
   m_ObjectHideFlags: 0
@@ -5783,6 +5783,7 @@ GameObject:
   - component: {fileID: 326124685}
   - component: {fileID: 933428356}
   - component: {fileID: 933428357}
+  - component: {fileID: 933428358}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5822,6 +5823,18 @@ MonoBehaviour:
   RightHand: {fileID: 374608604}
   _leftHandDetectionBall: {fileID: 806332224}
   _rightHandDetectionBall: {fileID: 2116823931}
+--- !u!114 &933428358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933428355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ceb698b6373ea0429b2019c778c115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &933498265
 Transform:
   m_ObjectHideFlags: 0
@@ -6721,6 +6734,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathEffect: {fileID: 8586148564292064510, guid: cc855b1b3679ab247becc8514122856d,
+    type: 3}
+  FloatingPointsGO: {fileID: 508989216552427562, guid: 800184b3547fe194ba9748447ab4e599,
     type: 3}
   Soldier: {fileID: 11400000, guid: e8629f2d08db4de4b9e17d70df43a0cf, type: 2}
   Tank: {fileID: 11400000, guid: 5c002d6ff62d06b48841e1bcb72a5f8d, type: 2}
@@ -13170,8 +13185,8 @@ MonoBehaviour:
   _interactionMenu: {fileID: 4273500439334484462, guid: b34ed4f1c8fc8424aa138f05e8d1125a,
     type: 3}
   _playerHead: {fileID: 933410085}
-  _leftHandMenuPos: {fileID: 933502037}
-  _rightHandMenuPos: {fileID: 933507491}
+  _leftHandMenuPos: {fileID: 224493695}
+  _rightHandMenuPos: {fileID: 374608602}
 --- !u!114 &8633384140228544564
 MonoBehaviour:
   m_ObjectHideFlags: 0

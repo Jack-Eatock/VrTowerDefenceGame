@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
 {
     public static int EnemiesFinished = 0; // could have made it to the end or died ..
     public GameObject DeathEffect;
+    public GameObject FloatingPointsGO;
 
     // Unit Serialised Objects \\
     public UnitSO Soldier; 
@@ -171,7 +172,7 @@ public class EnemySpawner : MonoBehaviour
         newUnit.transform.localPosition = GridGenerator.GridStatus[(int)PathwaysAvailable [_currentPathToSpawnOn] [0].x, (int)PathwaysAvailable [_currentPathToSpawnOn] [0].y].Position;
 
         _tempEnemyScript = newUnit.GetComponent<EnemyScript>();
-        _tempEnemyScript.EnemySetUP(unitType.Health, unitType.Speed, unitType.Points,unitType.Mass, DeathEffect, _currentPathToSpawnOn);
+        _tempEnemyScript.EnemySetUP(unitType.Health, unitType.Speed, unitType.Points,unitType.Mass, DeathEffect, _currentPathToSpawnOn, FloatingPointsGO);
         
         if (PathwaysAvailable.Count == 1)
         {

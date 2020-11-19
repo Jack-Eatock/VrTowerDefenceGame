@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class EnemyScript : MonoBehaviour, IInteractable
 {
     private GameObject DeathEffect;
+    private GameObject FloatingPointsGO;
 
     public float DeathEffectOffset = 0.4f;
     public float Health;
@@ -56,10 +57,11 @@ public class EnemyScript : MonoBehaviour, IInteractable
         InteractionMenuDisplayer.SetUpInteractionMenu(transform.position ,isLeftHand);
     }
 
-    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_, int _PathwayToFollow)
+    public void EnemySetUP(float _Health, float _Speed, int _Points, int Mass_, GameObject DeathEffect_, int _PathwayToFollow, GameObject _FloatingPoint)
     {
         _pathwayToFollow = _PathwayToFollow;
         DeathEffect = DeathEffect_;
+        FloatingPointsGO = _FloatingPoint;
         Health = _Health;
         _speed = _Speed;
         _points = _Points;
@@ -90,6 +92,16 @@ public class EnemyScript : MonoBehaviour, IInteractable
                
                 GameScript.Points += _points;
                 EnemySpawner.EnemiesFinished++;
+
+                // Start the floating points // Create the object then pass the correct values in and activate it.
+                GameObject floatingPointsGO = Instantiate(FloatingPointsGO);
+                UtilitiesScript.AttachObjectToWorld(floatingPointsGO, transform.localPosition + new Vector3(0, (DeathEffectOffset * MovementScript.ScaleFactor), 0));
+                floatingPointsGO.GetComponent<FloatingPointScript>().StartFloating(_points);
+
+                
+
+                
+
 
                 GameObject deathEffectGO = Instantiate(DeathEffect);
                 UtilitiesScript.AttachObjectToWorld(deathEffectGO, transform.localPosition + new Vector3 (0, (DeathEffectOffset * MovementScript.ScaleFactor), 0));
